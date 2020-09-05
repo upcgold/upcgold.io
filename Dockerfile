@@ -11,5 +11,5 @@ COPY . /scan
 RUN npm rebuild node-sass
 #CMD ["npm", "run-script", "build"]
 CMD ["yarn", "start"]
-EXPOSE 3008
+EXPOSE 3000
 ##ENTRYPOINT "./randomEgg.sh"
