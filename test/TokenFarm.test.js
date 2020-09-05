@@ -1,5 +1,5 @@
 const DaiToken = artifacts.require('DaiToken')
-const DappToken = artifacts.require('DappToken')
+const UpcToken = artifacts.require('UpcToken')
 const TokenFarm = artifacts.require('TokenFarm')
 
 require('chai')
@@ -16,7 +16,7 @@ contract('TokenFarm', ([owner, investor]) => {
   before(async () => {
     // Load Contracts
     daiToken = await DaiToken.new()
-    dappToken = await DappToken.new()
+    dappToken = await UpcToken.new()
     tokenFarm = await TokenFarm.new(dappToken.address, daiToken.address)
 
     // Transfer all Dapp tokens to farm (1 million)

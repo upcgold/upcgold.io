@@ -1,18 +1,21 @@
-version: "2"
+version: '2'
+
 services:
-  node:
-    image: "node:latest"
-    user: "root"
-    working_dir: /home/node/app
+  upcgold.io:
     environment:
-      - NODE_ENV=production
-    volumes:
-      - ./:/home/node/app
-    expose:
-      - "8081"
-    command: "npm start"
+      - VIRTUAL_HOST=upcgold.io
+      - LETSENCRYPT_HOST=upcgold.io
+    build: .
+    image: mountain/upcgold.io
+    container_name: upcgold.io
+    ports:
+      # strapi runs on port 1337, so map this port out to port 7002 to access it.  the container always
+      # specifies this it exposes this port in the Dockerfile.  to change this port (1337), change Dockerfile
+      - 3000:3000
     networks:
       - mongonet
+    restart: always
+
 networks:
   mongonet:
     external: true

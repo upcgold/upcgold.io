@@ -10,7 +10,14 @@ module.exports = {
         process.env.MNEMONIC,
         process.env.ROPSTEN_URL),
       network_id: 3
+    },
+    goerli: {
+      provider: () => new HDWalletProvider(
+        process.env.MNEMONIC,
+        process.env.GOERLI_URL),
+      network_id: "*"
     }
+
   },
   contracts_directory: './src/contracts/',
   contracts_build_directory: './src/abis/',
