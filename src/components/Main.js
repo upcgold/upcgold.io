@@ -43,6 +43,7 @@ class Main extends Component {
                   type="text"
                   ref={(input) => { this.input = input }}
                   className="form-control form-control-lg"
+	          onChange={this.handleChange}
                   placeholder="0"
                   required />
                 <div className="input-group-append">
@@ -52,7 +53,12 @@ class Main extends Component {
                   </div>
                 </div>
               </div>
-              <button type="submit" className="btn btn-primary btn-block btn-lg">STAKE!</button>
+              <button 
+	           type="submit" 
+	           className="btn btn-primary btn-block btn-lg"
+		  >
+		  STAKE!
+	      </button>
             </form>
             <button
               type="submit"

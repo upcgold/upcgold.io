@@ -25,7 +25,7 @@ class App extends Component {
     if(upcGoldBankData) {
       const upcGoldBank = new web3.eth.Contract(UPCGoldBank.abi, upcGoldBankData.address)
       this.setState({ upcGoldBank })
-      let stakingBalance = await upcGoldBank.methods.stakingBalance(this.state.account).call()
+      let stakingBalance = await upcGoldBank.methods.getAddressBalance().call()
       this.setState({ stakingBalance: stakingBalance.toString() })
     } else {
       window.alert('UPCGoldBank contract not deployed to detected network.')
@@ -47,14 +47,18 @@ class App extends Component {
     }
   }
 
-  stakeTokens = (amount) => {
-    this.setState({ loading: true })
-    this.state.daiToken.methods.approve(this.state.upcGoldBank._address, amount).send({ from: this.state.account }).on('transactionHash', (hash) => {
-      this.state.upcGoldBank.methods.stakeTokens(amount).send({ from: this.state.account }).on('transactionHash', (hash) => {
-        this.setState({ loading: false })
-      })
-    })
-  }
+  stakeTokens= async () => {
+    const { accounts, contract } = this.state;
+
+    //console.log(this.state.sendCryptoValue);
+    // Stores a given value, 5 by default.
+    this.state.upcGoldBank.methods.depositMoney().send({ from: this.state.account , value: "1000000000000000000"});
+  };
+
+  handleChange(e) {
+     var sendEth = this.state.web3.utils.toWei(e.target.value, "ether")
+     this.setState({ sendCryptoValue: sendEth });
+  };
 
   unstakeTokens = (amount) => {
     this.setState({ loading: true })
