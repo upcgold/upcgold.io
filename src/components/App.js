@@ -1,6 +1,6 @@
 import React, { Component } from 'react'
 import Web3 from 'web3'
-import TokenFarm from '../abis/TokenFarm.json'
+import UPCGoldBank from '../abis/UPCGoldBank.json'
 import Navbar from './Navbar'
 import Main from './Main'
 import './App.css'
@@ -20,15 +20,15 @@ class App extends Component {
 
     const networkId = await web3.eth.net.getId()
 
-    // Load TokenFarm
-    const tokenFarmData = TokenFarm.networks[networkId]
-    if(tokenFarmData) {
-      const tokenFarm = new web3.eth.Contract(TokenFarm.abi, tokenFarmData.address)
-      this.setState({ tokenFarm })
-      let stakingBalance = await tokenFarm.methods.stakingBalance(this.state.account).call()
+    // Load UPCGoldBank
+    const upcGoldBankData = UPCGoldBank.networks[networkId]
+    if(upcGoldBankData) {
+      const upcGoldBank = new web3.eth.Contract(UPCGoldBank.abi, upcGoldBankData.address)
+      this.setState({ upcGoldBank })
+      let stakingBalance = await upcGoldBank.methods.stakingBalance(this.state.account).call()
       this.setState({ stakingBalance: stakingBalance.toString() })
     } else {
-      window.alert('TokenFarm contract not deployed to detected network.')
+      window.alert('UPCGoldBank contract not deployed to detected network.')
     }
 
     this.setState({ loading: false })
@@ -49,8 +49,8 @@ class App extends Component {
 
   stakeTokens = (amount) => {
     this.setState({ loading: true })
-    this.state.daiToken.methods.approve(this.state.tokenFarm._address, amount).send({ from: this.state.account }).on('transactionHash', (hash) => {
-      this.state.tokenFarm.methods.stakeTokens(amount).send({ from: this.state.account }).on('transactionHash', (hash) => {
+    this.state.daiToken.methods.approve(this.state.upcGoldBank._address, amount).send({ from: this.state.account }).on('transactionHash', (hash) => {
+      this.state.upcGoldBank.methods.stakeTokens(amount).send({ from: this.state.account }).on('transactionHash', (hash) => {
         this.setState({ loading: false })
       })
     })
@@ -58,7 +58,7 @@ class App extends Component {
 
   unstakeTokens = (amount) => {
     this.setState({ loading: true })
-    this.state.tokenFarm.methods.unstakeTokens().send({ from: this.state.account }).on('transactionHash', (hash) => {
+    this.state.upcGoldBank.methods.unstakeTokens().send({ from: this.state.account }).on('transactionHash', (hash) => {
       this.setState({ loading: false })
     })
   }
@@ -67,7 +67,7 @@ class App extends Component {
     super(props)
     this.state = {
       account: '0x0',
-      tokenFarm: {},
+      upcGoldBank: {},
       daiTokenBalance: '0',
       stakingBalance: '0',
       loading: true

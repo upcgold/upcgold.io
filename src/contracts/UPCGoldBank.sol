@@ -31,7 +31,7 @@ contract UPCGoldBank {
         return balanceReceived[msg.sender].totalBalance;
     }
     
-    function depositMoney(uint _amount) public payable {
+    function depositMoney() public payable {
         balanceReceived[msg.sender].totalBalance += msg.value;
         
         Deposit memory deposit = Deposit(msg.value, now);
