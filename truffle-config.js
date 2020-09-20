@@ -21,8 +21,17 @@ module.exports = {
         process.env.MNEMONIC,
         process.env.GOERLI_URL),
       network_id: "*"
+    },
+    xdai: {
+          provider: function() {
+                return new HDWalletProvider(
+               process.env.MNEMONIC,
+               "https://dai.poa.network")
+          },
+          network_id: 100,
+          gas: 500000,
+          gasPrice: 1000000000
     }
-
   },
   contracts_directory: './src/contracts/',
   contracts_build_directory: './src/abis/',
