@@ -26,7 +26,7 @@ class App extends Component {
       const upcGoldBank = new web3.eth.Contract(UPCGoldBank.abi, upcGoldBankData.address)
       this.setState({ upcGoldBank })
       let stakingBalance = await upcGoldBank.methods.getAddressBalance().call()
-      this.setState({ stakingBalance: stakingBalance.toString() })
+      this.setState({ daiTokenBalance: stakingBalance.toString(), stakingBalance: stakingBalance.toString() })
     } else {
       window.alert('UPCGoldBank contract not deployed to detected network.')
     }
