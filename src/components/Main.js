@@ -43,7 +43,7 @@ class Main extends Component {
                   type="text"
                   ref={(input) => { this.input = input }}
                   className="form-control form-control-lg"
-	          onChange={this.handleChange}
+	          onChange={this.props.handleChange}
                   placeholder="0"
                   required />
                 <div className="input-group-append">

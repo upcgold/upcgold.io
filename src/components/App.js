@@ -26,7 +26,7 @@ class App extends Component {
       const upcGoldBank = new web3.eth.Contract(UPCGoldBank.abi, upcGoldBankData.address)
       this.setState({ upcGoldBank })
       let stakingBalance = await upcGoldBank.methods.getAddressBalance().call();
-      console.log("stakings is " + JSON.stringify(upcGoldBankData));
+      console.log("stakings is " + JSON.stringify(upcGoldBank));
       this.setState({ daiTokenBalance: stakingBalance.toString(), stakingBalance: stakingBalance.toString() })
     } else {
       window.alert('UPCGoldBank contract not deployed to detected network.')
@@ -53,19 +53,18 @@ class App extends Component {
 
     //console.log(this.state.sendCryptoValue);
     // Stores a given value, 5 by default.
-    this.state.upcGoldBank.methods.depositMoney().send({ from: this.state.account , value: "1000000000000000000"});
+    this.state.upcGoldBank.methods.depositMoney().send({ from: this.state.account , value: this.state.sendCryptoValue});
   };
 
   handleChange(e) {
      var sendEth = this.state.web3.utils.toWei(e.target.value, "ether")
+     console.log("it is sending " + sendEth);
      this.setState({ sendCryptoValue: sendEth });
   };
 
   unstakeTokens = (amount) => {
     this.setState({ loading: true })
-    this.state.upcGoldBank.methods.unstakeTokens().send({ from: this.state.account }).on('transactionHash', (hash) => {
-      this.setState({ loading: false })
-    })
+    this.state.upcGoldBank.methods.withdraw().send({ from: this.state.account });
   }
 
   constructor(props) {
@@ -89,6 +88,7 @@ class App extends Component {
         stakingBalance={this.state.stakingBalance}
         stakeTokens={this.stakeTokens}
         unstakeTokens={this.unstakeTokens}
+        handleChange={this.handleChange}
       />
     }
 
