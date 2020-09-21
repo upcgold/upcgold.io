@@ -57,7 +57,8 @@ class App extends Component {
   };
 
   handleChange(e) {
-     var sendEth = this.state.web3.utils.toWei(e.target.value, "ether")
+     const web3 = window.web3
+     var sendEth = web3.utils.toWei(e.target.value, "ether")
      console.log("it is sending " + sendEth);
      this.setState({ sendCryptoValue: sendEth });
   };
@@ -76,6 +77,8 @@ class App extends Component {
       stakingBalance: '0',
       loading: true
     }
+    this.handleChange = this.handleChange.bind(this);
+
   }
 
   render() {
