@@ -4,6 +4,8 @@ RUN mkdir -p /scan
 #COPY . /egg
 #RUN yarn global add serve
 RUN apt update &&  apt install vim -y
+RUN git config --global user.email "dockerexec@bash.cc"
+RUN git config --global user.name "Docker Exec Bash"
 WORKDIR /scan
 COPY . /scan
 #RUN npm install
