@@ -3,7 +3,7 @@ RUN mkdir -p /scan
 #WORKDIR /egg
 #COPY . /egg
 #RUN yarn global add serve
-RUN apt update &&  apt install vim
+RUN apt update &&  apt install vim -y
 WORKDIR /scan
 COPY . /scan
 #RUN npm install
