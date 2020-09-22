@@ -26,8 +26,8 @@ class App extends Component {
       const upcGoldBank = new web3.eth.Contract(UPCGoldBank.abi, upcGoldBankData.address)
       this.setState({ upcGoldBank })
       let stakingBalance = await upcGoldBank.methods.getAddressBalance().call({from: this.state.account });
-      console.log("stakings is " + JSON.stringify(stakingBalance));
-      this.setState({ daiTokenBalance: stakingBalance.toString(), stakingBalance: stakingBalance.toString() })
+      let contractBalance = await upcGoldBank.methods.getBalance().call();
+      this.setState({ contractBalance: contractBalance, daiTokenBalance: stakingBalance.toString(), stakingBalance: stakingBalance.toString() })
     } else {
       window.alert('UPCGoldBank contract not deployed to detected network.')
     }
@@ -89,6 +89,7 @@ class App extends Component {
       content = <Main
         daiTokenBalance={this.state.daiTokenBalance}
         stakingBalance={this.state.stakingBalance}
+        contractBalance={this.state.contractBalance}
         stakeTokens={this.stakeTokens}
         unstakeTokens={this.unstakeTokens}
         handleChange={this.handleChange}

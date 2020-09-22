@@ -10,13 +10,13 @@ class Main extends Component {
         <table className="table table-borderless text-muted text-center">
           <thead>
             <tr>
-              <th scope="col">Staking Balance</th>
+              <th scope="col">Total Staked:</th>
               <th scope="col">Reward Balance</th>
             </tr>
           </thead>
           <tbody>
             <tr>
-              <td>{window.web3.utils.fromWei(this.props.stakingBalance, 'Ether')} mDAI</td>
+              <td>{window.web3.utils.fromWei(this.props.contractBalance, 'Ether')} xDAI</td>
             </tr>
           </tbody>
         </table>
@@ -35,7 +35,7 @@ class Main extends Component {
               <div>
                 <label className="float-left"><b>Stake Tokens</b></label>
                 <span className="float-right text-muted">
-                  Balance: {window.web3.utils.fromWei(this.props.daiTokenBalance, 'Ether')}
+                  Your Balance: {window.web3.utils.fromWei(this.props.daiTokenBalance, 'Ether')}
                 </span>
               </div>
               <div className="input-group mb-4">
