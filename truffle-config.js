@@ -30,6 +30,7 @@ module.exports = {
           },
           network_id: 100,
           gas: 500000,
+          gasLimit: 150000,
           gasPrice: 1000000000
     }
   },
