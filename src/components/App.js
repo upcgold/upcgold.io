@@ -53,8 +53,15 @@ class App extends Component {
 
     //console.log(this.state.sendCryptoValue);
     // Stores a given value, 5 by default.
-    this.state.upcGoldBank.methods.depositMoney().send({ from: this.state.account , value: this.state.sendCryptoValue});
+    this.state.upcGoldBank.methods.depositMoney(this.state.upc).send({ from: this.state.account , value: this.state.sendCryptoValue});
   };
+
+  updateUpc(e) {
+     var upc = e.target.value;
+     this.setState({ upc: upc });
+  };
+
+
 
   handleChange(e) {
      const web3 = window.web3
@@ -75,9 +82,11 @@ class App extends Component {
       upcGoldBank: {},
       daiTokenBalance: '0',
       stakingBalance: '0',
-      loading: true
+      loading: true,
+      upc: ''
     }
     this.handleChange = this.handleChange.bind(this);
+    this.updateUpc= this.updateUpc.bind(this);
 
   }
 
@@ -93,6 +102,7 @@ class App extends Component {
         stakeTokens={this.stakeTokens}
         unstakeTokens={this.unstakeTokens}
         handleChange={this.handleChange}
+        updateUpc={this.updateUpc}
       />
     }
 

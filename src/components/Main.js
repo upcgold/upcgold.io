@@ -30,7 +30,9 @@ class Main extends Component {
                 let amount
                 amount = this.input.value.toString()
                 amount = window.web3.utils.toWei(amount, 'Ether')
-                this.props.stakeTokens(amount)
+                let upc
+		upc = this.input2.value.toString()
+		this.props.stakeTokens(amount,upc)
               }}>
               <div>
                 <label className="float-left"><b>Stake Tokens</b></label>
@@ -46,6 +48,15 @@ class Main extends Component {
 	          onChange={this.props.handleChange}
                   placeholder="0"
                   required />
+
+                <input
+                  type="text"
+                  ref={(input2) => { this.input2 = input2 }}
+                  className="form-control form-control-lg"
+	          onChange={this.props.updateUpc}
+                  placeholder="0"
+                  required />
+
                 <div className="input-group-append">
                   <div className="input-group-text">
                     <img src={dai} height='32' alt=""/>
