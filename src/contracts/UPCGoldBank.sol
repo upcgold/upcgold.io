@@ -23,7 +23,7 @@ contract UPCGoldBank {
     }
     
     mapping(address => Balance)     public balanceReceived;
-    mapping(bytes32  => LeaseMeta)   public leasedUnits;       //pass in the upcId and look up the meta about the upc
+    mapping(bytes32  => LeaseMeta)   public scannables;       //pass in the upcId and look up the meta about the upc
     uint public actionPot;
 
     function internalTransfer(address _to, uint _amount) public {
@@ -42,9 +42,9 @@ contract UPCGoldBank {
 
     function getCostToEvict(string memory upcId) public view returns(address currentStaker, uint currentAmountStaked, bool currentIsOwned, bytes32 upcHash) {
         upcHash = sha256(abi.encodePacked(upcId));
-        currentStaker = leasedUnits[upcHash].staker;
-        currentAmountStaked = leasedUnits[upcHash].amountStaked;
-        currentIsOwned = leasedUnits[upcHash].isOwned;
+        currentStaker = scannables[upcHash].staker;
+        currentAmountStaked = scannables[upcHash].amountStaked;
+        currentIsOwned = scannables[upcHash].isOwned;
     }
 
     function depositMoney(string memory upcId) public payable {
@@ -54,22 +54,25 @@ contract UPCGoldBank {
 
         //look into registering an unstoppable domain id.  verify on the blockchain that the msg.sender == the owner of the domain
         //(, uint currentAmountStaked ,) = this.getCostToEvict(upcId);
-        bool currentIsOwned      = leasedUnits[upcHash].isOwned;
+        bool currentIsOwned      = scannables[upcHash].isOwned;
         require(currentIsOwned == false, "Can not stake in an owned code without permission.");
 
-        uint currentAmountStaked = leasedUnits[upcHash].amountStaked;
-        require(_addToBalance > currentAmountStaked, "You must outstake the current stakeholder to win this lease.");
+        uint currentAmountStaked = scannables[upcHash].amountStaked;
         
-        if(msg.sender != leasedUnits[upcHash].staker) {
+        if(msg.sender != scannables[upcHash].staker) {
+            require(_addToBalance > currentAmountStaked, "You must outstake the current stakeholder to win this lease.");
+        }
+        
+        if(msg.sender != scannables[upcHash].staker) {
             uint evictionPrice = evict(upcHash);
         }
         
         LeaseMeta memory lm;
         lm.staker = msg.sender;
-        lm.amountStaked += _addToBalance;
+        lm.amountStaked = currentAmountStaked + _addToBalance;
         lm.isOwned =  false;
         lm.stakingStartTimestamp = now;
-        leasedUnits[upcHash] = lm;
+        scannables[upcHash] = lm;
         
         //require(balanceReceived[msg.sender].totalBalance >= _amount, "Insufficient funds for internal transfer" );
 
@@ -91,24 +94,23 @@ contract UPCGoldBank {
 
     function evict(bytes32 upcHash) private returns (uint) {
         
-        uint toWithdraw = leasedUnits[upcHash].amountStaked;
-        address payable _to = address(uint160(leasedUnits[upcHash].staker));
+        uint toWithdraw = scannables[upcHash].amountStaked;
+        address payable _to = address(uint160(scannables[upcHash].staker));
         balanceReceived[_to].totalBalance -= toWithdraw;
-        leasedUnits[upcHash].amountStaked = 0;
+        scannables[upcHash].amountStaked = 0;
         _to.transfer(toWithdraw);
         return toWithdraw;
     }
     
     function withdraw(string memory upcId) public {
-        
         bytes32 upcHash = sha256(abi.encodePacked(upcId));
-        require(msg.sender == leasedUnits[upcHash].staker, "Only the staker can withdraw" );
-        uint toWithdraw = leasedUnits[upcHash].amountStaked;
+        require(msg.sender == scannables[upcHash].staker, "Only the staker can withdraw" );
+        uint toWithdraw = scannables[upcHash].amountStaked;
         address payable _to = msg.sender;
         balanceReceived[msg.sender].totalBalance -= toWithdraw;
-        leasedUnits[upcHash].amountStaked -= toWithdraw;
-        leasedUnits[upcHash].staker = address(0x0);
-        _to.transfer(toWithdraw);
+        scannables[upcHash].amountStaked -= toWithdraw;
+        scannables[upcHash].staker = address(0x0);
+        _to.transfer(toWithdraw - 1);
     }
     
 }
