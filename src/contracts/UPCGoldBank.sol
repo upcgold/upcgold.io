@@ -65,8 +65,10 @@ contract UPCGoldBank {
         
         if(msg.sender != scannables[upcHash].staker) {
             uint evictionPrice = evict(upcHash);
+            //after an eviction, currentAmountStaked should equal zero to make way for the new owner's currentAmountStaked
+            currentAmountStaked = scannables[upcHash].amountStaked;
         }
-        
+
         LeaseMeta memory lm;
         lm.staker = msg.sender;
         lm.amountStaked = currentAmountStaked + _addToBalance;
