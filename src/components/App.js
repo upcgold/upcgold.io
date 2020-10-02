@@ -2,8 +2,11 @@ import React, { Component } from 'react'
 import Web3 from 'web3'
 import UPCGoldBank from '../abis/UPCGoldBank.json'
 import Navbar from './Navbar'
-import Main from './Main'
+import Deposit from './Deposit'
+import Withdraw from './Withdraw'
+import { Tab, Tabs, TabList, TabPanel } from 'react-tabs';
 import './App.css'
+import 'react-tabs/style/react-tabs.css';
 
 class App extends Component {
 
@@ -91,11 +94,13 @@ class App extends Component {
   }
 
   render() {
-    let content
+    let deposit
+    let withdraw 
     if(this.state.loading) {
-      content = <p id="loader" className="text-center">Loading...</p>
+      deposit = <p id="loader" className="text-center">Loading...</p>
+      withdraw= <p id="loader" className="text-center">Loading...</p>
     } else {
-      content = <Main
+      deposit = <Deposit
         daiTokenBalance={this.state.daiTokenBalance}
         stakingBalance={this.state.stakingBalance}
         contractBalance={this.state.contractBalance}
@@ -104,6 +109,17 @@ class App extends Component {
         handleChange={this.handleChange}
         updateUpc={this.updateUpc}
       />
+
+      withdraw= <Withdraw
+        daiTokenBalance={this.state.daiTokenBalance}
+        stakingBalance={this.state.stakingBalance}
+        contractBalance={this.state.contractBalance}
+        stakeTokens={this.stakeTokens}
+        unstakeTokens={this.unstakeTokens}
+        handleChange={this.handleChange}
+        updateUpc={this.updateUpc}
+      />
+
     }
 
     return (
@@ -113,7 +129,23 @@ class App extends Component {
           <div className="row">
             <main role="main" className="col-lg-12 ml-auto mr-auto" style={{ maxWidth: '600px' }}>
               <div className="content mr-auto ml-auto">
-                {content}
+  <Tabs>
+    <TabList>
+      <Tab>Deposit</Tab>
+      <Tab>Withdraw</Tab>
+      <Tab>Rewards</Tab>
+    </TabList>
+
+    <TabPanel>
+                {deposit}
+    </TabPanel>
+    <TabPanel>
+                {withdraw}
+    </TabPanel>
+    <TabPanel>
+      <h2>Any content 2</h2>
+    </TabPanel>
+  </Tabs>
               </div>
             </main>
           </div>
