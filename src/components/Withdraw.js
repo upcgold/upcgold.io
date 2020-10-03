@@ -41,7 +41,6 @@ class Main extends Component {
                 </span>
               </div>
               <div className="input-group mb-4">
-	        <p>Withdraw from</p>
                 <input
                   type="text"
                   ref={(input2) => { this.input2 = input2 }}
