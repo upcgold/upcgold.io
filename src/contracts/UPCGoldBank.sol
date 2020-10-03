@@ -26,18 +26,7 @@ contract UPCGoldBank {
     
     //declare an array of AddressToLeases
     //each will have the address of the staker and the upcHash/meta
-    
-    //on deposit, adddress the following element:
-    // add the staker to the AddressToLease
-    // AddressToLease a2l;
-    // a2l.lm.staker = staker;
-    //addressToLease[staker].push();
-    //addressToLease[staker].leaseMeta[upcHash].staker = staker;
-    //addressToLease[staker].leaseMeta[upcHash].staker = staker;
-    //addressToLease[staker].leaseMeta[upcHash].staker = staker;
 
-    
-    
     
     mapping(address  => LeaseMeta[])   public addressToLease;       //pass in the upcId and look up the meta about the upc
     mapping(address => Balance)     public balanceReceived;
@@ -92,7 +81,6 @@ contract UPCGoldBank {
             currentAmountStaked = scannables[upcHash].amountStaked;
         }
 
-
         LeaseMeta memory lm;
         lm.staker = msg.sender;
         lm.amountStaked = currentAmountStaked + _addToBalance;
@@ -100,7 +88,6 @@ contract UPCGoldBank {
         lm.stakingStartTimestamp = now;
         lm.upcHash = upcHash;
         scannables[upcHash] = lm;
-        
         
         //look through the current scannables and only add if 
         //the upcId is not already with user.  dont want to add new entry if user increases their stake
@@ -146,17 +133,39 @@ contract UPCGoldBank {
         return toWithdraw;
     }
     
+    function remove(uint index)  private {
+        if (index >= addressToLease[msg.sender].length) return;
+
+        for (uint i = index; i<addressToLease[msg.sender].length-1; i++){
+            addressToLease[msg.sender][i] = addressToLease[msg.sender][i+1];
+        }
+        delete addressToLease[msg.sender][addressToLease[msg.sender].length-1];
+        addressToLease[msg.sender].length--;
+    }
+    
     function withdraw(string memory upcId) public {
         bytes32 upcHash = sha256(abi.encodePacked(upcId));
         require(msg.sender == scannables[upcHash].staker, "Only the staker can withdraw funds" );
         
         uint _addToActionPot = this.calculateFee(scannables[upcHash].amountStaked);
         uint toWithdraw = scannables[upcHash].amountStaked - _addToActionPot;
-
         address payable _to = msg.sender;
         balanceReceived[msg.sender].totalBalance = 0;
         scannables[upcHash].amountStaked = 0;
         scannables[upcHash].staker = address(0x0);
+        
+        bool doDelete = false;
+        uint deleteIndex = 0;
+        for(uint i = 0; i< addressToLease[msg.sender].length; i++) {
+            if(addressToLease[msg.sender][i].upcHash == upcHash) {
+                doDelete = true;
+                deleteIndex = i;
+            }
+        }
+        
+        if(doDelete) {
+            remove(deleteIndex);
+        }
 
         address payable _actionPot = address(0x22F23F59A19a5EEd1eE9c546F64CC645B92a4263);
         _actionPot.transfer(_addToActionPot);
