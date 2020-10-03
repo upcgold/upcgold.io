@@ -47,7 +47,7 @@ class Main extends Component {
                   ref={(input2) => { this.input2 = input2 }}
                   className="form-control form-control-lg"
 	          onChange={this.props.updateUpc}
-                  placeholder="word"
+                  placeholder="String"
                   required />
 
                 <div className="input-group-append">

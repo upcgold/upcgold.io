@@ -46,7 +46,7 @@ class Main extends Component {
                   ref={(input) => { this.input = input }}
                   className="form-control form-control-lg"
 	          onChange={this.props.handleChange}
-                  placeholder="0"
+                  placeholder="xDAI"
                   required />
 
                 <input
@@ -54,7 +54,7 @@ class Main extends Component {
                   ref={(input2) => { this.input2 = input2 }}
                   className="form-control form-control-lg"
 	          onChange={this.props.updateUpc}
-                  placeholder="0"
+                  placeholder="String"
                   required />
 
                 <div className="input-group-append">
