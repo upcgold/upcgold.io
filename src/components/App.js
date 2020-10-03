@@ -161,7 +161,8 @@ class App extends Component {
     <TabList>
       <Tab>Deposit</Tab>
       <Tab>Withdraw</Tab>
-      <Tab>Rewards</Tab>
+      <Tab>Leases</Tab>
+      <Tab>Evictions</Tab>
     </TabList>
 
     <TabPanel>
@@ -171,7 +172,10 @@ class App extends Component {
                 {withdraw}
     </TabPanel>
     <TabPanel>
-      <h2>Any content 2</h2>
+                {withdraw}
+    </TabPanel>
+    <TabPanel>
+                {withdraw}
     </TabPanel>
   </Tabs>
               </div>
