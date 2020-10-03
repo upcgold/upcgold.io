@@ -7,20 +7,6 @@ class Main extends Component {
     return (
       <div id="content" className="mt-3">
 
-        <table className="table table-borderless text-muted text-center">
-          <thead>
-            <tr>
-              <th scope="col">Total Staked:</th>
-              <th scope="col">Reward Balance</th>
-            </tr>
-          </thead>
-          <tbody>
-            <tr>
-              <td>{window.web3.utils.fromWei(this.props.contractBalance, 'Ether')} xDAI</td>
-            </tr>
-          </tbody>
-        </table>
-
         <div className="card mb-4" >
 
           <div className="card-body">
