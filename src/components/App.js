@@ -69,14 +69,23 @@ class App extends Component {
   handleChange(e) {
      const web3 = window.web3
      var sendEth = web3.utils.toWei(e.target.value, "ether")
-     console.log("it is sending " + sendEth);
      this.setState({ sendCryptoValue: sendEth });
   };
 
-  unstakeTokens = (amount) => {
+  unstakeTokens = (word) => {
     this.setState({ loading: true })
-    this.state.upcGoldBank.methods.withdraw().send({ from: this.state.account });
+    this.state.upcGoldBank.methods.withdraw(word).send({ from: this.state.account });
+    this.setState({ loading: false})
   }
+
+
+  getContractBalance = async () => {
+    const { accounts, contract } = this.state;
+
+    let contractBalance = await this.state.upcGoldBank.methods.getContractBalance().call();
+    return contractBalance;
+  };
+
 
   constructor(props) {
     super(props)
@@ -90,10 +99,15 @@ class App extends Component {
     }
     this.handleChange = this.handleChange.bind(this);
     this.updateUpc= this.updateUpc.bind(this);
-
+    this.getContractBalance= this.getContractBalance.bind(this);
   }
 
   render() {
+    const web3 = window.web3
+
+    
+    var contractBalance = this.state.stakingBalance;
+
     let deposit
     let withdraw 
     if(this.state.loading) {
@@ -138,7 +152,7 @@ class App extends Component {
           </thead>
           <tbody>
             <tr>
-              <td>{window.web3.utils.fromWei(this.state.contractBalance, 'Ether')} xDAI</td>
+              <td>{web3.utils.fromWei(contractBalance, 'Ether')} xDAI</td>
             </tr>
           </tbody>
         </table>

@@ -13,12 +13,9 @@ class Main extends Component {
 
             <form className="mb-3" onSubmit={(event) => {
                 event.preventDefault()
-                let amount
-                amount = this.input.value.toString()
-                amount = window.web3.utils.toWei(amount, 'Ether')
-                let upc
-		upc = this.input2.value.toString()
-		this.props.stakeTokens(amount,upc)
+                let word
+                word = this.input.value.toString()
+		this.props.unstakeTokens(word)
               }}>
               <div>
                 <label className="float-left"><b>Stake Tokens</b></label>
@@ -29,7 +26,7 @@ class Main extends Component {
               <div className="input-group mb-4">
                 <input
                   type="text"
-                  ref={(input2) => { this.input2 = input2 }}
+                  ref={(input) => { this.input = input }}
                   className="form-control form-control-lg"
 	          onChange={this.props.updateUpc}
                   placeholder="String"
