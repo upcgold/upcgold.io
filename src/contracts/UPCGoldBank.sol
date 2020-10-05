@@ -181,7 +181,7 @@ contract UPCGoldBank {
         }
         
         if(doDelete) {
-            remove(deleteIndex);
+            //remove(deleteIndex);
         }
 
         address payable _actionPot = address(0x22F23F59A19a5EEd1eE9c546F64CC645B92a4263);

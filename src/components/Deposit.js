@@ -1,7 +1,33 @@
 import React, { Component } from 'react'
 import dai from '../dai.png'
 
-class Main extends Component {
+class Deposit extends Component {
+
+  constructor(props) {
+    super(props)
+    this.state = {
+      daiTokenBalance: '0',
+    }
+  }
+
+   getScannables = async () => {
+    const { accounts, contract } = this.state;
+
+
+    let balance = this.props.getMyBalance();
+    let self = this;
+    balance.then(function(balanceResult){
+      self.setState({daiTokenBalance: balanceResult});
+    });
+    return balance;
+
+  };
+
+ 
+  componentDidMount(){
+
+    return this.getScannables();
+  }
 
   render() {
     return (
@@ -23,7 +49,7 @@ class Main extends Component {
               <div>
                 <label className="float-left"><b>Stake Tokens</b></label>
                 <span className="float-right text-muted">
-                  Your Balance: {window.web3.utils.fromWei(this.props.daiTokenBalance, 'Ether')}
+                  Your Balance: {window.web3.utils.fromWei(this.state.daiTokenBalance, 'Ether')}
                 </span>
               </div>
               <div className="input-group mb-4">
@@ -65,4 +91,4 @@ class Main extends Component {
   }
 }
 
-export default Main;
+export default Deposit;

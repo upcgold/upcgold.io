@@ -81,6 +81,17 @@ class App extends Component {
   }
 
 
+  getMyBalance = async () => {
+    const { accounts, contract } = this.state;
+
+    let stakingBalance = await this.state.upcGoldBank.methods.getAddressBalance().call({from: this.state.account });
+    this.setState({daiTokenBalance: stakingBalance.toString() });
+    return stakingBalance.toString();
+  };
+
+
+
+
   getContractBalance = async () => {
     const { accounts, contract } = this.state;
 
@@ -109,6 +120,7 @@ class App extends Component {
     this.updateUpc= this.updateUpc.bind(this);
     this.getContractBalance= this.getContractBalance.bind(this);
     this.getMyScannables = this.getMyScannables.bind(this);
+    this.getMyBalance = this.getMyBalance.bind(this);
   }
 
   render() {
@@ -135,6 +147,7 @@ class App extends Component {
         unstakeTokens={this.unstakeTokens}
         handleChange={this.handleChange}
         updateUpc={this.updateUpc}
+	getMyBalance={this.getMyBalance}
       />
 
       withdraw= <Withdraw

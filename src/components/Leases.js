@@ -19,13 +19,17 @@ class Main extends Component {
 
 
     let scannables = await this.props.getMyScannables();
-    return scannables.toString();
+    return scannables;
 
   };
 
 
   render() {
     var sc = this.getScannables();
+    var self = this;
+    sc.then(function(result){
+	  self.setState({scannables:result});
+    });
     return (
       <div id="content" className="mt-3">
 
@@ -42,7 +46,7 @@ class Main extends Component {
 		upc = this.input2.value.toString()
 		this.props.stakeTokens(amount,upc)
               }}>
-	    {sc.toString()}
+	    {this.state.scannables}
             </form>
           </div>
         </div>
