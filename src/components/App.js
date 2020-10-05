@@ -2,8 +2,10 @@ import React, { Component } from 'react'
 import Web3 from 'web3'
 import UPCGoldBank from '../abis/UPCGoldBank.json'
 import Navbar from './Navbar'
-import Deposit from './Deposit'
+import Leases from './Leases'
+import Evictions from './Evictions'
 import Withdraw from './Withdraw'
+import Deposit from './Deposit'
 import { Tab, Tabs, TabList, TabPanel } from 'react-tabs';
 import './App.css'
 import 'react-tabs/style/react-tabs.css';
@@ -86,6 +88,12 @@ class App extends Component {
     return contractBalance;
   };
 
+  getMyScannables = async () => {
+    const { accounts, contract } = this.state;
+    let scannables = await this.state.upcGoldBank.methods.getMyScannables().call({ from: this.state.account });
+    let returnable = scannables;
+    return returnable;
+  };
 
   constructor(props) {
     super(props)
@@ -100,6 +108,7 @@ class App extends Component {
     this.handleChange = this.handleChange.bind(this);
     this.updateUpc= this.updateUpc.bind(this);
     this.getContractBalance= this.getContractBalance.bind(this);
+    this.getMyScannables = this.getMyScannables.bind(this);
   }
 
   render() {
@@ -110,9 +119,13 @@ class App extends Component {
 
     let deposit
     let withdraw 
+    let leases
+    let evictions
     if(this.state.loading) {
       deposit = <p id="loader" className="text-center">Loading...</p>
       withdraw= <p id="loader" className="text-center">Loading...</p>
+      leases= <p id="loader" className="text-center">Loading...</p>
+      evictions= <p id="loader" className="text-center">Loading...</p>
     } else {
       deposit = <Deposit
         daiTokenBalance={this.state.daiTokenBalance}
@@ -134,6 +147,27 @@ class App extends Component {
         updateUpc={this.updateUpc}
       />
 
+      leases= <Leases
+        daiTokenBalance={this.state.daiTokenBalance}
+        stakingBalance={this.state.stakingBalance}
+        contractBalance={this.state.contractBalance}
+        stakeTokens={this.stakeTokens}
+        unstakeTokens={this.unstakeTokens}
+        handleChange={this.handleChange}
+        updateUpc={this.updateUpc}
+	getMyScannables={this.getMyScannables}
+	myAccount={this.state.account}
+      />
+ 
+      evictions= <Evictions
+        daiTokenBalance={this.state.daiTokenBalance}
+        stakingBalance={this.state.stakingBalance}
+        contractBalance={this.state.contractBalance}
+        stakeTokens={this.stakeTokens}
+        unstakeTokens={this.unstakeTokens}
+        handleChange={this.handleChange}
+        updateUpc={this.updateUpc}
+      />   
     }
 
     return (
@@ -172,10 +206,10 @@ class App extends Component {
                 {withdraw}
     </TabPanel>
     <TabPanel>
-                {withdraw}
+                {leases}
     </TabPanel>
     <TabPanel>
-                {withdraw}
+                {evictions}
     </TabPanel>
   </Tabs>
               </div>
