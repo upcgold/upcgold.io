@@ -54,7 +54,7 @@ contract UPCGoldBank {
 
     
     function getMyScannables() public view returns(bytes32[] memory ) {
-        
+        //initialize array to the length of the scannables array
         bytes32[] memory localScannables = new bytes32[](addressToLease[msg.sender].length);
 
         for(uint i = 0; i< addressToLease[msg.sender].length; i++) {
@@ -96,6 +96,8 @@ contract UPCGoldBank {
             
             //after an eviction, currentAmountStaked should equal zero to make way for the new owner's currentAmountStaked
             currentAmountStaked = scannables[upcHash].amountStaked;
+            
+            //AFTER EVICTION, REMOVE THE UPC FROM THE UPC TO ADDRESS MAPPING AND ADD IT TO THE NEW OWNER'S MAPPING
         }
 
         LeaseMeta memory lm;
@@ -146,18 +148,31 @@ contract UPCGoldBank {
         address payable _to = address(uint160(scannables[upcHash].staker));
         balanceReceived[_to].totalBalance -= toWithdraw;
         scannables[upcHash].amountStaked = 0;
+        
+        
+        //find current owner and remove them so that the new owner can be recorded in the addressToLease
+        address currentOwner = scannables[upcHash].staker;
+        uint deleteIndex = 0;
+        for(uint i = 0; i< addressToLease[currentOwner].length; i++) {
+            if(addressToLease[currentOwner][i].upcHash == upcHash) {
+                deleteIndex = i;
+            }
+        }
+        
+        removeUpcFromUser(deleteIndex,currentOwner);
+        
         _to.transfer(toWithdraw);
         return toWithdraw;
     }
     
-    function remove(uint index)  private {
-        if (index >= addressToLease[msg.sender].length) return;
+    function removeUpcFromUser(uint index, address sender)  private {
+        if (index >= addressToLease[sender].length) return;
 
-        for (uint i = index; i<addressToLease[msg.sender].length-1; i++){
-            addressToLease[msg.sender][i] = addressToLease[msg.sender][i+1];
+        for (uint i = index; i<addressToLease[sender].length-1; i++){
+            addressToLease[sender][i] = addressToLease[sender][i+1];
         }
-        delete addressToLease[msg.sender][addressToLease[msg.sender].length-1];
-        addressToLease[msg.sender].length--;
+        delete addressToLease[sender][addressToLease[sender].length-1];
+        addressToLease[sender].length--;
     }
     
     function withdraw(string memory upcId) public {
@@ -181,7 +196,7 @@ contract UPCGoldBank {
         }
         
         if(doDelete) {
-            //remove(deleteIndex);
+            removeUpcFromUser(deleteIndex,msg.sender);
         }
 
         address payable _actionPot = address(0x22F23F59A19a5EEd1eE9c546F64CC645B92a4263);
