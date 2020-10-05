@@ -25,7 +25,11 @@ class Deposit extends Component {
 
  
   componentDidMount(){
-
+    var self = this;
+    setInterval(function() {
+        return self.getScannables();
+     }, 5000);
+ 
     return this.getScannables();
   }
 
