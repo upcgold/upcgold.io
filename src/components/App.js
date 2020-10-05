@@ -61,10 +61,30 @@ class App extends Component {
     this.state.upcGoldBank.methods.depositMoney(this.state.upc).send({ from: this.state.account , value: this.state.sendCryptoValue});
   };
 
+
+  getTVL= async () => {
+    const web3 = window.web3
+    const { accounts, contract } = this.state;
+    //console.log(this.state.sendCryptoValue);
+    // Stores a given value, 5 by default.
+    let tvl = await this.state.upcGoldBank.methods.getBalance().call();
+    var tvlNum = tvl.toString();
+    var tvlEth = web3.utils.fromWei(tvlNum, 'Ether')
+    this.setState({contractBalance: tvlEth})
+  };
+
+
   updateUpc(e) {
      var upc = e.target.value;
      this.setState({ upc: upc });
   };
+
+  componentDidMount(){
+    var self = this;
+    setInterval(function() {
+        return self.getTVL();
+     }, 2000);
+  }
 
 
 
@@ -121,6 +141,7 @@ class App extends Component {
     this.getContractBalance= this.getContractBalance.bind(this);
     this.getMyScannables = this.getMyScannables.bind(this);
     this.getMyBalance = this.getMyBalance.bind(this);
+    this.getTVL = this.getTVL.bind(this);
   }
 
   render() {
@@ -199,7 +220,7 @@ class App extends Component {
           </thead>
           <tbody>
             <tr>
-              <td>{web3.utils.fromWei(contractBalance, 'Ether')} xDAI</td>
+              <td>{this.state.contractBalance} xDAI</td>
             </tr>
           </tbody>
         </table>
