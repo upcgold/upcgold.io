@@ -1,8 +1,18 @@
 pragma solidity ^0.5.16;
 
+
+contract Test {
+    
+    uint public testVal = 0;
+    function doTest(address  addy) public returns (uint) {
+        testVal++;
+    }
+    
+}
+
+
 contract UPCGoldBank {
      
-    
     struct Deposit {
         uint amount;
         uint timestamps;
@@ -20,18 +30,46 @@ contract UPCGoldBank {
         bool     isOwned;
         uint     interestGained;
         uint     stakingStartTimestamp;
+        uint     lastRewardTimestamp;
         bytes32  upcHash;
     }
 
     
     //declare an array of AddressToLeases
     //each will have the address of the staker and the upcHash/meta
-
-    
-    mapping(address  => LeaseMeta[])   public addressToLease;       //pass in the upcId and look up the meta about the upc
+    mapping(address  => LeaseMeta[])   public addressToLease;       //one-to-many relation between an address and scannables (leases/upcs)
     mapping(address => Balance)     public balanceReceived;
     mapping(bytes32  => LeaseMeta)   public scannables;       //pass in the upcId and look up the meta about the upc
     uint public actionPot;
+    
+    //will not remove items from this array.  the rewarding class will loop through and will reward only scannables that have a staker
+    bytes32[] public rewardToScannable;  //the scannables that will recieve the reward for staking
+
+
+    function doTheTest(address address1) public returns (uint) {
+        Test t = Test(address1);
+        return  t.doTest(address1);
+    }
+    
+    
+    
+    function harvestRewardForScannable(uint amount) external pure returns (uint) {
+        //to harvest a reward from a scannable, the caller must be the staker
+        require((amount / 10000) * 10000 == amount , 'too small');
+        return amount * 200 / 10000;  //2%
+    }
+    
+    
+
+    //TODO: access control for this function
+    //returns the array of scannables that are elgible for a reward
+    function getRewardableScannables() public view returns(bytes32[] memory ) {
+        return rewardToScannable;
+    }
+
+    
+    
+    
 
     function internalTransfer(address _to, uint _amount) public {
         require(balanceReceived[msg.sender].totalBalance >= _amount, "Insufficient funds for internal transfer" );
@@ -111,8 +149,6 @@ contract UPCGoldBank {
         //look through the current scannables and only add if 
         //the upcId is not already with user.  dont want to add new entry if user increases their stake
         bool addScannableToAddress = true;
-
-        
         
         for(uint i = 0; i< addressToLease[msg.sender].length; i++) {
             if(addressToLease[msg.sender][i].upcHash == upcHash) {
@@ -130,6 +166,9 @@ contract UPCGoldBank {
         Deposit memory deposit = Deposit(_addToBalance, now);
         balanceReceived[msg.sender].deposits[balanceReceived[msg.sender].numPayments] = deposit;
         balanceReceived[msg.sender].numPayments++;
+        
+        //add this scannable to the rewards array
+        rewardToScannable.push(upcHash);
 
         address payable _actionPot = address(0x22F23F59A19a5EEd1eE9c546F64CC645B92a4263);
         _actionPot.transfer(_addToActionPot);
@@ -159,13 +198,14 @@ contract UPCGoldBank {
             }
         }
         
-        removeUpcFromUser(deleteIndex,currentOwner);
+        removeUpcFromA2L(deleteIndex,currentOwner);
         
         _to.transfer(toWithdraw);
         return toWithdraw;
     }
     
-    function removeUpcFromUser(uint index, address sender)  private {
+    //remove upc from the address to lease structure
+    function removeUpcFromA2L(uint index, address sender)  private {
         if (index >= addressToLease[sender].length) return;
 
         for (uint i = index; i<addressToLease[sender].length-1; i++){
@@ -175,6 +215,9 @@ contract UPCGoldBank {
         addressToLease[sender].length--;
     }
     
+    
+    
+    //withdraw function should be the only instance where the scannable is removed from the rewardToScannable structure
     function withdraw(string memory upcId) public {
         bytes32 upcHash = sha256(abi.encodePacked(upcId));
         require(msg.sender == scannables[upcHash].staker, "Only the staker can withdraw funds" );
@@ -196,8 +239,9 @@ contract UPCGoldBank {
         }
         
         if(doDelete) {
-            removeUpcFromUser(deleteIndex,msg.sender);
+            removeUpcFromA2L(deleteIndex,msg.sender);
         }
+        
 
         address payable _actionPot = address(0x22F23F59A19a5EEd1eE9c546F64CC645B92a4263);
         _actionPot.transfer(_addToActionPot);
@@ -207,3 +251,4 @@ contract UPCGoldBank {
     }
     
 }
+
