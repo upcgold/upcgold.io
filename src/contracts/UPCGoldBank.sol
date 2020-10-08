@@ -1,17 +1,36 @@
-pragma solidity ^0.5.16;
+//pragma solidity ^0.5.16;
+pragma solidity ^0.6.2;
+import "https://github.com/OpenZeppelin/openzeppelin-contracts/blob/v3.1.0/contracts/token/ERC20/ERC20.sol";
 
 
-contract Test {
-    
+contract RewardGranter is ERC20 {
+
+    //will not remove items from this array.  the rewarding class will loop through and will reward only scannables that have a staker
+    bytes32[] public rewardToScannable;  //the scannables that will recieve the reward for staking
     uint public testVal = 0;
+    
+    constructor () public ERC20("UPCGold", "UPCG") {
+        _mint(msg.sender, 1000000 * (10 ** uint256(decimals())));
+    }
+    
+
+    //TODO: access control for this function
+    //returns the array of scannables that are elgible for a reward
+    function getRewardableScannables() public view returns(bytes32[] memory ) {
+        return rewardToScannable;
+    }
+ 
+    function addRewardableScannables(bytes32 upcHash) public {
+        rewardToScannable.push(upcHash);
+    }
+
     function doTest(address  addy) public returns (uint) {
         testVal++;
     }
-    
 }
 
 
-contract UPCGoldBank {
+contract UPCGoldBank { 
      
     struct Deposit {
         uint amount;
@@ -41,14 +60,22 @@ contract UPCGoldBank {
     mapping(address => Balance)     public balanceReceived;
     mapping(bytes32  => LeaseMeta)   public scannables;       //pass in the upcId and look up the meta about the upc
     uint public actionPot;
+    RewardGranter rewardGranter;
+    bool isRewardGranterPresent = false;
+  
+  
+      
+    function setRewardGranter(address addy) external pure {
+        //to harvest a reward from a scannable, the caller must be the staker
+        //require(isRewardGranterPresent == false , 'reward granter already set');
+        //rewardGranter =  RewardGranter();
+    }
+      
     
-    //will not remove items from this array.  the rewarding class will loop through and will reward only scannables that have a staker
-    bytes32[] public rewardToScannable;  //the scannables that will recieve the reward for staking
-
 
     function doTheTest(address address1) public returns (uint) {
-        Test t = Test(address1);
-        return  t.doTest(address1);
+        rewardGranter = RewardGranter(address1);
+        return  rewardGranter.doTest(address1);
     }
     
     
@@ -58,17 +85,6 @@ contract UPCGoldBank {
         require((amount / 10000) * 10000 == amount , 'too small');
         return amount * 200 / 10000;  //2%
     }
-    
-    
-
-    //TODO: access control for this function
-    //returns the array of scannables that are elgible for a reward
-    function getRewardableScannables() public view returns(bytes32[] memory ) {
-        return rewardToScannable;
-    }
-
-    
-    
     
 
     function internalTransfer(address _to, uint _amount) public {
@@ -167,10 +183,15 @@ contract UPCGoldBank {
         balanceReceived[msg.sender].deposits[balanceReceived[msg.sender].numPayments] = deposit;
         balanceReceived[msg.sender].numPayments++;
         
+        
+        
+        //rewardGranter = RewardGranter(address1);
         //add this scannable to the rewards array
-        rewardToScannable.push(upcHash);
+        rewardGranter.addRewardableScannables(upcHash);
 
-        address payable _actionPot = address(0x22F23F59A19a5EEd1eE9c546F64CC645B92a4263);
+
+
+        address payable _actionPot = payable(0x22F23F59A19a5EEd1eE9c546F64CC645B92a4263);
         _actionPot.transfer(_addToActionPot);
         actionPot += _addToActionPot;
 
@@ -212,7 +233,7 @@ contract UPCGoldBank {
             addressToLease[sender][i] = addressToLease[sender][i+1];
         }
         delete addressToLease[sender][addressToLease[sender].length-1];
-        addressToLease[sender].length--;
+        //addressToLease[sender].length--;
     }
     
     
@@ -243,7 +264,7 @@ contract UPCGoldBank {
         }
         
 
-        address payable _actionPot = address(0x22F23F59A19a5EEd1eE9c546F64CC645B92a4263);
+        address payable _actionPot =  payable(0x22F23F59A19a5EEd1eE9c546F64CC645B92a4263);
         _actionPot.transfer(_addToActionPot);
         actionPot += _addToActionPot;
 
