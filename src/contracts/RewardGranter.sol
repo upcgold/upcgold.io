@@ -21,7 +21,16 @@ contract RewardGranter is ERC20 {
     }
  
     function addRewardableScannables(bytes32 upcHash) public {
-        rewardToScannable.push(upcHash);
+        bool doAdd = true;
+        for(uint i=0; i<rewardToScannable.length; i++) {
+            if(upcHash == rewardToScannable[i]) {
+                doAdd=false;
+            }
+        }
+        if(doAdd) {
+            rewardToScannable.push(upcHash);
+        }
+
     }
 
     function doMyTest(address  addy) public returns (uint) {
