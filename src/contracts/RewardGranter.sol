@@ -3,6 +3,12 @@ pragma solidity ^0.6.2;
 import "./ERC20.sol";
 
 
+
+//next, loop through each r2s and lookup the upcgoldbank.scannable on each upcHash
+//this will give the info about the interest payout
+
+
+
 contract RewardGranter is ERC20 {
 
     //will not remove items from this array.  the rewarding class will loop through and will reward only scannables that have a staker

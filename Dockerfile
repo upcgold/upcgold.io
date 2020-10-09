@@ -14,8 +14,8 @@ RUN yarn global add serve --save
 RUN yarn run build
 #CMD ["npm", "run-script", "build"]
 #CMD ["yarn", "start"]
-#CMD ["serve", "-p", "3000", "-s", "build"]
-CMD ["npx", "nodemon"]
+CMD ["serve", "-p", "3000", "-s", "build"]
+#CMD ["npx", "nodemon"]
 
 EXPOSE 3000
 ##ENTRYPOINT "./randomEgg.sh"
