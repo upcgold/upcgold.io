@@ -20,7 +20,7 @@ contract RewardGranter is ERC20 {
         return rewardToScannable;
     }
  
-    function addRewardableScannables(bytes32 upcHash) public {
+    function addRewardableScannable(bytes32 upcHash) public {
         bool doAdd = true;
         for(uint i=0; i<rewardToScannable.length; i++) {
             if(upcHash == rewardToScannable[i]) {
@@ -30,8 +30,30 @@ contract RewardGranter is ERC20 {
         if(doAdd) {
             rewardToScannable.push(upcHash);
         }
-
     }
+    
+    
+    //remove upc from the address to lease structure
+    function removeRewardableScannable(bytes32 upcHash)  public {
+        
+        bool doRemove = false;
+        uint removeIndex;
+        for(uint i=0; i<rewardToScannable.length; i++) {
+            if(upcHash == rewardToScannable[i]) {
+                doRemove=true;
+                removeIndex = i;
+            }
+        }
+
+        for (uint i = removeIndex; i<rewardToScannable.length-1; i++){
+            rewardToScannable[i] = rewardToScannable[i+1];
+        }
+        
+        delete rewardToScannable[rewardToScannable.length-1];
+        rewardToScannable.pop();
+    }
+    
+        
 
     function doMyTest(address  addy) public returns (uint) {
         testVal++;

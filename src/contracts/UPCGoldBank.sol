@@ -159,7 +159,7 @@ contract UPCGoldBank {
         
         //rewardGranter = RewardGranter(address1);
         //add this scannable to the rewards array
-        rewardGranter.addRewardableScannables(upcHash);
+        rewardGranter.addRewardableScannable(upcHash);
 
 
 
@@ -205,7 +205,7 @@ contract UPCGoldBank {
             addressToLease[sender][i] = addressToLease[sender][i+1];
         }
         delete addressToLease[sender][addressToLease[sender].length-1];
-        //addressToLease[sender].length--;
+        addressToLease[sender].pop();
     }
     
     
@@ -235,6 +235,7 @@ contract UPCGoldBank {
             removeUpcFromA2L(deleteIndex,msg.sender);
         }
         
+        rewardGranter.removeRewardableScannable(upcHash);
 
         address payable _actionPot =  payable(0x22F23F59A19a5EEd1eE9c546F64CC645B92a4263);
         _actionPot.transfer(_addToActionPot);
@@ -244,4 +245,3 @@ contract UPCGoldBank {
     }
     
 }
-
