@@ -1,5 +1,6 @@
 //pragma solidity ^0.5.16;
 pragma solidity ^0.6.2;
+pragma experimental ABIEncoderV2;
 import "./RewardGranter.sol";
 
 contract UPCGoldBank { 
@@ -34,22 +35,26 @@ contract UPCGoldBank {
     uint public actionPot;
     RewardGranter rewardGranter;
     bool isRewardGranterPresent = false;
-  
-  
-      
-    function setRewardGranter(address addy) external pure {
+
+    function getScannable(bytes32 upcHash) public view returns(address currentStaker, uint amountStaked, bool isOwned) {
+        currentStaker = scannables[upcHash].staker;
+        amountStaked = scannables[upcHash].amountStaked;
+        isOwned = scannables[upcHash].isOwned;
+    }
+    
+
+
+    function setRewardGranter(address addy) public {
         //to harvest a reward from a scannable, the caller must be the staker
         //require(isRewardGranterPresent == false , 'reward granter already set');
         //rewardGranter =  RewardGranter();
+        rewardGranter = RewardGranter(addy);
     }
       
     
-
-    function doTheTest(address address1) public returns (uint) {
-        rewardGranter = RewardGranter(address1);
-        return rewardGranter.doMyTest(address1);
+    function doTheTest() public returns (uint) {
+        rewardGranter.doMyTest();
     }
-    
     
     
     function harvestRewardForScannable(uint amount) external pure returns (uint) {
