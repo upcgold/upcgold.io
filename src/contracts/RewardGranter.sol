@@ -38,7 +38,8 @@ contract RewardGranter is ERC20 {
         uint amountStaked,
         bool isOwned,
         uint lastRewardTimestamp,
-        uint rewards
+        uint rewards,
+        bytes32 upcHash
     );    
 
     
@@ -124,7 +125,7 @@ contract RewardGranter is ERC20 {
             pm.rewards = newInterestAmount;
 
             payouts[upcHash] = pm;
-            emit GrantRewardEvent(currentStaker, amountStaked, isOwned, currentTimestamp,newInterestAmount);
+            emit GrantRewardEvent(currentStaker, amountStaked, isOwned, currentTimestamp,newInterestAmount,upcHash);
             interestPaid += newInterestAmount;
             addressesPaid = i;
         }
