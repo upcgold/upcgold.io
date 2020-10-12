@@ -29,6 +29,7 @@ contract RewardGranter is ERC20 {
         uint amountStaked;
         bool isOwned;
         uint lastRewardTimestamp;
+        uint rewards;
     }
 
 
@@ -36,13 +37,20 @@ contract RewardGranter is ERC20 {
         address currentStaker,
         uint amountStaked,
         bool isOwned,
-        uint lastRewardTimestamp
+        uint lastRewardTimestamp,
+        uint rewards
     );    
 
     
     constructor () public ERC20("UPCGold", "UPCG") {
         _mint(msg.sender, 1000000 * (10 ** uint256(decimals())));
     }
+    
+    
+    function calculateInterest(uint amount) private pure returns (uint) {
+        require((amount / 10000) * 10000 == amount , 'too small');
+        return amount * 700 / 10000;  //7%
+    }    
     
 
     //TODO: access control for this function
@@ -84,6 +92,8 @@ contract RewardGranter is ERC20 {
                 removeIndex = i;
             }
         }
+        
+        payouts[upcHash].currentStaker = address(0x0);
 
         for (uint i = removeIndex; i<rewardToScannable.length-1; i++){
             rewardToScannable[i] = rewardToScannable[i+1];
@@ -97,15 +107,25 @@ contract RewardGranter is ERC20 {
 
     function grantRewards() public returns(uint interestPaid, uint addressesPaid) {
         for (uint i = 0; i<=rewardToScannable.length-1; i++) {
-            (address currentStaker, uint amountStaked, bool isOwned, , , ) = bank.getScannable(rewardToScannable[i]);
+            bytes32 upcHash = rewardToScannable[i];
+            (address currentStaker, uint amountStaked, bool isOwned, , , ) = bank.getScannable(upcHash);
+            uint currentReward = payouts[upcHash].rewards;
+            uint cycleInterestPayment = calculateInterest(amountStaked);
+            uint newInterestAmount = currentReward + cycleInterestPayment;
+
             PayoutMeta memory pm;
+            
             pm.currentStaker = currentStaker;
             pm.amountStaked = amountStaked;
             pm.isOwned = isOwned;
+            pm.rewards = currentReward + cycleInterestPayment;
             uint currentTimestamp = now;
             pm.lastRewardTimestamp = currentTimestamp;
-            emit GrantRewardEvent(currentStaker, amountStaked, isOwned, currentTimestamp);
-            interestPaid = i;
+            pm.rewards = newInterestAmount;
+
+            payouts[upcHash] = pm;
+            emit GrantRewardEvent(currentStaker, amountStaked, isOwned, currentTimestamp,newInterestAmount);
+            interestPaid += newInterestAmount;
             addressesPaid = i;
         }
     }   
