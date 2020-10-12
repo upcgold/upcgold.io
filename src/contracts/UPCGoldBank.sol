@@ -1,4 +1,3 @@
-//pragma solidity ^0.5.16;
 pragma solidity ^0.6.2;
 pragma experimental ABIEncoderV2;
 import "./RewardGranter.sol";
@@ -36,10 +35,13 @@ contract UPCGoldBank {
     RewardGranter rewardGranter;
     bool isRewardGranterPresent = false;
 
-    function getScannable(bytes32 upcHash) public view returns(address currentStaker, uint amountStaked, bool isOwned) {
+    function getScannable(bytes32 upcHash) public view returns(address currentStaker, uint amountStaked, bool isOwned, uint interestGained, uint stakingStartTimestamp, uint lastRewardTimestamp) {
         currentStaker = scannables[upcHash].staker;
         amountStaked = scannables[upcHash].amountStaked;
         isOwned = scannables[upcHash].isOwned;
+        interestGained = scannables[upcHash].interestGained;
+        stakingStartTimestamp = scannables[upcHash].stakingStartTimestamp;
+        lastRewardTimestamp = scannables[upcHash].lastRewardTimestamp;
     }
     
 
@@ -50,11 +52,7 @@ contract UPCGoldBank {
         //rewardGranter =  RewardGranter();
         rewardGranter = RewardGranter(addy);
     }
-      
-    
-    function doTheTest() public returns (uint) {
-        rewardGranter.doMyTest();
-    }
+
     
     
     function harvestRewardForScannable(uint amount) external pure returns (uint) {
@@ -77,11 +75,6 @@ contract UPCGoldBank {
     function getAddressBalance() public view returns(uint) {
         return balanceReceived[msg.sender].totalBalance;
     }
-    
-    function concatenate(bytes32 x, bytes32 y) public pure returns (bytes32 retval ) {
-        //retval = bytes32(abi.encodePacked(x, y);
-        //return retval;
-    }
 
     
     function getMyScannables() public view returns(bytes32[] memory ) {
@@ -95,9 +88,6 @@ contract UPCGoldBank {
         return localScannables;
     }
     
-    function getScannableCount() public view returns(uint) {
-        return addressToLease[msg.sender].length;
-    }
     
     function getCostToEvict(string memory upcId) public view returns(address currentStaker, uint currentAmountStaked, bool currentIsOwned, bytes32 upcHash) {
         upcHash = sha256(abi.encodePacked(upcId));
@@ -174,6 +164,10 @@ contract UPCGoldBank {
 
     }
     
+    //function donateUPC 
+    
+    
+    
     function calculateFee(uint amount) external pure returns (uint) {
         require((amount / 10000) * 10000 == amount , 'too small');
         return amount * 200 / 10000;  //2%
@@ -240,6 +234,7 @@ contract UPCGoldBank {
             removeUpcFromA2L(deleteIndex,msg.sender);
         }
         
+        //
         rewardGranter.removeRewardableScannable(upcHash);
 
         address payable _actionPot =  payable(0x22F23F59A19a5EEd1eE9c546F64CC645B92a4263);

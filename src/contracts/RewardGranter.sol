@@ -12,24 +12,33 @@ import "./UPCGoldBank.sol";
 
 
 contract RewardGranter is ERC20 {
-   
 
     //will not remove items from this array.  the rewarding class will loop through and will reward only scannables that have a staker
     bytes32[] public rewardToScannable;  //the scannables that will recieve the reward for staking
     uint public testVal = 0;
-    
-    event GrantRewardEvent (
-        address owner,
-        uint lastRewardTimestamp,
-        bytes32 upcHash,
-        uint interestGainedBefore,
-        uint interestGainedAfter,
-        bool isOwnedAfter
-    );
-    
-    UPCGoldBank bank;
+    mapping(bytes32 => PayoutMeta)     public payouts;
 
+
+    //the bank setter can only be called once
+    bool bankPresent = false;
+    UPCGoldBank bank;    
     
+
+    struct PayoutMeta {
+        address currentStaker;
+        uint amountStaked;
+        bool isOwned;
+        uint lastRewardTimestamp;
+    }
+
+
+    event GrantRewardEvent (
+        address currentStaker,
+        uint amountStaked,
+        bool isOwned,
+        uint lastRewardTimestamp
+    );    
+
     
     constructor () public ERC20("UPCGold", "UPCG") {
         _mint(msg.sender, 1000000 * (10 ** uint256(decimals())));
@@ -42,8 +51,11 @@ contract RewardGranter is ERC20 {
         return rewardToScannable;
     }
  
-     function setBank(address address1) public returns (uint) {
+    //function can be called once
+    function setBank(address address1) public returns (uint) {
+        require( bankPresent == false, 'Bank already set');
         bank = UPCGoldBank(address1);
+        bankPresent = true;
     }
     
  
@@ -82,15 +94,36 @@ contract RewardGranter is ERC20 {
     }
 
 
-    function grantRewards(bytes32 upcHash) public view returns(address currentStaker, uint amountStaked, bool isOwned) {
-        ( currentStaker,  amountStaked,  isOwned) =bank.getScannable(upcHash);
+    function lookupRewards(bytes32 upcHash) private view returns(address currentStaker, uint amountStaked, bool isOwned, uint interestGained, uint stakingStartTimestamp, uint lastRewardTimestamp) {
+        (currentStaker, amountStaked, isOwned, interestGained, stakingStartTimestamp, lastRewardTimestamp) = bank.getScannable(upcHash);
+
     }   
-    
-    
+
+
+
+    function grantRewards() public returns(uint interestPaid, uint addressesPaid) {
+        for (uint i = 0; i<rewardToScannable.length-1; i++) {
+            (address currentStaker, uint amountStaked, bool isOwned, uint interestGained, uint stakingStartTimestamp, uint lastRewardTimestamp) = bank.getScannable(rewardToScannable[i]);
+            PayoutMeta memory pm;
+            pm.currentStaker = currentStaker;
+            pm.amountStaked = amountStaked;
+            pm.isOwned = isOwned;
+            pm.lastRewardTimestamp = now;
+            emit GrantRewardEvent(currentStaker, amountStaked, isOwned, lastRewardTimestamp);
+            interestPaid = i;
+            addressesPaid = i;
+        }
+    }   
+
+
+
     function doMyTest() public {
         testVal++;
         uint bla = 5;
         bytes32 word = "0x9494";
-        emit GrantRewardEvent(msg.sender, testVal, word, bla, 0, false);
+        
+        for(uint i=777; i<888; i++) {
+            //emit GrantRewardEvent(msg.sender, testVal, word, bla, i, false);
+        }
     }
 }
