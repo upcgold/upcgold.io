@@ -94,36 +94,20 @@ contract RewardGranter is ERC20 {
     }
 
 
-    function lookupRewards(bytes32 upcHash) private view returns(address currentStaker, uint amountStaked, bool isOwned, uint interestGained, uint stakingStartTimestamp, uint lastRewardTimestamp) {
-        (currentStaker, amountStaked, isOwned, interestGained, stakingStartTimestamp, lastRewardTimestamp) = bank.getScannable(upcHash);
-
-    }   
-
-
 
     function grantRewards() public returns(uint interestPaid, uint addressesPaid) {
-        for (uint i = 0; i<rewardToScannable.length-1; i++) {
-            (address currentStaker, uint amountStaked, bool isOwned, uint interestGained, uint stakingStartTimestamp, uint lastRewardTimestamp) = bank.getScannable(rewardToScannable[i]);
+        for (uint i = 0; i<=rewardToScannable.length-1; i++) {
+            (address currentStaker, uint amountStaked, bool isOwned, , , ) = bank.getScannable(rewardToScannable[i]);
             PayoutMeta memory pm;
             pm.currentStaker = currentStaker;
             pm.amountStaked = amountStaked;
             pm.isOwned = isOwned;
-            pm.lastRewardTimestamp = now;
-            emit GrantRewardEvent(currentStaker, amountStaked, isOwned, lastRewardTimestamp);
+            uint currentTimestamp = now;
+            pm.lastRewardTimestamp = currentTimestamp;
+            emit GrantRewardEvent(currentStaker, amountStaked, isOwned, currentTimestamp);
             interestPaid = i;
             addressesPaid = i;
         }
     }   
 
-
-
-    function doMyTest() public {
-        testVal++;
-        uint bla = 5;
-        bytes32 word = "0x9494";
-        
-        for(uint i=777; i<888; i++) {
-            //emit GrantRewardEvent(msg.sender, testVal, word, bla, i, false);
-        }
-    }
 }
