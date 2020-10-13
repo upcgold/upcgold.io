@@ -22,16 +22,18 @@ class Main extends Component {
 
   componentDidMount = async () => {
     var sc = this.getScannables();
+    var localScannables = Array();
     var self = this;
     sc.then(function(result){
-	  console.log(result.length);
-	  result = String(result);
+	  var numLeases = result.length;
 	  var scannable;
-          for(var i=0; i< result.length; i++)
+          for(var i=0; i<numLeases; i++)
           {
-	    scannable = self.buildCard(result.substring(0,10));
+            var resultStr = String(result[i]);
+            scannable = self.buildCard(resultStr.substring(0,10));
+            localScannables.push(scannable);
           }
-	  self.setState({scannables:scannable});
+	  self.setState({scannables:localScannables});
     });
   }
 
@@ -43,7 +45,12 @@ class Main extends Component {
 
   buildCard = (data) => {
      return (
-      <Card>
+[
+  'Info',
+].map((variant, idx) => (	     
+      <Card
+	bg={variant.toLowerCase()}
+      >
        <Card.Header>
          <Nav variant="tabs" defaultActiveKey="#first">
            <Nav.Item>
@@ -66,7 +73,7 @@ class Main extends Component {
          </Card.Text>
          <Button variant="primary">Go somewhere</Button>
        </Card.Body>
-     </Card>);
+     </Card>)));
   }
 
   render() {
