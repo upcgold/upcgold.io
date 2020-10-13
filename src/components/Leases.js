@@ -30,7 +30,7 @@ class Main extends Component {
           for(var i=0; i<numLeases; i++)
           {
             var resultStr = String(result[i]);
-            scannable = self.buildCard(resultStr.substring(0,10));
+            scannable = self.buildCard(resultStr.substring(0,resultStr.length));
             localScannables.push(scannable);
           }
 	  self.setState({scannables:localScannables});
@@ -44,12 +44,14 @@ class Main extends Component {
   };
 
   buildCard = (data) => {
+     var bgCol = "#" + data.substring(20,26);
+console.log(bgCol);
      return (
 [
   'Info',
 ].map((variant, idx) => (	     
       <Card
-	bg={variant.toLowerCase()}
+        style={{backgroundColor: bgCol}}
       >
        <Card.Header>
          <Nav variant="tabs" defaultActiveKey="#first">
@@ -67,7 +69,7 @@ class Main extends Component {
          </Nav>
        </Card.Header>
        <Card.Body>
-         <Card.Title>{data}</Card.Title>
+         <Card.Title>{data.substring(0,10)}</Card.Title>
          <Card.Text>
            With supporting text below as a natural lead-in to additional content.
          </Card.Text>
