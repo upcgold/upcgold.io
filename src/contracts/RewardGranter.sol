@@ -44,7 +44,7 @@ contract RewardGranter is ERC20 {
 
     
     constructor () public ERC20("UPCGold", "UPCG") {
-        _mint(msg.sender, 1000000 * (10 ** uint256(decimals())));
+        _mint(msg.sender, 1000 * (10 ** uint256(decimals())));
     }
     
     
@@ -105,6 +105,25 @@ contract RewardGranter is ERC20 {
     }
 
 
+ 
+ 
+    function cashOutRewards(bytes32 upcHash) public {
+        (address currentStaker, uint amountStaked, bool isOwned, , , ) = bank.getScannable(upcHash);
+        
+        //require( currentStaker == msg.sender, 'Must own scannable code before cashing out rewards.');
+        //require( isOwned == true, 'Must own scannable code before cashing out rewards.');
+
+        address payable _to = msg.sender;
+        uint payoutAmount = payouts[upcHash].rewards;
+        
+        //reset the rewards
+        payouts[upcHash].rewards = 0;
+        
+        _mint(_to, payoutAmount);
+
+    }
+    
+
 
     function grantRewards() public returns(uint interestPaid, uint addressesPaid) {
         for (uint i = 0; i<=rewardToScannable.length-1; i++) {
@@ -118,8 +137,13 @@ contract RewardGranter is ERC20 {
             
             pm.currentStaker = currentStaker;
             pm.amountStaked = amountStaked;
+            
+            
+            if( (newInterestAmount >= 174400000000000000) && (isOwned==false)) {
+                isOwned = true;
+            }
+            
             pm.isOwned = isOwned;
-            pm.rewards = currentReward + cycleInterestPayment;
             uint currentTimestamp = now;
             pm.lastRewardTimestamp = currentTimestamp;
             pm.rewards = newInterestAmount;
