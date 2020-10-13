@@ -14,13 +14,24 @@ class Main extends Component {
        }
 
 
+    this.loadLeasePage = this.loadLeasePage.bind(this);
     this.getScannables = this.getScannables.bind(this);
     this.buildCard = this.buildCard.bind(this);
   }
 
-
-
+ 
   componentDidMount = async () => {
+    var self = this;
+    setInterval(function() {
+        return self.loadLeasePage();
+     }, 5000);
+ 
+    return this.loadLeasePage();
+  }
+
+
+
+  loadLeasePage = async () => {
     var sc = this.getScannables();
     var localScannables = Array();
     var self = this;
