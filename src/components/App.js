@@ -228,16 +228,12 @@ class App extends Component {
   <Tabs>
     <TabList>
       <Tab>Deposit</Tab>
-      <Tab>Withdraw</Tab>
       <Tab>Leases</Tab>
       <Tab>Evictions</Tab>
     </TabList>
 
     <TabPanel>
                 {deposit}
-    </TabPanel>
-    <TabPanel>
-                {withdraw}
     </TabPanel>
     <TabPanel>
                 {leases}

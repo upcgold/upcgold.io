@@ -12,8 +12,6 @@ class Main extends Component {
       this.state = {
         scannables: '0'
        }
-
-
     this.loadLeasePage = this.loadLeasePage.bind(this);
     this.getScannables = this.getScannables.bind(this);
     this.buildCard = this.buildCard.bind(this);
@@ -28,7 +26,6 @@ class Main extends Component {
  
     return this.loadLeasePage();
   }
-
 
 
   loadLeasePage = async () => {
@@ -56,64 +53,76 @@ class Main extends Component {
 
   buildCard = (data) => {
      var bgCol = "#" + data.substring(20,26);
-console.log(bgCol);
      return (
-[
-  'Info',
-].map((variant, idx) => (	     
-      <Card
-        style={{backgroundColor: bgCol}}
-      >
-       <Card.Header>
-         <Nav variant="tabs" defaultActiveKey="#first">
-           <Nav.Item>
-             <Nav.Link href="#first">Active</Nav.Link>
-           </Nav.Item>
-           <Nav.Item>
-             <Nav.Link href="#link">Link</Nav.Link>
-           </Nav.Item>
-           <Nav.Item>
-             <Nav.Link href="#disabled" disabled>
-               Disabled
-             </Nav.Link>
-           </Nav.Item>
-         </Nav>
-       </Card.Header>
-       <Card.Body>
-         <Card.Title>{data.substring(0,10)}</Card.Title>
-         <Card.Text>
-           With supporting text below as a natural lead-in to additional content.
-         </Card.Text>
-         <Button variant="primary">Go somewhere</Button>
-       </Card.Body>
-     </Card>)));
+      [
+        'Info',
+      ].map((variant, idx) => (	     
+            <Card
+              style={{backgroundColor: bgCol}}
+            >
+             <Card.Header>
+               <Nav variant="tabs" defaultActiveKey="#first">
+                 <Nav.Item>
+                   <Nav.Link href="#first">Active</Nav.Link>
+                 </Nav.Item>
+                 <Nav.Item>
+                   <Nav.Link href="#link">Link</Nav.Link>
+                 </Nav.Item>
+                 <Nav.Item>
+                   <Nav.Link href="#disabled">
+                     Disabled
+                   </Nav.Link>
+                 </Nav.Item>
+               </Nav>
+             </Card.Header>
+             <Card.Body>
+               <Card.Title>{data.substring(0,10)}</Card.Title>
+               <Card.Text>
+            <form className="mb-3" onSubmit={(event) => {
+                event.preventDefault()
+                let word
+                word = this.input.value.toString()
+		this.props.unstakeTokens(word)
+              }}>
+              <div className="input-group mb-4">
+                <input
+                  type="text"
+                  ref={(input) => { this.input = input }}
+                  className="form-control form-control-lg"
+	          onChange={this.props.updateUpc}
+                  placeholder="String"
+                  required />
+
+                <div className="input-group-append">
+                  <div className="input-group-text">
+                    <img src={dai} height='32' alt=""/>
+                    &nbsp;&nbsp;&nbsp; xDAI
+                  </div>
+                </div>
+              </div>
+              <button 
+	           type="submit" 
+	           className="btn btn-primary btn-block btn-lg"
+		  >
+		  UNSTAKE!
+	      </button>
+            </form>
+               </Card.Text>
+             </Card.Body>
+           </Card>)));
   }
 
   render() {
     return (
       <div id="content" className="mt-3">
-
         <div className="card mb-4" >
-
           <div className="card-body">
 
 
 
-
-            <form className="mb-3" onSubmit={(event) => {
-                event.preventDefault()
-                let amount
-                amount = this.input.value.toString()
-                amount = window.web3.utils.toWei(amount, 'Ether')
-                let upc
-		upc = this.input2.value.toString()
-		this.props.stakeTokens(amount,upc)
-              }}>
-	    {this.state.scannables}
-            </form>
+		{this.state.scannables}
           </div>
         </div>
-
       </div>
     );
   }
