@@ -77,20 +77,32 @@ class Main extends Component {
 
     var promise = this.state.scannableStats[data];
     var currentStaker;
+    var amountStaked;
+    var isOwned;
     var self = this;
     promise.then(values => {
         //console.log(values);
         currentStaker=values[0];
-        console.log(values);
-        var stakerIndex = values[0]; //store this as the index in the state
+        amountStaked=values[1];
+        isOwned=values[2];
         var arr = [];
         arr.push(values[0]);
+        arr.push(values[1]);
+        arr.push(values[2]);
         self.setState({[data]: arr});
     }); 
     var bgCol = "#" + data.substring(20,26);
     var stateProp = data;
     currentStaker = this.state.[stateProp];
-    console.log("STATE " + JSON.stringify(this.state.[stateProp]));
+    var currentStakerAr;
+
+    //complicated flow... this is where the individual card's scan stats are calculated and set. currentStaker is not set on page load.  it is set 5 seconds after when the load.... function is called.  this is why this check must be done before setting values
+    if(currentStaker) {
+       currentStakerAr = Object.values(currentStaker);
+       amountStaked = currentStakerAr[1];
+       isOwned= currentStakerAr[2].toString();
+    }
+    
      return (
       [
         'Info',
@@ -116,7 +128,10 @@ class Main extends Component {
              <Card.Body>
                <Card.Title>{data.substring(0,10)}</Card.Title>
                <Card.Text>
-	      Current Owner: {currentStaker}
+	      <p>UPC Master: {currentStaker}</p>
+	      <p>Staked: {amountStaked}</p>
+	      <p>Owned: {isOwned}</p>
+             
             <form className="mb-3" onSubmit={(event) => {
                 event.preventDefault()
                 let word
