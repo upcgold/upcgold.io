@@ -10,10 +10,12 @@ class Main extends Component {
     super(props)
     let scannables;
       this.state = {
-        scannables: '0'
+        scannables: '0',
+	scannableStats: []
        }
     this.loadLeasePage = this.loadLeasePage.bind(this);
     this.getScannables = this.getScannables.bind(this);
+    this.getScannable = this.getScannable.bind(this);
     this.buildCard = this.buildCard.bind(this);
   }
 
@@ -35,15 +37,34 @@ class Main extends Component {
     sc.then(function(result){
 	  var numLeases = result.length;
 	  var scannable;
+	  var currentScannableStats = self.state.scannableStats;
           for(var i=0; i<numLeases; i++)
           {
-            var resultStr = String(result[i]);
-            scannable = self.buildCard(resultStr.substring(0,resultStr.length));
+            var upcHash = String(result[i]);
+	    var tempSc = self.getScannable(upcHash);
+            tempSc.then(function(result){
+		  var newAr = JSON.stringify(result);
+		  newAr = JSON.parse(newAr);
+        	  currentScannableStats[upcHash] = "33333";
+                  self.setState({scannableStats: currentScannableStats});
+            });
+
+
+
+
+            currentScannableStats[upcHash] = tempSc;
+            scannable = self.buildCard(upcHash.substring(0,upcHash.length));
             localScannables.push(scannable);
           }
 	  self.setState({scannables:localScannables});
     });
   }
+
+  getScannable = async (upcHash) => {
+    const { accounts, contract } = this.state;
+    let scannable = await this.props.getScannable(upcHash);
+    return scannable;
+  };
 
   getScannables = async () => {
     const { accounts, contract } = this.state;
@@ -52,7 +73,24 @@ class Main extends Component {
   };
 
   buildCard = (data) => {
-     var bgCol = "#" + data.substring(20,26);
+    console.log(this.state);
+
+    var promise = this.state.scannableStats[data];
+    var currentStaker;
+    var self = this;
+    promise.then(values => {
+        //console.log(values);
+        currentStaker=values[0];
+        console.log(values);
+        var stakerIndex = values[0]; //store this as the index in the state
+        var arr = [];
+        arr.push(values[0]);
+        self.setState({[data]: arr});
+    }); 
+    var bgCol = "#" + data.substring(20,26);
+    var stateProp = data;
+    currentStaker = this.state.[stateProp];
+    console.log("STATE " + JSON.stringify(this.state.[stateProp]));
      return (
       [
         'Info',
@@ -78,6 +116,7 @@ class Main extends Component {
              <Card.Body>
                <Card.Title>{data.substring(0,10)}</Card.Title>
                <Card.Text>
+	      Current Owner: {currentStaker}
             <form className="mb-3" onSubmit={(event) => {
                 event.preventDefault()
                 let word

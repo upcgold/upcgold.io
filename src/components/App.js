@@ -126,6 +126,13 @@ class App extends Component {
     return returnable;
   };
 
+  getScannable = async (upcHash) => {
+    const { accounts, contract } = this.state;
+    let scannable = await this.state.upcGoldBank.methods.getScannable(upcHash).call({ from: this.state.account });
+    let returnable = scannable;
+    return returnable;
+  };
+
   constructor(props) {
     super(props)
     this.state = {
@@ -140,6 +147,7 @@ class App extends Component {
     this.updateUpc= this.updateUpc.bind(this);
     this.getContractBalance= this.getContractBalance.bind(this);
     this.getMyScannables = this.getMyScannables.bind(this);
+    this.getScannable = this.getScannable.bind(this);
     this.getMyBalance = this.getMyBalance.bind(this);
     this.getTVL = this.getTVL.bind(this);
   }
@@ -171,16 +179,6 @@ class App extends Component {
 	getMyBalance={this.getMyBalance}
       />
 
-      withdraw= <Withdraw
-        daiTokenBalance={this.state.daiTokenBalance}
-        stakingBalance={this.state.stakingBalance}
-        contractBalance={this.state.contractBalance}
-        stakeTokens={this.stakeTokens}
-        unstakeTokens={this.unstakeTokens}
-        handleChange={this.handleChange}
-        updateUpc={this.updateUpc}
-      />
-
       leases= <Leases
         daiTokenBalance={this.state.daiTokenBalance}
         stakingBalance={this.state.stakingBalance}
@@ -190,6 +188,7 @@ class App extends Component {
         handleChange={this.handleChange}
         updateUpc={this.updateUpc}
 	getMyScannables={this.getMyScannables}
+	getScannable={this.getScannable}
 	myAccount={this.state.account}
       />
  
