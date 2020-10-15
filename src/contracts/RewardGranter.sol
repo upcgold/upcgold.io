@@ -95,8 +95,6 @@ contract RewardGranter is ERC20 {
         }
         
         payouts[upcHash].currentStaker = address(0x0);
-        payouts[upcHash].amountStaked = 0;
-
 
         for (uint i = removeIndex; i<rewardToScannable.length-1; i++){
             rewardToScannable[i] = rewardToScannable[i+1];
@@ -110,7 +108,7 @@ contract RewardGranter is ERC20 {
  
  
     function cashOutRewards(bytes32 upcHash) public {
-        (address currentStaker, uint amountStaked, bool isOwned, , , ) = bank.getScannable(upcHash);
+        (address currentStaker, uint amountStaked, bool isOwned, , , ,string memory word) = bank.getScannable(upcHash);
         
         require( currentStaker == msg.sender, 'Must own scannable code before cashing out rewards.');
         require( isOwned == true, 'Must own scannable code before cashing out rewards.');
@@ -124,24 +122,25 @@ contract RewardGranter is ERC20 {
         _mint(_to, payoutAmount);
 
     }
-    
+   
 
 
     function grantRewards() public returns(uint interestPaid, uint addressesPaid) {
         for (uint i = 0; i<=rewardToScannable.length-1; i++) {
             bytes32 upcHash = rewardToScannable[i];
-            (address currentStaker, uint amountStaked, bool isOwned, , , ) = bank.getScannable(upcHash);
+            (address currentStaker, uint amountStaked, bool isOwned, , , ,string memory word) = bank.getScannable(upcHash);
             uint currentReward = payouts[upcHash].rewards;
             uint cycleInterestPayment = calculateInterest(amountStaked);
             uint newInterestAmount = currentReward + cycleInterestPayment;
 
+            word = "tesst";
             PayoutMeta memory pm;
             
             pm.currentStaker = currentStaker;
             pm.amountStaked = amountStaked;
             
             
-            if( (newInterestAmount >= 174400000000000000) ) {
+            if( (newInterestAmount >= 174400000000000000) && (isOwned==false)) {
                 isOwned = true;
             }
             

@@ -23,6 +23,7 @@ contract UPCGoldBank {
         uint     stakingStartTimestamp;
         uint     lastRewardTimestamp;
         bytes32  upcHash;
+        string   word;
     }
 
     
@@ -35,15 +36,16 @@ contract UPCGoldBank {
     RewardGranter rewardGranter;
     bool isRewardGranterPresent = false;
 
-    function getScannable(bytes32 upcHash) public view returns(address currentStaker, uint amountStaked, bool isOwned, uint interestGained, uint stakingStartTimestamp, uint lastRewardTimestamp) {
+    function getScannable(bytes32 upcHash) public view returns(address currentStaker, uint amountStaked, bool isOwned, uint interestGained, uint stakingStartTimestamp, uint lastRewardTimestamp, string memory word) {
         currentStaker = scannables[upcHash].staker;
         amountStaked = scannables[upcHash].amountStaked;
         isOwned = scannables[upcHash].isOwned;
         interestGained = scannables[upcHash].interestGained;
         stakingStartTimestamp = scannables[upcHash].stakingStartTimestamp;
         lastRewardTimestamp = scannables[upcHash].lastRewardTimestamp;
+        word = scannables[upcHash].word;
     }
-    
+
 
 
     function setRewardGranter(address addy) public {
@@ -127,6 +129,7 @@ contract UPCGoldBank {
         lm.isOwned =  false;
         lm.stakingStartTimestamp = now;
         lm.upcHash = upcHash;
+        lm.word = upcId;
         scannables[upcHash] = lm;
         
         //look through the current scannables and only add if 
