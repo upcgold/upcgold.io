@@ -11,7 +11,8 @@ class Main extends Component {
     let scannables;
       this.state = {
         scannables: '0',
-	scannableStats: []
+	scannableStats: [],
+	scannableRewards: []
        }
     this.loadLeasePage = this.loadLeasePage.bind(this);
     this.getScannables = this.getScannables.bind(this);
@@ -45,12 +46,8 @@ class Main extends Component {
             tempSc.then(function(result){
 		  var newAr = JSON.stringify(result);
 		  newAr = JSON.parse(newAr);
-        	  currentScannableStats[upcHash] = "33333";
                   self.setState({scannableStats: currentScannableStats});
             });
-
-
-
 
             currentScannableStats[upcHash] = tempSc;
             scannable = self.buildCard(upcHash.substring(0,upcHash.length));
@@ -79,19 +76,21 @@ class Main extends Component {
     var currentStaker;
     var amountStaked;
     var isOwned;
+    var word;
     var self = this;
     promise.then(values => {
-        //console.log(values);
+        console.log(values);
         currentStaker=values[0];
         amountStaked=values[1];
-        isOwned=values[2];
+        word=values[6];
         var arr = [];
         arr.push(values[0]);
         arr.push(values[1]);
-        arr.push(values[2]);
+        arr.push(word);
         self.setState({[data]: arr});
     }); 
-    var bgCol = "#" + data.substring(20,26);
+    var bgCol = "#" + data.substring(34,40);
+    var altCol = "#" + data.substring(11,17);
     var stateProp = data;
     currentStaker = this.state.[stateProp];
     var currentStakerAr;
@@ -99,8 +98,8 @@ class Main extends Component {
     //complicated flow... this is where the individual card's scan stats are calculated and set. currentStaker is not set on page load.  it is set 5 seconds after when the load.... function is called.  this is why this check must be done before setting values
     if(currentStaker) {
        currentStakerAr = Object.values(currentStaker);
-       amountStaked = currentStakerAr[1];
-       isOwned= currentStakerAr[2].toString();
+       amountStaked = window.web3.utils.fromWei(currentStakerAr[1], 'Ether');
+       word = currentStakerAr[2];
     }
     
      return (
@@ -110,18 +109,18 @@ class Main extends Component {
             <Card
               style={{backgroundColor: bgCol}}
             >
-             <Card.Header>
+             <Card.Header
+              style={{backgroundColor: altCol, display: 'flex', flexDirection: 'row'}}
+	      >
                <Nav variant="tabs" defaultActiveKey="#first">
                  <Nav.Item>
-                   <Nav.Link href="#first">Active</Nav.Link>
+                   <Nav.Link href="#first">Overview</Nav.Link>
                  </Nav.Item>
                  <Nav.Item>
-                   <Nav.Link href="#link">Link</Nav.Link>
+                   <Nav.Link href="#link">Rewards</Nav.Link>
                  </Nav.Item>
                  <Nav.Item>
-                   <Nav.Link href="#disabled">
-                     Disabled
-                   </Nav.Link>
+                   <Nav.Link href="#games">Games</Nav.Link>
                  </Nav.Item>
                </Nav>
              </Card.Header>
@@ -129,14 +128,14 @@ class Main extends Component {
                <Card.Title>{data.substring(0,10)}</Card.Title>
                <Card.Text>
 	      <p>UPC Master: {currentStaker}</p>
-	      <p>Staked: {amountStaked}</p>
-	      <p>Owned: {isOwned}</p>
+	      <p>Staked: {amountStaked} (xDAI)</p>
+	      <p>UPC: {word}</p>
              
             <form className="mb-3" onSubmit={(event) => {
                 event.preventDefault()
-                let word
-                word = this.input.value.toString()
-		this.props.unstakeTokens(word)
+                let word1
+                word1 = this.input.value.toString()
+		this.props.unstakeTokens(word1)
               }}>
               <div className="input-group mb-4">
                 <input

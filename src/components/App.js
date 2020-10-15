@@ -1,6 +1,7 @@
 import React, { Component } from 'react'
 import Web3 from 'web3'
 import UPCGoldBank from '../abis/UPCGoldBank.json'
+import RewardGranter from '../abis/RewardGranter.json'
 import Navbar from './Navbar'
 import Leases from './Leases'
 import Evictions from './Evictions'
@@ -93,6 +94,13 @@ class App extends Component {
      var sendEth = web3.utils.toWei(e.target.value, "ether")
      this.setState({ sendCryptoValue: sendEth });
   };
+
+  unstakeTokens = (word) => {
+    this.setState({ loading: true })
+    this.state.upcGoldBank.methods.withdraw(word).send({ from: this.state.account });
+    this.setState({ loading: false})
+  }
+
 
   unstakeTokens = (word) => {
     this.setState({ loading: true })
