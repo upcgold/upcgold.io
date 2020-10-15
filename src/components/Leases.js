@@ -107,7 +107,7 @@ class Main extends Component {
         'Info',
       ].map((variant, idx) => (	     
             <Card
-              style={{backgroundColor: bgCol}}
+              style={{backgroundColor: bgCol, marginBottom: '2em'}}
             >
              <Card.Header
               style={{backgroundColor: altCol, display: 'flex', flexDirection: 'row'}}
@@ -170,9 +170,6 @@ class Main extends Component {
       <div id="content" className="mt-3">
         <div className="card mb-4" >
           <div className="card-body">
-
-
-
 		{this.state.scannables}
           </div>
         </div>
