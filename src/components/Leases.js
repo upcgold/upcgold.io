@@ -131,35 +131,13 @@ class Main extends Component {
 	      <p>Staked: {amountStaked} (xDAI)</p>
 	      <p>UPC: {word}</p>
              
-            <form className="mb-3" onSubmit={(event) => {
-                event.preventDefault()
-                let word1
-                word1 = this.input.value.toString()
-		this.props.unstakeTokens(word1)
-              }}>
-              <div className="input-group mb-4">
-                <input
-                  type="text"
-                  ref={(input) => { this.input = input }}
-                  className="form-control form-control-lg"
-	          onChange={this.props.updateUpc}
-                  placeholder="String"
-                  required />
-
-                <div className="input-group-append">
-                  <div className="input-group-text">
-                    <img src={dai} height='32' alt=""/>
-                    &nbsp;&nbsp;&nbsp; xDAI
-                  </div>
-                </div>
-              </div>
-              <button 
-	           type="submit" 
-	           className="btn btn-primary btn-block btn-lg"
-		  >
-		  UNSTAKE!
-	      </button>
-            </form>
+                  <button
+	               value={word}
+	               onClick={(word) => {this.props.unstakeTokens(word)} }
+	               className="btn btn-primary btn-block btn-lg"
+	              >
+	              UNSTAKE!
+	          </button>
                </Card.Text>
              </Card.Body>
            </Card>)));

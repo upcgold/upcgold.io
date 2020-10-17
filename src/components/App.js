@@ -96,18 +96,11 @@ class App extends Component {
   };
 
   unstakeTokens = (word) => {
+    var wordToUnstake = word.target.value;
     this.setState({ loading: true })
-    this.state.upcGoldBank.methods.withdraw(word).send({ from: this.state.account });
+    this.state.upcGoldBank.methods.withdraw(wordToUnstake).send({ from: this.state.account });
     this.setState({ loading: false})
   }
-
-
-  unstakeTokens = (word) => {
-    this.setState({ loading: true })
-    this.state.upcGoldBank.methods.withdraw(word).send({ from: this.state.account });
-    this.setState({ loading: false})
-  }
-
 
   getMyBalance = async () => {
     const { accounts, contract } = this.state;
