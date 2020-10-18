@@ -94,12 +94,14 @@ class Main extends Component {
     var stateProp = data;
     currentStaker = this.state.[stateProp];
     var currentStakerAr;
+    var currentStakerRaw = "0x0";
 
     //complicated flow... this is where the individual card's scan stats are calculated and set. currentStaker is not set on page load.  it is set 5 seconds after when the load.... function is called.  this is why this check must be done before setting values
     if(currentStaker) {
        currentStakerAr = Object.values(currentStaker);
        amountStaked = window.web3.utils.fromWei(currentStakerAr[1], 'Ether');
        word = currentStakerAr[2];
+       currentStakerRaw = currentStakerAr[0];
     }
     
      return (
@@ -127,7 +129,7 @@ class Main extends Component {
              <Card.Body>
                <Card.Title>{data.substring(0,10)}</Card.Title>
                <Card.Text>
-	      <p>UPC Master: {currentStaker}</p>
+	      <p>UPC Master: {currentStakerRaw}</p>
 	      <p>Staked: {amountStaked} (xDAI)</p>
 	      <p>UPC: {word}</p>
              
