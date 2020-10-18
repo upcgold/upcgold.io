@@ -227,16 +227,16 @@ class App extends Component {
 
   <Tabs>
     <TabList>
-      <Tab>Deposit</Tab>
       <Tab>Leases</Tab>
+      <Tab>Deposit</Tab>
       <Tab>Evictions</Tab>
     </TabList>
 
     <TabPanel>
-                {deposit}
+                {leases}
     </TabPanel>
     <TabPanel>
-                {leases}
+                {deposit}
     </TabPanel>
     <TabPanel>
                 {evictions}
