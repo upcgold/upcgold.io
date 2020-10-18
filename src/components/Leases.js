@@ -3,6 +3,7 @@ import dai from '../dai.png'
 import Card from 'react-bootstrap/Card';
 import Nav from 'react-bootstrap/Nav';
 import Button from 'react-bootstrap/Button';
+import loader from './infinity-loader.gif';
 
 class Main extends Component {
 
@@ -12,7 +13,9 @@ class Main extends Component {
       this.state = {
         scannables: '0',
 	scannableStats: [],
-	scannableRewards: []
+	scannableRewards: [],
+	cardsLoading: true,
+	loadingGif: <img src={loader} alt="loading..." />
        }
     this.loadLeasePage = this.loadLeasePage.bind(this);
     this.getScannables = this.getScannables.bind(this);
@@ -70,11 +73,9 @@ class Main extends Component {
   };
 
   buildCard = (data) => {
-    console.log(this.state);
-
     var promise = this.state.scannableStats[data];
     var currentStaker;
-    var amountStaked;
+    var amountStaked = this.state.loadingGif;
     var isOwned;
     var word;
     var self = this;
@@ -88,6 +89,7 @@ class Main extends Component {
         arr.push(values[1]);
         arr.push(word);
         self.setState({[data]: arr});
+        self.setState({cardsLoading: false});
     }); 
     var bgCol = "#" + data.substring(34,40);
     var altCol = "#" + data.substring(11,17);
@@ -98,10 +100,18 @@ class Main extends Component {
 
     //complicated flow... this is where the individual card's scan stats are calculated and set. currentStaker is not set on page load.  it is set 5 seconds after when the load.... function is called.  this is why this check must be done before setting values
     if(currentStaker) {
-       currentStakerAr = Object.values(currentStaker);
-       amountStaked = window.web3.utils.fromWei(currentStakerAr[1], 'Ether');
-       word = currentStakerAr[2];
-       currentStakerRaw = currentStakerAr[0];
+
+       if(this.state.cardsLoading) {
+           currentStakerAr = Object.values(currentStaker);
+           word = currentStakerAr[2];
+           currentStakerRaw = currentStakerAr[0];
+       }
+       else {
+           currentStakerAr = Object.values(currentStaker);
+           amountStaked = window.web3.utils.fromWei(currentStakerAr[1], 'Ether');
+           word = currentStakerAr[2];
+           currentStakerRaw = currentStakerAr[0];
+       }
     }
     
      return (
