@@ -3,7 +3,8 @@ import dai from '../dai.png'
 import Card from 'react-bootstrap/Card';
 import Nav from 'react-bootstrap/Nav';
 import Button from 'react-bootstrap/Button';
-import loader from './infinity-loader.gif';
+//import loader from './infinity-loader.gif';
+import loader from './infinity-loader2.gif';
 
 class Main extends Component {
 
