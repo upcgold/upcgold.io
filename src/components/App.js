@@ -215,14 +215,8 @@ class App extends Component {
 
     return (
       <div style={{height: '100vh', width: '100vw', border:'none'}} >
-
-	<button onClick={this.handleFlip}>Click to play!</button>
-
         <Navbar account={this.state.account} />
-
-
-
-                  <Tabs>
+                  <Tabs style={{paddingTop:'10px'}}>
                     <TabList>
                       <Tab>Directions</Tab>
                       <Tab>Play!</Tab>
