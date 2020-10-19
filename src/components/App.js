@@ -214,16 +214,12 @@ class App extends Component {
     }
 
     return (
-      <ReactCardFlip style={{paddingTop:'0px'}} isFlipped={this.state.isFlipped} flipDirection="horizontal">
       <div style={{height: '100vh', width: '100vw', border:'none'}} >
 
 	<button onClick={this.handleFlip}>Click to play!</button>
 <iframe style={{height: '100vh', width: '100vw', border:'none'}} src="https://www.elegantthemes.com/layouts/business/cryptocurrency-landing-page/live-demo">
     </iframe >
 
-      </div>
-
-      <div>
         <Navbar account={this.state.account} />
         <div className="container-fluid mt-5">
           <div className="row">
@@ -266,7 +262,6 @@ class App extends Component {
           </div>
         </div>
       </div>
-      </ReactCardFlip>
 
     );
   }
