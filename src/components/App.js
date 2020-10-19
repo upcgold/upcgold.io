@@ -217,10 +217,34 @@ class App extends Component {
       <div style={{height: '100vh', width: '100vw', border:'none'}} >
 
 	<button onClick={this.handleFlip}>Click to play!</button>
-<iframe style={{height: '100vh', width: '100vw', border:'none'}} src="https://www.elegantthemes.com/layouts/business/cryptocurrency-landing-page/live-demo">
-    </iframe >
 
         <Navbar account={this.state.account} />
+
+
+
+                  <Tabs>
+                    <TabList>
+                      <Tab>Directions</Tab>
+                      <Tab>Play!</Tab>
+                    </TabList>
+                    <TabPanel>
+<iframe style={{height: '100vh', width: '100vw', border:'none'}} src="https://www.elegantthemes.com/layouts/business/cryptocurrency-landing-page/live-demo">
+    </iframe >
+                    </TabPanel>
+                    <TabPanel>
+
+
+
+
+
+
+
+
+
+
+
+
+
         <div className="container-fluid mt-5">
           <div className="row">
             <main role="main" className="col-lg-12 ml-auto mr-auto" style={{ maxWidth: '600px' }}>
@@ -261,6 +285,9 @@ class App extends Component {
             </main>
           </div>
         </div>
+
+                    </TabPanel>
+                  </Tabs>
       </div>
 
     );
