@@ -1,4 +1,5 @@
 import React, { Component } from 'react'
+import ReactCardFlip from 'react-card-flip';
 import Web3 from 'web3'
 import UPCGoldBank from '../abis/UPCGoldBank.json'
 import RewardGranter from '../abis/RewardGranter.json'
@@ -87,7 +88,12 @@ class App extends Component {
      }, 2000);
   }
 
-
+ 
+  handleFlip(e) {
+    e.preventDefault();
+    this.setState(prevState => ({ isFlipped: !prevState.isFlipped }));
+  }
+ 
 
   handleChange(e) {
      const web3 = window.web3
@@ -142,7 +148,8 @@ class App extends Component {
       daiTokenBalance: '0',
       stakingBalance: '0',
       loading: true,
-      upc: ''
+      upc: '',
+      isFlipped: false
     }
     this.handleChange = this.handleChange.bind(this);
     this.updateUpc= this.updateUpc.bind(this);
@@ -151,6 +158,7 @@ class App extends Component {
     this.getScannable = this.getScannable.bind(this);
     this.getMyBalance = this.getMyBalance.bind(this);
     this.getTVL = this.getTVL.bind(this);
+    this.handleFlip = this.handleFlip.bind(this);
   }
 
   render() {
@@ -205,48 +213,56 @@ class App extends Component {
     }
 
     return (
+      <ReactCardFlip style={{paddingTop:'0px'}} isFlipped={this.state.isFlipped} flipDirection="horizontal">
       <div>
         <Navbar account={this.state.account} />
         <div className="container-fluid mt-5">
           <div className="row">
             <main role="main" className="col-lg-12 ml-auto mr-auto" style={{ maxWidth: '600px' }}>
               <div className="content mr-auto ml-auto">
-        <table className="table table-borderless text-muted text-center">
-          <thead>
-            <tr>
-              <th scope="col">Total Staked:</th>
-              <th scope="col">Reward Balance</th>
-            </tr>
-          </thead>
-          <tbody>
-            <tr>
-              <td>{this.state.contractBalance} xDAI</td>
-            </tr>
-          </tbody>
-        </table>
-
-  <Tabs>
-    <TabList>
-      <Tab>Leases</Tab>
-      <Tab>Deposit</Tab>
-      <Tab>Evictions</Tab>
-    </TabList>
-
-    <TabPanel>
-                {leases}
-    </TabPanel>
-    <TabPanel>
-                {deposit}
-    </TabPanel>
-    <TabPanel>
-                {evictions}
-    </TabPanel>
-  </Tabs>
+                 <table className="table table-borderless text-muted text-center">
+                   <thead>
+                     <tr>
+                       <th scope="col">Total Staked:</th>
+                       <th scope="col">Reward Balance</th>
+                     </tr>
+                   </thead>
+                   <tbody>
+                     <tr>
+                       <td>{this.state.contractBalance} xDAI</td>
+                     </tr>
+                   </tbody>
+                 </table>
+         
+                  <button onClick={this.handleFlip}>Click to flip</button>
+                  <Tabs>
+                    <TabList>
+                      <Tab>Leases</Tab>
+                      <Tab>Deposit</Tab>
+                      <Tab>Evictions</Tab>
+                    </TabList>
+                
+                    <TabPanel>
+                                {leases}
+                    </TabPanel>
+                    <TabPanel>
+                                {deposit}
+                    </TabPanel>
+                    <TabPanel>
+                                {evictions}
+                    </TabPanel>
+                  </Tabs>
               </div>
             </main>
           </div>
         </div>
       </div>
+      <div>
+        <h1> hello </h1>
+	<button onClick={this.handleFlip}>Click to flip</button>
+      </div>
+      </ReactCardFlip>
+
     );
   }
 }
