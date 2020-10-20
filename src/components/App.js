@@ -215,7 +215,6 @@ class App extends Component {
 
     return (
       <div style={{height: '100vh', width: '100vw', border:'none'}} >
-        <Navbar account={this.state.account} />
                   <Tabs style={{paddingTop:'10px'}}>
                     <TabList>
                       <Tab>Directions</Tab>
