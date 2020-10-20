@@ -229,7 +229,6 @@ class App extends Component {
           <div className="row">
             <main role="main" className="col-lg-12 ml-auto mr-auto" style={{ maxWidth: '600px' }}>
               <div className="content mr-auto ml-auto">
-                  <button onClick={this.handleFlip}>Read Instructions</button>
                   <Tabs>
                     <TabList>
                       <Tab>Leases</Tab>
