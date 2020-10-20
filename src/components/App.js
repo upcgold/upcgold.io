@@ -225,37 +225,10 @@ class App extends Component {
     </iframe >
                     </TabPanel>
                     <TabPanel>
-
-
-
-
-
-
-
-
-
-
-
-
-
         <div className="container-fluid mt-5">
           <div className="row">
             <main role="main" className="col-lg-12 ml-auto mr-auto" style={{ maxWidth: '600px' }}>
               <div className="content mr-auto ml-auto">
-                 <table className="table table-borderless text-muted text-center">
-                   <thead>
-                     <tr>
-                       <th scope="col">Total Staked:</th>
-                       <th scope="col">Reward Balance</th>
-                     </tr>
-                   </thead>
-                   <tbody>
-                     <tr>
-                       <td>{this.state.contractBalance} xDAI</td>
-                     </tr>
-                   </tbody>
-                 </table>
-         
                   <button onClick={this.handleFlip}>Read Instructions</button>
                   <Tabs>
                     <TabList>
