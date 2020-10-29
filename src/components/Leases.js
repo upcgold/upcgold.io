@@ -98,6 +98,7 @@ class Main extends Component {
     currentStaker = this.state.[stateProp];
     var currentStakerAr;
     var currentStakerRaw = "0x0";
+    var upcOwnerTruncated; 
 
     //complicated flow... this is where the individual card's scan stats are calculated and set. currentStaker is not set on page load.  it is set 5 seconds after when the load.... function is called.  this is why this check must be done before setting values
     if(currentStaker) {
@@ -106,25 +107,27 @@ class Main extends Component {
            currentStakerAr = Object.values(currentStaker);
            word = currentStakerAr[2];
            currentStakerRaw = currentStakerAr[0];
+	   upcOwnerTruncated = currentStakerRaw.substring(0,5) + "..." + currentStakerRaw.substring(35);
        }
        else {
            currentStakerAr = Object.values(currentStaker);
            amountStaked = window.web3.utils.fromWei(currentStakerAr[1], 'Ether');
            word = currentStakerAr[2];
            currentStakerRaw = currentStakerAr[0];
+	   upcOwnerTruncated = currentStakerRaw.substring(0,5) + "..." + currentStakerRaw.substring(35);
        }
     }
-    
+
      return (
       [
         'Info',
-      ].map((variant, idx) => (	     
+      ].map((variant, idx) => (
             <Card
               style={{backgroundColor: bgCol, marginBottom: '2em'}}
             >
              <Card.Header
               style={{backgroundColor: altCol, display: 'flex', flexDirection: 'row'}}
-	      >
+        >
                <Nav variant="tabs" defaultActiveKey="#first">
                  <Nav.Item>
                    <Nav.Link href="#first">Overview</Nav.Link>
@@ -138,23 +141,24 @@ class Main extends Component {
                </Nav>
              </Card.Header>
              <Card.Body>
-               <Card.Title>{data.substring(0,10)}</Card.Title>
+               <Card.Title>My name is: {data.substring(0,10)}</Card.Title>
                <Card.Text>
-	      <p>UPC Master: {currentStakerRaw}</p>
-	      <p>Staked: {amountStaked} (xDAI)</p>
-	      <p>UPC: {word}</p>
-             
-                  <button
-	               value={word}
-	               onClick={(word) => {this.props.unstakeTokens(word)} }
-	               className="btn btn-primary btn-block btn-lg"
-	              >
-	              UNSTAKE!
-	          </button>
+                  <div style={{backgroundColor: "#fff", padding: '4px', marginBottom: '10px'}}>
+                  <p>Owner: {upcOwnerTruncated}</p>
+                  <p>Balance: {amountStaked} (xDAI)</p>
+                  <p>UPC: {word}</p>
+                  </div>
+                            <button
+                           value={word}
+                           onClick={(word) => {this.props.unstakeTokens(word)} }
+                           className="btn btn-primary btn-block btn-lg"
+                          >
+                          UNSTAKE!
+                      </button>
                </Card.Text>
              </Card.Body>
            </Card>)));
-  }
+    }
 
   render() {
     return (
