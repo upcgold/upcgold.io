@@ -3,8 +3,8 @@ version: '2'
 services:
   upcgold.io:
     environment:
-      - VIRTUAL_HOST=upcgold.io
-      - LETSENCRYPT_HOST=upcgold.io
+      - VIRTUAL_HOST=bank.upcgold.io
+      - LETSENCRYPT_HOST=bank.upcgold.io
     build: .
     image: mountain/upcgold.io
     container_name: upcgold.io
