@@ -221,7 +221,7 @@ class App extends Component {
                       <Tab>Play!</Tab>
                     </TabList>
                     <TabPanel>
-<iframe style={{height: '100vh', width: '100vw', border:'none'}} src="https://www.elegantthemes.com/layouts/business/cryptocurrency-landing-page/live-demo">
+<iframe style={{height: '100vh', width: '100vw', border:'none'}} src="https://upcgold.io">
     </iframe >
                     </TabPanel>
                     <TabPanel>
