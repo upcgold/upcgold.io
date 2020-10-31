@@ -1,13 +1,13 @@
 version: '2'
 
 services:
-  upcgold.io:
+  bank.upcgold.io:
     environment:
       - VIRTUAL_HOST=bank.upcgold.io
       - LETSENCRYPT_HOST=bank.upcgold.io
     build: .
     image: mountain/upcgold.io
-    container_name: upcgold.io
+    container_name: bank.upcgold.io
     ports:
       # strapi runs on port 1337, so map this port out to port 7002 to access it.  the container always
       # specifies this it exposes this port in the Dockerfile.  to change this port (1337), change Dockerfile
