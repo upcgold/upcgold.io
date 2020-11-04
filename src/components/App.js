@@ -221,7 +221,7 @@ class App extends Component {
                       <Tab>Play!</Tab>
                     </TabList>
                     <TabPanel>
-<iframe scrolling="no" style={{height: '100vh', width: '100vw', border:'none'}} src="https://appfront.upcgold.io">
+<iframe style={{height: '100vh', width: '100vw', border:'none'}} src="https://appfront.upcgold.io">
     </iframe >
                     </TabPanel>
                     <TabPanel>
