@@ -214,14 +214,14 @@ class App extends Component {
     }
 
     return (
-      <div style={{height: '100vh', width: '100vw', border:'none'}} >
+      <div style={{height: '100vh', width: '100vw', border:'none', overflow: 'hidden'}} >
                   <Tabs style={{paddingTop:'10px'}}>
                     <TabList>
                       <Tab>Directions</Tab>
                       <Tab>Play!</Tab>
                     </TabList>
                     <TabPanel>
-<iframe style={{height: '100vh', width: '100vw', border:'none'}} src="https://appfront.upcgold.io">
+<iframe style={{top: '0', minHeight: '100vh', width: '100vw', border:'none'}} src="https://appfront.upcgold.io">
     </iframe >
                     </TabPanel>
                     <TabPanel>
