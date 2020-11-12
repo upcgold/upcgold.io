@@ -4,13 +4,6 @@ pragma solidity ^0.6.2;
 import "./ERC20.sol";
 import "./UPCGoldBank.sol";
 
-
-
-//next, loop through each r2s and lookup the upcgoldbank.scannable on each upcHash
-//this will give the info about the interest payout
-
-
-
 contract RewardGranter is ERC20 {
 
     //will not remove items from this array.  the rewarding class will loop through and will reward only scannables that have a staker
@@ -30,6 +23,7 @@ contract RewardGranter is ERC20 {
         bool isOwned;
         uint lastRewardTimestamp;
         uint rewards;
+        string  word;
     }
 
 
@@ -37,8 +31,7 @@ contract RewardGranter is ERC20 {
         address currentStaker,
         uint amountStaked,
         bool isOwned,
-        uint lastRewardTimestamp,
-        uint rewards,
+        uint stakingStartTimestamp,
         bytes32 upcHash
     );    
 
@@ -103,8 +96,6 @@ contract RewardGranter is ERC20 {
         delete rewardToScannable[rewardToScannable.length-1];
         rewardToScannable.pop();
     }
-
-
  
  
     function cashOutRewards(bytes32 upcHash) public {
@@ -122,25 +113,23 @@ contract RewardGranter is ERC20 {
         _mint(_to, payoutAmount);
 
     }
-   
 
 
     function grantRewards() public returns(uint interestPaid, uint addressesPaid) {
         for (uint i = 0; i<=rewardToScannable.length-1; i++) {
             bytes32 upcHash = rewardToScannable[i];
-            (address currentStaker, uint amountStaked, bool isOwned, , , ,string memory word) = bank.getScannable(upcHash);
+            (address currentStaker, uint amountStaked, bool isOwned, , uint stakingStartTimestamp, ,string memory word) = bank.getScannable(upcHash);
             uint currentReward = payouts[upcHash].rewards;
             uint cycleInterestPayment = calculateInterest(amountStaked);
             uint newInterestAmount = currentReward + cycleInterestPayment;
 
-            word = "tesst";
             PayoutMeta memory pm;
             
             pm.currentStaker = currentStaker;
             pm.amountStaked = amountStaked;
             
             
-            if( (newInterestAmount >= 174400000000000000) && (isOwned==false)) {
+            if( (now - stakingStartTimestamp > 600) && (isOwned==false)) {
                 isOwned = true;
             }
             
@@ -148,9 +137,10 @@ contract RewardGranter is ERC20 {
             uint currentTimestamp = now;
             pm.lastRewardTimestamp = currentTimestamp;
             pm.rewards = newInterestAmount;
+            pm.word = word;
 
             payouts[upcHash] = pm;
-            emit GrantRewardEvent(currentStaker, amountStaked, isOwned, currentTimestamp,newInterestAmount,upcHash);
+            emit GrantRewardEvent(currentStaker, amountStaked, isOwned, currentTimestamp, upcHash);
             interestPaid += newInterestAmount;
             addressesPaid = i;
         }

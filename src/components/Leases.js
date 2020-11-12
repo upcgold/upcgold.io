@@ -74,13 +74,15 @@ class Main extends Component {
   };
 
   buildCard = (data) => {
-    var promise = this.state.scannableStats[data];
+    var promiseStats   = this.state.scannableStats[data];
+    var promiseRewards = this.state.scannableRewards[data];
+
     var currentStaker;
     var amountStaked = this.state.loadingGif;
     var isOwned;
     var word;
     var self = this;
-    promise.then(values => {
+    promiseStats.then(values => {
         console.log(values);
         currentStaker=values[0];
         amountStaked=values[1];
@@ -92,8 +94,8 @@ class Main extends Component {
         self.setState({[data]: arr});
         self.setState({cardsLoading: false});
     }); 
-    var bgCol = "#" + data.substring(34,40);
-    var altCol = "#" + data.substring(11,17);
+    var bgCol = "#" + data.substring(32,38);
+    var altCol = "#" + data.substring(21,27);
     var stateProp = data;
     currentStaker = this.state.[stateProp];
     var currentStakerAr;

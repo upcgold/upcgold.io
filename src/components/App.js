@@ -40,6 +40,24 @@ class App extends Component {
       window.alert('UPCGoldBank contract not deployed to detected network.')
     }
 
+
+
+    // Load RewardGranter
+    const rewardGranterData = RewardGranter.networks[networkId]
+    if(rewardGranterData) {
+      const rewardGranter = new web3.eth.Contract(RewardGranter.abi, rewardGranterData.address)
+      this.setState({ rewardGranter })
+//      var testPayout = web3.utils.asciiToHex("0xf8ece5499a70cb0f7a2c8adae5cb5c32abd9a6978f245f29d67331998712632");
+	    //0xf8ece5499a70cb0f7a2c8adae5cb5c32abd9a6978f245f29d67331998712632c
+      var testPayout = "0xf8ece5499a70cb0f7a2c8adae5cb5c32abd9a6978f245f29d67331998712632c";
+      //let payout = await rewardGranter.methods.getRewardableScannables().call();
+      let payout = await rewardGranter.methods.payouts(testPayout).call();
+      console.log("PAYOUT");
+      console.log(payout);
+    } else {
+      window.alert('RewardGranter contract not deployed to detected network.')
+    }
+
     this.setState({ loading: false })
   }
 
@@ -117,8 +135,12 @@ class App extends Component {
     return stakingBalance.toString();
   };
 
+  getRewardInfo= async (upcHash) => {
+    const { accounts, contract } = this.state;
 
-
+    let contractBalance = await this.state.upcGoldBank.methods.getContractBalance().call();
+    return contractBalance;
+  };
 
   getContractBalance = async () => {
     const { accounts, contract } = this.state;
