@@ -214,7 +214,7 @@ class App extends Component {
     }
 
     return (
-      <div style={{height: '100vh', width: '100vw', border:'none', overflow: 'hidden'}} >
+      <div style={{height: '100vh', width: '100vw', border:'none'}} >
                   <Tabs style={{paddingTop:'10px'}}>
                     <TabList>
                       <Tab>Directions</Tab>
