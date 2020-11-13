@@ -47,32 +47,10 @@ class Main extends Component {
           {
             var upcHash = String(result[i]);
             let scannable;
-            let rewardInfo;
 	    let currentStaker;
 	    let amountStaked;
 	    let word;
-
-
-            (async () => {
-                rewardInfo = await await self.props.getRewardInfo(upcHash);
-        	//console.log("REWARD INFO: " + JSON.stringify(rewardInfo));
-            })();
-
-
 	    var tempSc = self.getScannable(upcHash);
-            tempSc.then(values => {
-                currentStaker=values[0];
-                amountStaked=values[1];
-                word=values[6];
-                var arr = [];
-                arr.push(values[0]);
-                arr.push(values[1]);
-                arr.push(word);
-                self.setState({[upcHash]: arr});
-                self.setState({cardsLoading: false});
-            }); 
-
-            console.log("REWARD INFO: " + tempSc);
             currentScannableStats[upcHash] = tempSc;
             scannable = self.buildCard(upcHash.substring(0,upcHash.length));
             localScannables.push(scannable);
@@ -93,15 +71,48 @@ class Main extends Component {
     return scannables;
   };
 
+  /**
+   * the goal of this function is to output card html for one scannable.  this function resolves
+   * a promise from the loadPage function and then does a lookup to get the reward information for
+   * each scannable (RewardGranter)
+   */
   buildCard = (data) => {
     var promiseStats   = this.state.scannableStats[data];
     var promiseRewards = this.state.scannableRewards[data];
-
+    var rewardKey = data + "-reward";
     var currentStaker;
     var amountStaked = this.state.loadingGif;
     var isOwned;
     var word;
+    let rewardInfo;
+    //building the card is 2 step process.  first resolve the promise from above (when the load page function above is called) and set state info for this individual
+    //scannable.
     var self = this;
+    promiseStats.then(values => {
+        currentStaker=values[0];
+        amountStaked=values[1];
+        word=values[6];
+        var arr = [];
+        arr.push(values[0]);
+        arr.push(values[1]);
+        arr.push(word);
+        self.setState({[data]: arr});
+        self.setState({cardsLoading: false});
+    }); 
+
+    (async () => {
+        rewardInfo = await self.props.getRewardInfo(data);
+	var currentUpcState = self.state[data];
+	if(currentUpcState) {
+	   currentUpcState.push(rewardInfo.isOwned);
+	   currentUpcState.push(rewardInfo.rewards);
+	   currentUpcState.push(rewardInfo.lastRewardTimestamp);
+           self.setState({[rewardKey]: currentUpcState});
+	}
+	console.log("CURRENT INFO: " + JSON.stringify(currentUpcState));
+//	console.log("REWARD  INFO: " + JSON.stringify(rewardInfo));
+//	console.log("OWNED  INFO: " + JSON.stringify(rewardInfo.isOwned));
+    })();
 
     var bgCol = "#" + data.substring(32,38);
     var altCol = "#" + data.substring(21,27);
@@ -110,8 +121,30 @@ class Main extends Component {
     var currentStakerAr;
     var currentStakerRaw = "0x0";
     var upcOwnerTruncated; 
+    var isOwned = "False";
+    var rewardsEarned = "To be calculated...";
+    var cardRewards = this.state[rewardKey];
 
-    //complicated flow... this is where the individual card's scan stats are calculated and set. currentStaker is not set on page load.  it is set 5 seconds after when the load.... function is called.  this is why this check must be done before setting values
+    //the 3rd element is ownership info.  this was added in the async block above
+    if(cardRewards && cardRewards.length >= 3) {
+       var isOwned = cardRewards[3];
+       if(isOwned) {
+          isOwned = "True";
+       }
+       else {
+          isOwned = "False";
+       }
+    }
+
+    //the 3rd element is rewards info.  this was added in the async block above
+    if(cardRewards && cardRewards.length >= 4) {
+       var rewardsEarnedTmp = cardRewards[4];
+       if(rewardsEarned) {
+          rewardsEarned = rewardsEarnedTmp;
+       }
+    }    //complicated flow... this is where the individual card's scan stats are calculated and set. currentStaker is not set on page load.  it is set 5 seconds after when the load.... function is called.  this is why this check must be done before setting values
+
+
     if(currentStaker) {
 
        if(this.state.cardsLoading) {
@@ -159,6 +192,8 @@ class Main extends Component {
                   <p>Owner: {upcOwnerTruncated}</p>
                   <p>Balance: {amountStaked} (xDAI)</p>
                   <p>UPC: {word}</p>
+                  <p>Owned: {isOwned}</p>
+                  <p>Rewards: {rewardsEarned}</p>
                   </div>
                             <button
                            value={word}
