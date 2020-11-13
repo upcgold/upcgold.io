@@ -49,11 +49,11 @@ class App extends Component {
       this.setState({ rewardGranter })
 //      var testPayout = web3.utils.asciiToHex("0xf8ece5499a70cb0f7a2c8adae5cb5c32abd9a6978f245f29d67331998712632");
 	    //0xf8ece5499a70cb0f7a2c8adae5cb5c32abd9a6978f245f29d67331998712632c
-      var testPayout = "0xf8ece5499a70cb0f7a2c8adae5cb5c32abd9a6978f245f29d67331998712632c";
+//      var testPayout = "0xf8ece5499a70cb0f7a2c8adae5cb5c32abd9a6978f245f29d67331998712632c";
       //let payout = await rewardGranter.methods.getRewardableScannables().call();
-      let payout = await rewardGranter.methods.payouts(testPayout).call();
-      console.log("PAYOUT");
-      console.log(payout);
+//      let payout = await rewardGranter.methods.payouts(testPayout).call();
+//      console.log("PAYOUT");
+//      console.log(payout);
     } else {
       window.alert('RewardGranter contract not deployed to detected network.')
     }
@@ -137,9 +137,8 @@ class App extends Component {
 
   getRewardInfo= async (upcHash) => {
     const { accounts, contract } = this.state;
-
-    let contractBalance = await this.state.upcGoldBank.methods.getContractBalance().call();
-    return contractBalance;
+    let payout = await this.state.rewardGranter.methods.payouts(upcHash).call({from: this.state.account });
+    return payout;
   };
 
   getContractBalance = async () => {
@@ -222,6 +221,7 @@ class App extends Component {
 	getMyScannables={this.getMyScannables}
 	getScannable={this.getScannable}
 	myAccount={this.state.account}
+	getRewardInfo={this.getRewardInfo}
       />
  
       evictions= <Evictions

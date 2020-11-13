@@ -46,6 +46,15 @@ class Main extends Component {
           for(var i=0; i<numLeases; i++)
           {
             var upcHash = String(result[i]);
+            let scannable;
+
+    (async () => {
+console.log("checking " + upcHash);
+        scannable = await await self.props.getRewardInfo(upcHash);
+	    console.log("string is " + JSON.stringify(scannable));
+    })();
+
+
 	    var tempSc = self.getScannable(upcHash);
             tempSc.then(function(result){
 		  var newAr = JSON.stringify(result);
@@ -83,7 +92,6 @@ class Main extends Component {
     var word;
     var self = this;
     promiseStats.then(values => {
-        console.log(values);
         currentStaker=values[0];
         amountStaked=values[1];
         word=values[6];
@@ -125,6 +133,7 @@ class Main extends Component {
         'Info',
       ].map((variant, idx) => (
             <Card
+	      key={data.substring(0,10)}
               style={{backgroundColor: bgCol, marginBottom: '2em'}}
             >
              <Card.Header
