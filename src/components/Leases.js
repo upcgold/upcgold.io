@@ -114,8 +114,8 @@ class Main extends Component {
 //	console.log("OWNED  INFO: " + JSON.stringify(rewardInfo.isOwned));
     })();
 
-    var bgCol = "#BCCAD0";
-    var altCol = "#EAEBEC";
+    var bgCol = "#FDF9EC";
+    var altCol = "#FDF9EC";
     var stateProp = data;
     currentStaker = this.state.[stateProp];
     var currentStakerAr;
