@@ -10,9 +10,11 @@ contract RewardGranter is ERC20 {
     bytes32[] public rewardToScannable;  //the scannables that will recieve the reward for staking
     uint public testVal = 0;
     mapping(bytes32 => PayoutMeta)     public payouts;
+    address public owner;
+
 
     //uint public ownershipWaitingPeriod = 86400;
-    uint public ownershipWaitingPeriod = 600;
+    uint private ownershipWaitingPeriod = 600;
 
 
     //the bank setter can only be called once
@@ -40,9 +42,18 @@ contract RewardGranter is ERC20 {
 
     
     constructor () public ERC20("UPCGold", "UPCG") {
+        owner = msg.sender;
         _mint(msg.sender, 1000 * (10 ** uint256(decimals())));
     }
     
+    function getOwnershipPeroid() public view returns (uint) {
+        return ownershipWaitingPeriod;
+    }
+    
+    function setOwnershipPeroid(uint duration) public {
+        require(msg.sender == owner , 'Unauthorized to set ownership period');
+        ownershipWaitingPeriod = duration;
+    }
     
     function calculateInterest(uint amount) private pure returns (uint) {
         require((amount / 10000) * 10000 == amount , 'too small');
@@ -96,14 +107,18 @@ contract RewardGranter is ERC20 {
             rewardToScannable[i] = rewardToScannable[i+1];
         }
         
-        delete rewardToScannable[rewardToScannable.length-1];
-        rewardToScannable.pop();
+        if(doRemove) {
+            delete rewardToScannable[rewardToScannable.length-1];
+            rewardToScannable.pop();   
+        }
+
     }
 
 
  
  
     function cashOutRewards(bytes32 upcHash) public {
+        /*
         (address currentStaker, uint amountStaked, bool isOwned, , , ,string memory word) = bank.getScannable(upcHash);
         
         require( currentStaker == msg.sender, 'Must own scannable code before cashing out rewards.');
@@ -116,7 +131,7 @@ contract RewardGranter is ERC20 {
         payouts[upcHash].rewards = 0;
         
         _mint(_to, payoutAmount);
-
+        */
     }
    
 

@@ -47,20 +47,32 @@ class Main extends Component {
           {
             var upcHash = String(result[i]);
             let scannable;
+            let rewardInfo;
+	    let currentStaker;
+	    let amountStaked;
+	    let word;
+
 
             (async () => {
-                scannable = await await self.props.getRewardInfo(upcHash);
-        	console.log("SCANNABLE: " + JSON.stringify(scannable));
+                rewardInfo = await await self.props.getRewardInfo(upcHash);
+        	//console.log("REWARD INFO: " + JSON.stringify(rewardInfo));
             })();
 
 
 	    var tempSc = self.getScannable(upcHash);
-            tempSc.then(function(result){
-		  var newAr = JSON.stringify(result);
-		  newAr = JSON.parse(newAr);
-                  self.setState({scannableStats: currentScannableStats});
-            });
+            tempSc.then(values => {
+                currentStaker=values[0];
+                amountStaked=values[1];
+                word=values[6];
+                var arr = [];
+                arr.push(values[0]);
+                arr.push(values[1]);
+                arr.push(word);
+                self.setState({[upcHash]: arr});
+                self.setState({cardsLoading: false});
+            }); 
 
+            console.log("REWARD INFO: " + tempSc);
             currentScannableStats[upcHash] = tempSc;
             scannable = self.buildCard(upcHash.substring(0,upcHash.length));
             localScannables.push(scannable);
@@ -90,17 +102,7 @@ class Main extends Component {
     var isOwned;
     var word;
     var self = this;
-    promiseStats.then(values => {
-        currentStaker=values[0];
-        amountStaked=values[1];
-        word=values[6];
-        var arr = [];
-        arr.push(values[0]);
-        arr.push(values[1]);
-        arr.push(word);
-        self.setState({[data]: arr});
-        self.setState({cardsLoading: false});
-    }); 
+
     var bgCol = "#" + data.substring(32,38);
     var altCol = "#" + data.substring(21,27);
     var stateProp = data;
