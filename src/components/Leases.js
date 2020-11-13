@@ -114,8 +114,8 @@ class Main extends Component {
 //	console.log("OWNED  INFO: " + JSON.stringify(rewardInfo.isOwned));
     })();
 
-    var bgCol = "#" + data.substring(32,38);
-    var altCol = "#" + data.substring(21,27);
+    var bgCol = "#BCCAD0";
+    var altCol = "#EAEBEC";
     var stateProp = data;
     currentStaker = this.state.[stateProp];
     var currentStakerAr;
@@ -130,6 +130,8 @@ class Main extends Component {
        var isOwned = cardRewards[3];
        if(isOwned) {
           isOwned = "True";
+          bgCol = "#" + data.substring(32,38);
+          altCol = "#" + data.substring(21,27);
        }
        else {
           isOwned = "False";
