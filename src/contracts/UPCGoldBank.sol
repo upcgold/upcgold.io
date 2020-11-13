@@ -31,6 +31,11 @@ contract UPCGoldBank {
     //each will have the address of the staker and the upcHash/meta
     mapping(address  => LeaseMeta[])   public addressToLease;       //one-to-many relation between an address and scannables (leases/upcs)
     mapping(address => Balance)     public balanceReceived;
+    
+    /*
+    *  all possible scannables already exist.  this mapping defines the current information about the scannables
+    *  the addressToLease mapping defines which address owns which scannable
+    */
     mapping(bytes32  => LeaseMeta)   public scannables;       //pass in the upcId and look up the meta about the upc
     uint public actionPot;
     RewardGranter rewardGranter;
@@ -109,9 +114,13 @@ contract UPCGoldBank {
         require(currentIsOwned == false, "Can not stake in an owned code without permission.");
 
         uint currentAmountStaked = scannables[upcHash].amountStaked;
+        bool restaking = false;
         
         if(msg.sender != scannables[upcHash].staker) {
             require(_addToBalance > currentAmountStaked, "You must outstake the current stakeholder to win this lease.");
+        }
+        else {
+            restaking = true;
         }
         
         if(msg.sender != scannables[upcHash].staker) {
@@ -126,7 +135,14 @@ contract UPCGoldBank {
         LeaseMeta memory lm;
         lm.staker = msg.sender;
         lm.amountStaked = currentAmountStaked + _addToBalance;
-        lm.isOwned =  false;
+        
+        if(!restaking) {
+            lm.isOwned =  false;
+        }
+        else {
+            lm.isOwned =  true;
+        }
+        
         lm.stakingStartTimestamp = now;
         lm.upcHash = upcHash;
         lm.word = upcId;

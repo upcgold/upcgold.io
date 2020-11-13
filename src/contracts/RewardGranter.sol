@@ -11,6 +11,9 @@ contract RewardGranter is ERC20 {
     uint public testVal = 0;
     mapping(bytes32 => PayoutMeta)     public payouts;
 
+    //uint public ownershipWaitingPeriod = 86400;
+    uint public ownershipWaitingPeriod = 600;
+
 
     //the bank setter can only be called once
     bool bankPresent = false;
@@ -96,6 +99,8 @@ contract RewardGranter is ERC20 {
         delete rewardToScannable[rewardToScannable.length-1];
         rewardToScannable.pop();
     }
+
+
  
  
     function cashOutRewards(bytes32 upcHash) public {
@@ -113,6 +118,7 @@ contract RewardGranter is ERC20 {
         _mint(_to, payoutAmount);
 
     }
+   
 
 
     function grantRewards() public returns(uint interestPaid, uint addressesPaid) {
@@ -129,7 +135,7 @@ contract RewardGranter is ERC20 {
             pm.amountStaked = amountStaked;
             
             
-            if( (now - stakingStartTimestamp > 600) && (isOwned==false)) {
+            if( (now - stakingStartTimestamp > ownershipWaitingPeriod) && (isOwned==false)) {
                 isOwned = true;
             }
             

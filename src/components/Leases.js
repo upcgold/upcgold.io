@@ -48,11 +48,10 @@ class Main extends Component {
             var upcHash = String(result[i]);
             let scannable;
 
-    (async () => {
-console.log("checking " + upcHash);
-        scannable = await await self.props.getRewardInfo(upcHash);
-	    console.log("string is " + JSON.stringify(scannable));
-    })();
+            (async () => {
+                scannable = await await self.props.getRewardInfo(upcHash);
+        	console.log("SCANNABLE: " + JSON.stringify(scannable));
+            })();
 
 
 	    var tempSc = self.getScannable(upcHash);
