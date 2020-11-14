@@ -89,9 +89,13 @@ class Main extends Component {
     //scannable.
     var self = this;
     promiseStats.then(values => {
+	//example object.  disable the log below to inspect 
+	//values {"0":"0x22F23F59A19a5EEd1eE9c546F64CC645B92a4263","1":"98000000000000000","2":false,"3":"0","4":"1605388210","5":"chris","currentStaker":"0x22F23F59A19a5EEd1eE9c546F64CC645B92a4263","amountStaked":"98000000000000000","isOwned":false,"rewards":"0","stakingStartTimestamp":"1605388210","word":"chris"}
+
+	//console.log("values " + JSON.stringify(values));
         currentStaker=values[0];
         amountStaked=values[1];
-        word=values[6];
+        word=values[5];
         var arr = [];
         arr.push(values[0]);
         arr.push(values[1]);
