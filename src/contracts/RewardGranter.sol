@@ -69,11 +69,14 @@ contract RewardGranter is ERC20 {
  
     //function can be called once
     function setBank(address address1) public returns (uint) {
-        require( bankPresent == false, 'Bank already set');
         bank = UPCGoldBank(address1);
         bankPresent = true;
     }
     
+ 
+     function isOwned(bytes32 upcHash) public view returns (bool) {
+         return payouts[upcHash].isOwned;
+    }
  
  
     function addRewardableScannable(bytes32 upcHash) public {

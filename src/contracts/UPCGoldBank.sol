@@ -105,13 +105,15 @@ contract UPCGoldBank {
 
     function depositMoney(string memory upcId) public payable {
         bytes32 upcHash = sha256(abi.encodePacked(upcId));
+
+        
         uint _addToActionPot = this.calculateFee(msg.value);
         uint _addToBalance = msg.value - _addToActionPot; //take eth out to do good with
 
         //look into registering an unstoppable domain id.  verify on the blockchain that the msg.sender == the owner of the domain
         //(, uint currentAmountStaked ,) = this.getCostToEvict(upcId);
-        bool currentIsOwned      = scannables[upcHash].isOwned;
-        require(currentIsOwned == false, "Can not stake in an owned code without permission.");
+        bool owned = rewardGranter.isOwned(upcHash);
+        require(owned == false, "Get your own code.  This one is taken :p");
 
         uint currentAmountStaked = scannables[upcHash].amountStaked;
         bool restaking = false;
@@ -193,7 +195,8 @@ contract UPCGoldBank {
     }
 
     function evict(bytes32 upcHash) private returns (uint) {
-        
+
+        //require(scannables[upcHash].isOwned == false, "Can not evict from an occupied scannable.");
         uint toWithdraw = scannables[upcHash].amountStaked;
         address payable _to = address(uint160(scannables[upcHash].staker));
         balanceReceived[_to].totalBalance -= toWithdraw;
