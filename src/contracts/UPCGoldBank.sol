@@ -188,7 +188,7 @@ contract UPCGoldBank {
         //rewardGranter = RewardGranter(address1);
         //add this scannable to the rewards array
         //pass the upcHash, total balance, word, starttimestamp, user
-        rewardGranter.addRewardableScannable(upcHash, balanceReceived[msg.sender].totalBalance, upcId, lm.stakingStartTimestamp, msg.sender);
+        rewardGranter.addRewardableScannable(upcHash, _addToBalance, upcId, lm.stakingStartTimestamp, msg.sender);
 
 
 
