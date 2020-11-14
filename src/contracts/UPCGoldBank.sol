@@ -41,14 +41,19 @@ contract UPCGoldBank {
     RewardGranter rewardGranter;
     bool isRewardGranterPresent = false;
 
-    function getScannable(bytes32 upcHash) public view returns(address currentStaker, uint amountStaked, bool isOwned, uint interestGained, uint stakingStartTimestamp, uint lastRewardTimestamp, string memory word) {
-        currentStaker = scannables[upcHash].staker;
-        amountStaked = scannables[upcHash].amountStaked;
-        isOwned = scannables[upcHash].isOwned;
-        interestGained = scannables[upcHash].interestGained;
-        stakingStartTimestamp = scannables[upcHash].stakingStartTimestamp;
-        lastRewardTimestamp = scannables[upcHash].lastRewardTimestamp;
-        word = scannables[upcHash].word;
+    function getScannable(bytes32 upcHash) public view returns(address currentStaker, uint amountStaked, bool isOwned, uint rewards,  uint stakingStartTimestamp, string memory word) {
+
+        (address _currentStaker, uint _amountStaked, string memory _word, bool _isOwned, uint _stakingStartTimestamp, uint _rewards) = rewardGranter.getPayoutByHash(upcHash);
+        //(address currentStaker, uint totalBalance, string memory upcId, bool isOwned, uint stakingStartTimestamp, uint rewards, uint lastRewardTimestamp)
+
+
+        currentStaker = _currentStaker;
+        amountStaked = _amountStaked;
+        word = _word;
+        isOwned = _isOwned;
+        stakingStartTimestamp = _stakingStartTimestamp;
+        rewards = _rewards;
+        //lastRewardTimestamp = _lastRewardTimestamp;
     }
 
 
@@ -113,7 +118,14 @@ contract UPCGoldBank {
         //look into registering an unstoppable domain id.  verify on the blockchain that the msg.sender == the owner of the domain
         //(, uint currentAmountStaked ,) = this.getCostToEvict(upcId);
         bool owned = rewardGranter.isOwned(upcHash);
-        require(owned == false, "Get your own code.  This one is taken :p");
+        address currentStaker;
+        if(owned) {
+            currentStaker = rewardGranter.getOwner(upcHash);
+        }
+        
+        if(owned) {
+            require(currentStaker == msg.sender , "Get your own code.  This one is taken :p");
+        }
 
         uint currentAmountStaked = scannables[upcHash].amountStaked;
         bool restaking = false;
@@ -175,7 +187,8 @@ contract UPCGoldBank {
         
         //rewardGranter = RewardGranter(address1);
         //add this scannable to the rewards array
-        rewardGranter.addRewardableScannable(upcHash);
+        //pass the upcHash, total balance, word, starttimestamp, user
+        rewardGranter.addRewardableScannable(upcHash, balanceReceived[msg.sender].totalBalance, upcId, lm.stakingStartTimestamp, msg.sender);
 
 
 

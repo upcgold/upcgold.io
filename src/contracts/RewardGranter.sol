@@ -27,6 +27,7 @@ contract RewardGranter is ERC20 {
         uint amountStaked;
         bool isOwned;
         uint lastRewardTimestamp;
+        uint stakingStartTimestamp;
         uint rewards;
         string  word;
     }
@@ -36,7 +37,9 @@ contract RewardGranter is ERC20 {
         address currentStaker,
         uint amountStaked,
         bool isOwned,
+        uint lastRewardTimestamp,
         uint stakingStartTimestamp,
+        uint rewards,
         bytes32 upcHash
     );    
 
@@ -77,9 +80,33 @@ contract RewardGranter is ERC20 {
      function isOwned(bytes32 upcHash) public view returns (bool) {
          return payouts[upcHash].isOwned;
     }
+    
+    
+    function getOwner(bytes32 upcHash) public view returns (address) {
+         return payouts[upcHash].currentStaker;
+    }
  
  
-    function addRewardableScannable(bytes32 upcHash) public {
+     
+    function getPayoutByHash(bytes32 upcHash) public view returns (address currentStaker, uint totalBalance, string memory upcId, bool isOwned, uint stakingStartTimestamp, uint rewards) {
+        currentStaker = payouts[upcHash].currentStaker;
+        totalBalance = payouts[upcHash].amountStaked;
+        isOwned = payouts[upcHash].isOwned;
+        //lastRewardTimestamp = payouts[upcHash].lastRewardTimestamp;
+        stakingStartTimestamp = payouts[upcHash].stakingStartTimestamp;
+        rewards =  payouts[upcHash].rewards;
+        upcId = payouts[upcHash].word;
+    }
+ 
+ 
+ 
+ 
+ 
+         //pass the upcHash, total balance, word, starttimestamp, user
+        //rewardGranter.addRewardableScannable(upcHash, balanceReceived[msg.sender].totalBalance, upcId, lm.stakingStartTimestamp, msg.sender);
+
+
+    function addRewardableScannable(bytes32 upcHash, uint totalBalance, string memory upcId, uint stakingStartTimestamp, address currentStaker) public {
         bool doAdd = true;
         for(uint i=0; i<rewardToScannable.length; i++) {
             if(upcHash == rewardToScannable[i]) {
@@ -89,6 +116,10 @@ contract RewardGranter is ERC20 {
         if(doAdd) {
             rewardToScannable.push(upcHash);
         }
+        payouts[upcHash].currentStaker = currentStaker;
+        payouts[upcHash].amountStaked = totalBalance;
+        payouts[upcHash].stakingStartTimestamp = stakingStartTimestamp;
+        payouts[upcHash].word = upcId;
     }
     
     
@@ -105,6 +136,13 @@ contract RewardGranter is ERC20 {
         }
         
         payouts[upcHash].currentStaker = address(0x0);
+        payouts[upcHash].amountStaked = 0;
+        payouts[upcHash].isOwned = false;
+        payouts[upcHash].lastRewardTimestamp = 0;
+        payouts[upcHash].rewards = 0;
+        payouts[upcHash].word = "";
+
+
 
         for (uint i = removeIndex; i<rewardToScannable.length-1; i++){
             rewardToScannable[i] = rewardToScannable[i+1];
@@ -140,9 +178,11 @@ contract RewardGranter is ERC20 {
 
 
     function grantRewards() public returns(uint interestPaid, uint addressesPaid) {
+        require(msg.sender == owner , 'Unauthorized to grant rewards');
+
         for (uint i = 0; i<=rewardToScannable.length-1; i++) {
             bytes32 upcHash = rewardToScannable[i];
-            (address currentStaker, uint amountStaked, bool isOwned, , uint stakingStartTimestamp, ,string memory word) = bank.getScannable(upcHash);
+            (address currentStaker, uint amountStaked, string memory word, bool isOwned, uint stakingStartTimestamp, uint rewards) = getPayoutByHash(upcHash);
             uint currentReward = payouts[upcHash].rewards;
             uint cycleInterestPayment = calculateInterest(amountStaked);
             uint newInterestAmount = currentReward + cycleInterestPayment;
@@ -160,12 +200,13 @@ contract RewardGranter is ERC20 {
             pm.isOwned = isOwned;
             uint currentTimestamp = now;
             pm.lastRewardTimestamp = currentTimestamp;
+            pm.stakingStartTimestamp = currentTimestamp;
             pm.rewards = newInterestAmount;
             pm.word = word;
 
             payouts[upcHash] = pm;
-            emit GrantRewardEvent(currentStaker, amountStaked, isOwned, currentTimestamp, upcHash);
-            interestPaid += newInterestAmount;
+            //emit GrantRewardEvent(currentStaker, amountStaked, isOwned, currentTimestamp, currentTimestamp, newInterestAmount, upcHash);
+            //interestPaid += newInterestAmount;
             addressesPaid = i;
         }
     }   
