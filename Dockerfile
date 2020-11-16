@@ -11,11 +11,28 @@ COPY . /scan
 #RUN npm install
 RUN npm rebuild node-sass
 RUN yarn global add serve --save
-#RUN yarn run build
-#CMD ["npm", "run-script", "build"]
-#CMD ["yarn", "start"]
-#CMD ["serve", "-p", "3000", "-s", "build"]
-CMD ["npx", "nodemon"]
 
-EXPOSE 3000
+
+#########
+# <production> 
+#######
+RUN yarn run build
+CMD ["serve", "-p", "3000", "-s", "build"]
+#########
+# </production> 
+#######
+
+
+
+
+#########
+# <dev> 
+#######
+#CMD ["npx", "nodemon"]
+#EXPOSE 3000
+#########
+# </dev> 
+#######
+
+
 ##ENTRYPOINT "./randomEgg.sh"
