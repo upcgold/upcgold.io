@@ -128,6 +128,7 @@ class Main extends Component {
     var isOwned = "False";
     var rewardsEarned = "To be calculated...";
     var cardRewards = this.state[rewardKey];
+    var adminTabs;
 
     //the 3rd element is ownership info.  this was added in the async block above
     if(cardRewards && cardRewards.length >= 3) {
@@ -136,6 +137,7 @@ class Main extends Component {
           isOwned = "True";
           bgCol = "#" + data.substring(32,38);
           altCol = "#" + data.substring(21,27);
+          adminTabs = <Nav.Item><Nav.Link href="#link">Admin</Nav.Link></Nav.Item>;
        }
        else {
           isOwned = "False";
@@ -184,12 +186,7 @@ class Main extends Component {
                  <Nav.Item>
                    <Nav.Link href="#first">Overview</Nav.Link>
                  </Nav.Item>
-                 <Nav.Item>
-                   <Nav.Link href="#link">Rewards</Nav.Link>
-                 </Nav.Item>
-                 <Nav.Item>
-                   <Nav.Link href="#games">Games</Nav.Link>
-                 </Nav.Item>
+                 {adminTabs}
                </Nav>
              </Card.Header>
              <Card.Body>
