@@ -146,7 +146,8 @@ class Main extends Component {
     if(cardRewards && cardRewards.length >= 4) {
        var rewardsEarnedTmp = cardRewards[4];
        if(rewardsEarned) {
-          rewardsEarned = rewardsEarnedTmp;
+         rewardsEarned = rewardsEarnedTmp;
+	 rewardsEarned = window.web3.utils.fromWei(rewardsEarned, 'Ether');
        }
     }    //complicated flow... this is where the individual card's scan stats are calculated and set. currentStaker is not set on page load.  it is set 5 seconds after when the load.... function is called.  this is why this check must be done before setting values
 
