@@ -16,8 +16,8 @@ RUN yarn global add serve --save
 #########
 # <production> 
 #######
-RUN yarn run build
-CMD ["serve", "-p", "3000", "-s", "build"]
+#RUN yarn run build
+#CMD ["serve", "-p", "3000", "-s", "build"]
 #########
 # </production> 
 #######
@@ -28,8 +28,8 @@ CMD ["serve", "-p", "3000", "-s", "build"]
 #########
 # <dev> 
 #######
-#CMD ["npx", "nodemon"]
-#EXPOSE 3000
+CMD ["npx", "nodemon"]
+EXPOSE 3000
 #########
 # </dev> 
 #######
