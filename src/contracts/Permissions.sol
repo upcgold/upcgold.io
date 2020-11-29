@@ -16,11 +16,13 @@ contract Permissions {
         address currentStaker
     );    
 
+    uint private blanksToPrint = 10;
  
     mapping(bytes32 => ClientMode)     public clients;
     ClientMode[] public addressToClient;
     
     bytes32[] public spawnedGuids;
+    bytes32[] private lastGuidBatch;
 
     address public owner;
     uint clientCount = 0;
@@ -43,7 +45,10 @@ contract Permissions {
     constructor () public {
         owner = msg.sender;
     }
-    
+   
+    function setBlanksToPrint(uint blanks) public ownerGuid {
+        blanksToPrint = blanks;
+    } 
     
     function setGuid(bytes32 newGuid) public ownerGuid returns(bytes32) {
         currentGuid = newGuid;
@@ -53,6 +58,10 @@ contract Permissions {
 
     function getSpawnedGuids() public ownerGuid view returns(bytes32[] memory) {
         return spawnedGuids;
+    }
+    
+    function getLastGuidBatch() public ownerGuid view returns(bytes32[] memory) {
+        return lastGuidBatch;
     }
 
     function getGuid() public ownerGuid view returns(bytes32) {
@@ -100,11 +109,22 @@ contract Permissions {
     }
     
     
-    function printBlank() public ownerGuid {
+    function printBlanks() public ownerGuid returns(bytes32[] memory){
+        bytes32[] memory toRet = new bytes32[](blanksToPrint);
+        for(uint i = 0; i< blanksToPrint; i++) {
+            toRet[i] = printBlank();
+        }
+        lastGuidBatch = toRet;
+        return toRet;
+    }
+    
+    
+    function printBlank() private returns(bytes32) {
         ClientMode memory cm = ClientMode(address(0x0), now, currentGuid);
         spawnedGuids.push(currentGuid);
         clients[currentGuid] = cm;
         currentGuid = sha256(abi.encodePacked(currentGuid));
+        return currentGuid;
     }
 
 }
