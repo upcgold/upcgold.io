@@ -26,7 +26,8 @@ contract Permissions {
 
     address public owner;
     uint clientCount = 0;
-    
+    uint public blanksPrinted = 0;
+
     //use block100 modifier to control access to the payout function
     modifier ownerGuid() {
         require( owner == msg.sender , "Error: Only owner can see the guid");
@@ -67,6 +68,24 @@ contract Permissions {
     function getGuid() public ownerGuid view returns(bytes32) {
         return currentGuid;
     }
+    
+    function getGuidRange(uint start, uint end) public ownerGuid view returns(bytes32[] memory) {
+        
+        require(start <= end , "Getting range and start must be <= end");
+        uint currentArrayCount = 0;
+        uint arrSize = end - start;
+        if(arrSize == 0) {
+            arrSize = 1;
+        }
+        
+        bytes32[] memory toRet = new bytes32[](arrSize);
+
+        for(uint i = start; i< end; i++) {
+            toRet[currentArrayCount] = spawnedGuids[i];
+            currentArrayCount++;
+        }
+        return toRet;
+    } 
         
         
     //this function is called from the android app when the app detects the register protocol in the upc
@@ -113,6 +132,7 @@ contract Permissions {
         bytes32[] memory toRet = new bytes32[](blanksToPrint);
         for(uint i = 0; i< blanksToPrint; i++) {
             toRet[i] = printBlank();
+            blanksPrinted++;
         }
         lastGuidBatch = toRet;
         return toRet;
