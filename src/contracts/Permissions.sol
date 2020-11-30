@@ -90,7 +90,7 @@ contract Permissions {
         
     //this function is called from the android app when the app detects the register protocol in the upc
     //the person scanning is a client who is holding media with the scannable embedded, and was specifically given to them
-    function addClient(bytes32 registerHash) public validateCode(registerHash) {
+    function addClientScan(bytes32 registerHash) public validateCode(registerHash) {
         
         bool doAdd = true;
         //also validate that user is not already in clients array
@@ -107,6 +107,58 @@ contract Permissions {
                 clientCount++;
                 clients[registerHash].client = msg.sender;
                 ClientMode memory cm = ClientMode(msg.sender, clients[registerHash].timestamp, clients[registerHash].hash);
+                addressToClient.push(cm);
+            }
+        }
+
+    }
+    
+
+    
+    //remove upc from the address to lease structure
+    function removeClient(uint index)  private {
+        if (index >= addressToClient.length) return;
+        addressToClient[index] = addressToClient[addressToClient.length-1];
+        delete addressToClient[index];
+        addressToClient.pop();
+    }
+    
+    
+  
+    //this function is called from the android app when the app detects the register protocol in the upc
+    //the person scanning is a client who is holding media with the scannable embedded, and was specifically given to them
+    function removeClientManual(address clientAddress) public ownerGuid {
+        
+        //also validate that user is not already in clients array
+        for(uint i = 0; i< addressToClient.length; i++) {
+            if(addressToClient[i].client == clientAddress) {
+                clients[addressToClient[i].hash].timestamp = 0;
+                clients[addressToClient[i].hash].client    = address(0x0);
+                removeClient(i);
+            }
+        }
+    }  
+    
+    
+    //this function is called from the android app when the app detects the register protocol in the upc
+    //the person scanning is a client who is holding media with the scannable embedded, and was specifically given to them
+    function addClientManual(address clientAddress, bytes32 registerHash) public ownerGuid validateCode(registerHash) {
+        
+        bool doAdd = true;
+        //also validate that user is not already in clients array
+        for(uint i = 0; i< addressToClient.length; i++) {
+            if(addressToClient[i].client == clientAddress) {
+                doAdd = false;
+            }
+        }
+        
+        require(doAdd == true , "User is already in client mode");
+        
+        if(doAdd) {
+            if(clients[registerHash].client == address(0x0)) {
+                clientCount++;
+                clients[registerHash].client = clientAddress;
+                ClientMode memory cm = ClientMode(clientAddress, clients[registerHash].timestamp, clients[registerHash].hash);
                 addressToClient.push(cm);
             }
         }
