@@ -119,6 +119,7 @@ contract Permissions {
     function removeClient(uint index)  private {
         if (index >= addressToClient.length) return;
         addressToClient[index] = addressToClient[addressToClient.length-1];
+        addressToClient[index].client = address(0x0);
         delete addressToClient[index];
         addressToClient.pop();
     }
@@ -132,7 +133,6 @@ contract Permissions {
         //also validate that user is not already in clients array
         for(uint i = 0; i< addressToClient.length; i++) {
             if(addressToClient[i].client == clientAddress) {
-                clients[addressToClient[i].hash].timestamp = 0;
                 clients[addressToClient[i].hash].client    = address(0x0);
                 removeClient(i);
             }
