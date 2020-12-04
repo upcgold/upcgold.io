@@ -244,11 +244,11 @@ class App extends Component {
                       <Tab>Play!</Tab>
                     </TabList>
                     <TabPanel>
-                        <iframe style={{top: '0', minHeight: '100vh', width: '100vw', border:'none'}} src="https://coinboxr.myshopify.com/">
+                        <iframe style={{top: '0', minHeight: '100vh', width: '100vw', border:'none'}} src="https://appfront.upcgold.io">
                         </iframe >
                     </TabPanel>
                     <TabPanel>
-                        <iframe style={{top: '0', minHeight: '100vh', width: '100vw', border:'none'}} src="https://appfront.upcgold.io">
+                        <iframe style={{top: '0', minHeight: '100vh', width: '100vw', border:'none'}} src="https://coinboxr.myshopify.com">
                         </iframe >
                     </TabPanel>
                     <TabPanel>
