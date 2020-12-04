@@ -240,11 +240,16 @@ class App extends Component {
                   <Tabs style={{paddingTop:'10px'}}>
                     <TabList>
                       <Tab>Directions</Tab>
+                      <Tab>Shop</Tab>
                       <Tab>Play!</Tab>
                     </TabList>
                     <TabPanel>
-<iframe style={{top: '0', minHeight: '100vh', width: '100vw', border:'none'}} src="https://appfront.upcgold.io">
-    </iframe >
+                        <iframe style={{top: '0', minHeight: '100vh', width: '100vw', border:'none'}} src="https://coinboxr.myshopify.com/">
+                        </iframe >
+                    </TabPanel>
+                    <TabPanel>
+                        <iframe style={{top: '0', minHeight: '100vh', width: '100vw', border:'none'}} src="https://appfront.upcgold.io">
+                        </iframe >
                     </TabPanel>
                     <TabPanel>
         <div className="container-fluid mt-5">
