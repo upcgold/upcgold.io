@@ -1,7 +1,8 @@
 {
-  "name": "defi-tutorial",
+  "name": "UPCGrid",
   "version": "0.1.0",
-  "description": "DeFi Token Staking App",
+  "description": "",
+  "homepage": "http://upcgold.github.io/upcgold.io",
   "author": "gregory@dappuniversity.com",
   "dependencies": {
     "@dicebear/avatars": "^4.2.5",
@@ -34,6 +35,8 @@
     "web3": "1.2.11"
   },
   "scripts": {
+    "predeploy": "npm run build",
+    "deploy": "gh-pages -d build",
     "start": "react-scripts start",
     "build": "react-scripts build",
     "test": "react-scripts test",
@@ -47,5 +50,8 @@
     "not dead",
     "not ie <= 11",
     "not op_mini all"
-  ]
+  ],
+  "devDependencies": {
+    "gh-pages": "^3.1.0"
+  }
 }

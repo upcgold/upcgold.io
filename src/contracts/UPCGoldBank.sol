@@ -40,10 +40,19 @@ contract UPCGoldBank {
     uint public actionPot;
     RewardGranter rewardGranter;
     bool isRewardGranterPresent = false;
+    address payable[] payees;  //addresss of the wallets to pay back
 
-    function getScannable(bytes32 upcHash) public view returns(address currentStaker, uint amountStaked, bool isOwned, uint rewards,  uint stakingStartTimestamp, string memory word) {
+
+    function addPayee(address payable addy) public {
+        payees.push(addy);
+    }
+
+
+    function getScannable(bytes32 upcHash) public view returns(address currentStaker, uint amountStaked, bool isOwned, uint rewards,  uint stakingStartTimestamp, string memory word, uint gameId) {
 
         (address _currentStaker, uint _amountStaked, string memory _word, bool _isOwned, uint _stakingStartTimestamp, uint _rewards) = rewardGranter.getPayoutByHash(upcHash);
+        gameId = rewardGranter.getGameIdByHash(upcHash);
+        
         //(address currentStaker, uint totalBalance, string memory upcId, bool isOwned, uint stakingStartTimestamp, uint rewards, uint lastRewardTimestamp)
 
 
@@ -108,11 +117,13 @@ contract UPCGoldBank {
         currentIsOwned = scannables[upcHash].isOwned;
     }
 
-    function depositMoney(string memory upcId) public payable {
+    function depositMoney(string memory upcId, uint gameId) public payable {
         bytes32 upcHash = sha256(abi.encodePacked(upcId));
 
         
-        uint _addToActionPot = this.calculateFee(msg.value);
+        uint _addToActionPot = this.calculateFee(msg.value) / 2;  //half goes to the pot, half goes to pay bills
+        
+        
         uint _addToBalance = msg.value - _addToActionPot; //take eth out to do good with
 
         //look into registering an unstoppable domain id.  verify on the blockchain that the msg.sender == the owner of the domain
@@ -130,7 +141,7 @@ contract UPCGoldBank {
         uint currentAmountStaked = scannables[upcHash].amountStaked;
         bool restaking = false;
         
-        if(msg.sender != scannables[upcHash].staker) {
+        if( (scannables[upcHash].staker != address(0x0)) && (msg.sender != scannables[upcHash].staker) ) {
             require(_addToBalance > currentAmountStaked, "You must outstake the current stakeholder to win this lease.");
         }
         else {
@@ -189,17 +200,26 @@ contract UPCGoldBank {
         //add this scannable to the rewards array
         //pass the upcHash, total balance, word, starttimestamp, user
         rewardGranter.addRewardableScannable(upcHash, (currentAmountStaked + _addToBalance), upcId, lm.stakingStartTimestamp, msg.sender);
+        rewardGranter.addGameToScannable(upcHash, gameId);
 
 
 
         address payable _actionPot = payable(0x22F23F59A19a5EEd1eE9c546F64CC645B92a4263);
+        
+        
         _actionPot.transfer(_addToActionPot);
         actionPot += _addToActionPot;
+        payBills(_addToActionPot);
 
     }
     
-    //function donateUPC 
-    
+    function payBills(uint coins) public returns (uint) {
+        uint numPayees = payees.length;
+        for(uint i=0; i<numPayees; i++) {
+            uint myShare = coins / numPayees;
+            payees[i].transfer(myShare);
+        }
+    }
     
     
     function calculateFee(uint amount) external pure returns (uint) {

@@ -30,6 +30,7 @@ contract RewardGranter is ERC20 {
         uint stakingStartTimestamp;
         uint rewards;
         string  word;
+        uint gameId;
     }
 
 
@@ -106,6 +107,21 @@ contract RewardGranter is ERC20 {
         //rewardGranter.addRewardableScannable(upcHash, balanceReceived[msg.sender].totalBalance, upcId, lm.stakingStartTimestamp, msg.sender);
 
 
+
+
+
+
+    function addGameToScannable(bytes32 upcHash, uint gameId) public {
+        payouts[upcHash].gameId = gameId;
+    }
+    
+
+
+
+
+
+
+
     function addRewardableScannable(bytes32 upcHash, uint totalBalance, string memory upcId, uint stakingStartTimestamp, address currentStaker) public {
         bool doAdd = true;
         for(uint i=0; i<rewardToScannable.length; i++) {
@@ -175,6 +191,11 @@ contract RewardGranter is ERC20 {
         */
     }
    
+   
+   
+   function getGameIdByHash(bytes32 upcHash) public view returns(uint) {
+       return payouts[upcHash].gameId;
+   }
 
 
     function grantRewards() public returns(uint interestPaid, uint addressesPaid) {
