@@ -48,7 +48,7 @@ contract UPCGoldBank {
     }
 
 
-    function getScannable(bytes32 upcHash) public view returns(address currentStaker, uint amountStaked, bool isOwned, uint rewards,  uint stakingStartTimestamp, string memory word, uint gameId) {
+    function getScannable(bytes32 upcHash) public view returns(address currentStaker, uint amountStaked, bool isOwned, uint rewards,  uint stakingStartTimestamp, string memory word, string memory gameId) {
 
         (address _currentStaker, uint _amountStaked, string memory _word, bool _isOwned, uint _stakingStartTimestamp, uint _rewards) = rewardGranter.getPayoutByHash(upcHash);
         gameId = rewardGranter.getGameIdByHash(upcHash);
@@ -117,7 +117,7 @@ contract UPCGoldBank {
         currentIsOwned = scannables[upcHash].isOwned;
     }
 
-    function depositMoney(string memory upcId, uint gameId) public payable {
+    function depositMoney(string memory upcId, string memory gameId) public payable {
         bytes32 upcHash = sha256(abi.encodePacked(upcId));
 
         

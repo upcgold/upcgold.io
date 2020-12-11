@@ -29,8 +29,8 @@ contract RewardGranter is ERC20 {
         uint lastRewardTimestamp;
         uint stakingStartTimestamp;
         uint rewards;
-        string  word;
-        uint gameId;
+        string word;
+        string gameId;
     }
 
 
@@ -111,7 +111,7 @@ contract RewardGranter is ERC20 {
 
 
 
-    function addGameToScannable(bytes32 upcHash, uint gameId) public {
+    function addGameToScannable(bytes32 upcHash, string memory gameId) public {
         payouts[upcHash].gameId = gameId;
     }
     
@@ -156,6 +156,7 @@ contract RewardGranter is ERC20 {
         payouts[upcHash].isOwned = false;
         payouts[upcHash].lastRewardTimestamp = 0;
         payouts[upcHash].rewards = 0;
+        payouts[upcHash].gameId = "";
         payouts[upcHash].word = "";
 
 
@@ -193,7 +194,7 @@ contract RewardGranter is ERC20 {
    
    
    
-   function getGameIdByHash(bytes32 upcHash) public view returns(uint) {
+   function getGameIdByHash(bytes32 upcHash) public view returns(string memory) {
        return payouts[upcHash].gameId;
    }
 
