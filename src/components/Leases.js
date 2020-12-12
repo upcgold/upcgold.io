@@ -43,14 +43,15 @@ class Main extends Component {
 	  var numLeases = result.length;
 	  var scannable;
 	  var currentScannableStats = self.state.scannableStats;
+    //populate the content on each card
           for(var i=0; i<numLeases; i++)
           {
             var upcHash = String(result[i]);
             let scannable;
-	    let currentStaker;
-	    let amountStaked;
-	    let word;
-	    var tempSc = self.getScannable(upcHash);
+            let currentStaker;
+            let amountStaked;
+            let word;
+            var tempSc = self.getScannable(upcHash);
             currentScannableStats[upcHash] = tempSc;
             scannable = self.buildCard(upcHash.substring(0,upcHash.length));
             localScannables.push(scannable);
