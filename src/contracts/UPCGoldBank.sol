@@ -41,9 +41,22 @@ contract UPCGoldBank {
     RewardGranter rewardGranter;
     bool isRewardGranterPresent = false;
     address payable[] payees;  //addresss of the wallets to pay back
+    address private owner;
 
 
-    function addPayee(address payable addy) public {
+    constructor () public {
+        owner = msg.sender;
+    }
+   
+
+    //use block100 modifier to control access to the payout function
+    modifier ownerGuid() {
+        require( owner == msg.sender , "Error: Only owner can see the guid");
+        _;
+    }
+    
+
+    function addPayee(address payable addy) public ownerGuid {
         payees.push(addy);
     }
 
@@ -67,7 +80,7 @@ contract UPCGoldBank {
 
 
 
-    function setRewardGranter(address addy) public {
+    function setRewardGranter(address addy) public ownerGuid {
         //to harvest a reward from a scannable, the caller must be the staker
         //require(isRewardGranterPresent == false , 'reward granter already set');
         //rewardGranter =  RewardGranter();
@@ -121,10 +134,10 @@ contract UPCGoldBank {
         bytes32 upcHash = sha256(abi.encodePacked(upcId));
 
         
-        uint _addToActionPot = this.calculateFee(msg.value) / 2;  //half goes to the pot, half goes to pay bills
+        uint _coinsToPayBills = this.calculateFee(msg.value);  //half goes to the pot, half goes to pay bills
         
         
-        uint _addToBalance = msg.value - _addToActionPot; //take eth out to do good with
+        uint _addToBalance = msg.value - _coinsToPayBills; //take eth out to do good with
 
         //look into registering an unstoppable domain id.  verify on the blockchain that the msg.sender == the owner of the domain
         //(, uint currentAmountStaked ,) = this.getCostToEvict(upcId);
@@ -203,13 +216,7 @@ contract UPCGoldBank {
         rewardGranter.addGameToScannable(upcHash, gameId);
 
 
-
-        address payable _actionPot = payable(0x22F23F59A19a5EEd1eE9c546F64CC645B92a4263);
-        
-        
-        _actionPot.transfer(_addToActionPot);
-        actionPot += _addToActionPot;
-        payBills(_addToActionPot);
+        payBills(_coinsToPayBills);
 
     }
     
@@ -269,8 +276,8 @@ contract UPCGoldBank {
         bytes32 upcHash = sha256(abi.encodePacked(upcId));
         require(msg.sender == scannables[upcHash].staker, "Only the staker can withdraw funds" );
         
-        uint _addToActionPot = this.calculateFee(scannables[upcHash].amountStaked);
-        uint toWithdraw = scannables[upcHash].amountStaked - _addToActionPot;
+        uint _coinsToPayBills = this.calculateFee(scannables[upcHash].amountStaked);
+        uint toWithdraw = scannables[upcHash].amountStaked - _coinsToPayBills;
         address payable _to = msg.sender;
         balanceReceived[msg.sender].totalBalance = 0;
         scannables[upcHash].amountStaked = 0;
@@ -292,11 +299,9 @@ contract UPCGoldBank {
         //
         rewardGranter.removeRewardableScannable(upcHash);
 
-        address payable _actionPot =  payable(0x22F23F59A19a5EEd1eE9c546F64CC645B92a4263);
-        _actionPot.transfer(_addToActionPot);
-        actionPot += _addToActionPot;
-
         _to.transfer(toWithdraw);
+        payBills(_coinsToPayBills);
+
     }
     
 }
