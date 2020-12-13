@@ -244,11 +244,11 @@ class App extends Component {
                       <Tab>Play!</Tab>
                     </TabList>
                     <TabPanel>
-                        <iframe style={{top: '0', minHeight: '100vh', width: '100vw', border:'none'}} src="https://appfront.upcgold.io">
+                        <iframe style={{top: '0', minHeight: '100vh', width: '100vw', border:'none'}} src="https://hello.upcgold.io/home">
                         </iframe >
                     </TabPanel>
                     <TabPanel>
-                        <iframe style={{top: '0', minHeight: '100vh', width: '100vw', border:'none'}} src="https://coinboxr.myshopify.com/?_bt=eyJfcmFpbHMiOnsibWVzc2FnZSI6IkJBaEpJaHRqYjJsdVltOTRjaTV0ZVhOb2IzQnBabmt1WTI5dEJqb0dSVlE9IiwiZXhwIjoiMjAyMC0xMi0wNFQyMDoyMjoyMC4wMTVaIiwicHVyIjoicGVybWFuZW50X3Bhc3N3b3JkX2J5cGFzcyJ9fQ%3D%3D--95459f9328d5b859f3537e96106118f37f9fa483">
+                        <iframe style={{top: '0', minHeight: '100vh', width: '100vw', border:'none'}} src="https://upcgold.github.io/react-store-compose">
                         </iframe >
                     </TabPanel>
                     <TabPanel>
