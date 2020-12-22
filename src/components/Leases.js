@@ -194,10 +194,10 @@ class Main extends Component {
                </Nav>
              </Card.Header>
              <Card.Body>
-               <Card.Title>Scan Data: {word}</Card.Title>
+               <Card.Title>Chip Stats: {word}</Card.Title>
                <Card.Text>
                   <div style={{backgroundColor: "#fff", padding: '4px', marginBottom: '10px'}}>
-                  <p>Balance: {amountStaked} (xDAI)</p>
+                  <p>Value: {amountStaked} (xDAI)</p>
                   <p>Rewards: {rewardsEarned}</p>
                   <p>SCAN AT CASINO: <QRCode value={data} /></p>
                   <p><a href="https://casino.upcgold.io">Casino</a></p>
