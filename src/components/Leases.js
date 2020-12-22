@@ -5,7 +5,7 @@ import Nav from 'react-bootstrap/Nav';
 import Button from 'react-bootstrap/Button';
 //import loader from './infinity-loader.gif';
 import loader from './infinity-loader2.gif';
-import QRCode from "react-qr-code";
+import QRCode from "qrcode-react";
 
 
 class Main extends Component {
