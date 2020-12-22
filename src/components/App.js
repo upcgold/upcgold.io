@@ -239,9 +239,9 @@ class App extends Component {
       <div style={{height: '100vh', width: '100vw', border:'none'}} >
                   <Tabs style={{paddingTop:'10px'}}>
                     <TabList>
-                      <Tab>Directions</Tab>
-                      <Tab>Shop</Tab>
-                      <Tab>Play!</Tab>
+                      <Tab>About Us</Tab>
+                      <Tab>Store</Tab>
+                      <Tab>*Crypto Casino*</Tab>
                     </TabList>
                     <TabPanel>
                         <iframe style={{top: '0', minHeight: '100vh', width: '100vw', border:'none'}} src="https://hello.upcgold.io/home">
@@ -258,19 +258,11 @@ class App extends Component {
               <div className="content mr-auto ml-auto">
                   <Tabs>
                     <TabList>
-                      <Tab>Leases</Tab>
-                      <Tab>Deposit</Tab>
-                      <Tab>Evictions</Tab>
+                      <Tab>Chips</Tab>
                     </TabList>
                 
                     <TabPanel>
                                 {leases}
-                    </TabPanel>
-                    <TabPanel>
-                                {deposit}
-                    </TabPanel>
-                    <TabPanel>
-                                {evictions}
                     </TabPanel>
                   </Tabs>
               </div>
