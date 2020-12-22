@@ -194,15 +194,13 @@ class Main extends Component {
                </Nav>
              </Card.Header>
              <Card.Body>
-               <Card.Title>My name is: {data.substring(0,10)}</Card.Title>
+               <Card.Title>Scan Data: {word}</Card.Title>
                <Card.Text>
                   <div style={{backgroundColor: "#fff", padding: '4px', marginBottom: '10px'}}>
-                  <p>Owner: {upcOwnerTruncated}</p>
                   <p>Balance: {amountStaked} (xDAI)</p>
-                  <p>UPC: {word}</p>
-                  <p>Owned: {isOwned}</p>
                   <p>Rewards: {rewardsEarned}</p>
-                  <p>SCAN ME: <QRCode value={data} /></p>
+                  <p>SCAN AT CASINO: <QRCode value={data} /></p>
+                  <p><a href="https://casino.upcgold.io">Casino</a></p>
                   </div>
                             <button
                            value={word}
