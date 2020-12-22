@@ -5,6 +5,8 @@ import Nav from 'react-bootstrap/Nav';
 import Button from 'react-bootstrap/Button';
 //import loader from './infinity-loader.gif';
 import loader from './infinity-loader2.gif';
+import QRCode from "react-qr-code";
+
 
 class Main extends Component {
 
@@ -133,7 +135,8 @@ class Main extends Component {
 
     //the 3rd element is ownership info.  this was added in the async block above
     if(cardRewards && cardRewards.length >= 3) {
-       var isOwned = cardRewards[3];
+       //var isOwned = cardRewards[3];
+       var isOwned = true;  //this needs to be dynamic
        if(isOwned) {
           isOwned = "True";
           bgCol = "#" + data.substring(32,38);
@@ -199,6 +202,7 @@ class Main extends Component {
                   <p>UPC: {word}</p>
                   <p>Owned: {isOwned}</p>
                   <p>Rewards: {rewardsEarned}</p>
+                  <p>SCAN ME: <QRCode value={data} /></p>
                   </div>
                             <button
                            value={word}
