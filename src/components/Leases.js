@@ -207,7 +207,7 @@ class Main extends Component {
                            onClick={(word) => {this.props.unstakeTokens(word)} }
                            className="btn btn-primary btn-block btn-lg"
                           >
-                          UNSTAKE!
+                          Release UPC
                       </button>
                </Card.Text>
              </Card.Body>
