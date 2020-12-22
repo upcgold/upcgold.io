@@ -198,7 +198,6 @@ class Main extends Component {
                <Card.Text>
                   <div style={{backgroundColor: "#fff", padding: '4px', marginBottom: '10px'}}>
                   <p>Value: {amountStaked} (xDAI)</p>
-                  <p>Rewards: {rewardsEarned}</p>
                   <p>SCAN AT CASINO: <QRCode value={data} /></p>
                   <p><a href="https://casino.upcgold.io">Casino</a></p>
                   </div>
