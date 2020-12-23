@@ -8,6 +8,8 @@ import loader from './infinity-loader2.gif';
 import QRCode from "qrcode-react";
 
 import ReactCardFlip from 'react-card-flip';
+import Trianglify from 'react-trianglify'
+
 
 
 
@@ -190,7 +192,7 @@ class Main extends Component {
 
      var flippedKey = "flip" + data.toString();
      var isFlip = this.state[flippedKey];
-console.log(isFlip);
+     var bg = <Trianglify seed={data} />;
      return (
       [
         'Info',
@@ -209,6 +211,7 @@ console.log(isFlip);
                  {adminTabs}
                </Nav>
              </Card.Header>
+{bg}
              <Card.Body>
                <Card.Title>Chip Stats: {word}</Card.Title>
                <Card.Text>
