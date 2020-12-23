@@ -211,7 +211,6 @@ class Main extends Component {
                  {adminTabs}
                </Nav>
              </Card.Header>
-{bg}
              <Card.Body>
                <Card.Title>Chip Stats: {word}</Card.Title>
                <Card.Text>
@@ -233,6 +232,7 @@ class Main extends Component {
            </Card>
            <div>
            <h1>hello</h1>
+           {bg}
            <button onClick={() => this.flipCard(data)}>Click to flip</button>
            </div>
         </ReactCardFlip>)));
