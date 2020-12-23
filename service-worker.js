@@ -14,7 +14,7 @@
 importScripts("https://storage.googleapis.com/workbox-cdn/releases/3.6.3/workbox-sw.js");
 
 importScripts(
-  "/upcgold.io/precache-manifest.e062cc729a77d76e1a480b51d7fe62e6.js"
+  "/upcgold.io/precache-manifest.d7988cd4be445eccdab9be4e3b9e7389.js"
 );
 
 workbox.clientsClaim();
