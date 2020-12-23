@@ -7,6 +7,9 @@ import Button from 'react-bootstrap/Button';
 import loader from './infinity-loader2.gif';
 import QRCode from "qrcode-react";
 
+import ReactCardFlip from 'react-card-flip';
+
+
 
 class Main extends Component {
 
@@ -18,12 +21,14 @@ class Main extends Component {
 	scannableStats: [],
 	scannableRewards: [],
 	cardsLoading: true,
+        flipped: [],
 	loadingGif: <img src={loader} alt="loading..." />
        }
     this.loadLeasePage = this.loadLeasePage.bind(this);
     this.getScannables = this.getScannables.bind(this);
     this.getScannable = this.getScannable.bind(this);
     this.buildCard = this.buildCard.bind(this);
+    this.flipCard= this.flipCard.bind(this);
   }
 
  
@@ -57,6 +62,8 @@ class Main extends Component {
             currentScannableStats[upcHash] = tempSc;
             scannable = self.buildCard(upcHash.substring(0,upcHash.length));
             localScannables.push(scannable);
+            var flipId = "flip" + upcHash;
+	    self.setState({[flipId]:self.state[flipId]});
           }
 	  self.setState({scannables:localScannables});
     });
@@ -73,6 +80,12 @@ class Main extends Component {
     let scannables = await this.props.getMyScannables();
     return scannables;
   };
+
+
+  flipCard = (data) => {
+    var flipKey = "flip" + data;
+    this.setState({[flipKey]: !this.state[flipKey]});
+  }
 
   /**
    * the goal of this function is to output card html for one scannable.  this function resolves
@@ -175,12 +188,15 @@ class Main extends Component {
        }
     }
 
+     var flippedKey = "flip" + data.toString();
+     var isFlip = this.state[flippedKey];
+console.log(isFlip);
      return (
       [
         'Info',
       ].map((variant, idx) => (
+         <ReactCardFlip isFlipped={isFlip} flipDirection="horizontal">
             <Card
-	      key={data.substring(0,10)}
               style={{backgroundColor: bgCol, marginBottom: '2em'}}
             >
              <Card.Header
@@ -196,6 +212,8 @@ class Main extends Component {
              <Card.Body>
                <Card.Title>Chip Stats: {word}</Card.Title>
                <Card.Text>
+                  <button onClick={() => this.flipCard(data)}>Click to flip</button>
+
                   <div style={{backgroundColor: "#fff", padding: '4px', marginBottom: '10px'}}>
                   <p>Value: {amountStaked} (xDAI)</p>
                   <p>SCAN AT CASINO: <QRCode value={data} /></p>
@@ -210,7 +228,12 @@ class Main extends Component {
                       </button>
                </Card.Text>
              </Card.Body>
-           </Card>)));
+           </Card>
+           <div>
+           <h1>hello</h1>
+           <button onClick={() => this.flipCard(data)}>Click to flip</button>
+           </div>
+        </ReactCardFlip>)));
     }
 
   render() {
