@@ -217,7 +217,6 @@ console.log(isFlip);
                   <div style={{backgroundColor: "#fff", padding: '4px', marginBottom: '10px'}}>
                   <p>Value: {amountStaked} (xDAI)</p>
                   <p>SCAN AT CASINO: <QRCode value={data} /></p>
-                  <p><a href="https://casino.upcgold.io">Casino</a></p>
                   </div>
                             <button
                            value={word}
