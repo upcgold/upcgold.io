@@ -241,7 +241,7 @@ class App extends Component {
                     <TabList>
                       <Tab>About Us</Tab>
                       <Tab>Store</Tab>
-                      <Tab>Savings Casino</Tab>
+                      <Tab>CoinBox Casino</Tab>
                     </TabList>
                     <TabPanel>
                         <iframe style={{top: '0', minHeight: '100vh', width: '100vw', border:'none'}} src="https://hello.upcgold.io/home">
