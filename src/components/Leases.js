@@ -195,7 +195,6 @@ class Main extends Component {
      var bg = <Trianglify seed={data} />;
      var dataJson = 
      {
-	"data": data,
 	"color": bgCol,
 	"value": amountStaked,
 	"owner": currentStakerRaw,
