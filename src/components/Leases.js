@@ -198,6 +198,7 @@ class Main extends Component {
 	"data": data,
 	"color": bgCol,
 	"value": amountStaked,
+	"owner": currentStakerRaw,
 	"word": word
      };
 
