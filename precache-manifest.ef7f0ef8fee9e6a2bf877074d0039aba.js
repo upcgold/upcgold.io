@@ -1,11 +1,11 @@
 self.__precacheManifest = [
   {
-    "revision": "f5cb8f07bf3488068430",
+    "revision": "24176e9add0d78ae4dd8",
     "url": "/upcgold.io/static/css/main.52f54d9b.chunk.css"
   },
   {
-    "revision": "f5cb8f07bf3488068430",
-    "url": "/upcgold.io/static/js/main.f5cb8f07.chunk.js"
+    "revision": "24176e9add0d78ae4dd8",
+    "url": "/upcgold.io/static/js/main.24176e9a.chunk.js"
   },
   {
     "revision": "70cf5d7539e7a327a989",
@@ -24,7 +24,7 @@ self.__precacheManifest = [
     "url": "/upcgold.io/static/media/infinity-loader2.446a752b.gif"
   },
   {
-    "revision": "a39fd1038bfe98d80410433c00800ccb",
+    "revision": "0ddf8d532ca1209218852c4c76765b12",
     "url": "/upcgold.io/index.html"
   }
 ];
