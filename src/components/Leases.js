@@ -193,6 +193,15 @@ class Main extends Component {
      var flippedKey = "flip" + data.toString();
      var isFlip = this.state[flippedKey];
      var bg = <Trianglify seed={data} />;
+     var dataJson = 
+     {
+	"data": data,
+	"color": bgCol,
+	"value": amountStaked,
+	"word": word
+     };
+
+
      return (
       [
         'Info',
@@ -218,7 +227,7 @@ class Main extends Component {
 
                   <div style={{backgroundColor: "#fff", padding: '4px', marginBottom: '10px'}}>
                   <p>Value: {amountStaked} (xDAI)</p>
-                  <p>SCAN AT CASINO: <QRCode value={data} /></p>
+                  <p>SCAN AT CASINO: <QRCode value={JSON.stringify(dataJson)} /></p>
                   </div>
                             <button
                            value={word}
