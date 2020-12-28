@@ -5,8 +5,10 @@ import Nav from 'react-bootstrap/Nav';
 import Button from 'react-bootstrap/Button';
 //import loader from './infinity-loader.gif';
 import loader from './infinity-loader2.gif';
+import Slideshow from './Slideshow';
 import QRCode from "qrcode-react";
-
+import Slider from 'react-animated-slider';
+import 'react-animated-slider/build/horizontal.css';
 import ReactCardFlip from 'react-card-flip';
 import Trianglify from 'react-trianglify'
 
@@ -62,11 +64,17 @@ class Main extends Component {
             let word;
             var tempSc = self.getScannable(upcHash);
             currentScannableStats[upcHash] = tempSc;
-            scannable = self.buildCard(upcHash.substring(0,upcHash.length));
-            localScannables.push(scannable);
+            scannable = self.buildCard(i,upcHash.substring(0,upcHash.length));
+            var scannableJson = {
+               "index": i,
+               "body": scannable             
+            };
+            localScannables.push(scannableJson);
             var flipId = "flip" + upcHash;
 	    self.setState({[flipId]:self.state[flipId]});
           }
+
+
 	  self.setState({scannables:localScannables});
     });
   }
@@ -94,7 +102,7 @@ class Main extends Component {
    * a promise from the loadPage function and then does a lookup to get the reward information for
    * each scannable (RewardGranter)
    */
-  buildCard = (data) => {
+  buildCard = (count,data) => {
     var promiseStats   = this.state.scannableStats[data];
     var promiseRewards = this.state.scannableRewards[data];
     var rewardKey = data + "-reward";
@@ -206,6 +214,7 @@ class Main extends Component {
       [
         'Info',
       ].map((variant, idx) => (
+        <div key={count}>
          <ReactCardFlip isFlipped={isFlip} flipDirection="horizontal">
             <Card
               style={{backgroundColor: bgCol, marginBottom: '2em'}}
@@ -244,15 +253,17 @@ class Main extends Component {
            {bg}
            <button onClick={() => this.flipCard(data)}>Click to flip</button>
            </div>
-        </ReactCardFlip>)));
+        </ReactCardFlip>
+       </div>)));
     }
 
   render() {
+console.log(this.state.scannables);
     return (
       <div id="content" className="mt-3">
         <div className="card mb-4" >
           <div className="card-body">
-		{this.state.scannables}
+	    <Slideshow />
           </div>
         </div>
       </div>
