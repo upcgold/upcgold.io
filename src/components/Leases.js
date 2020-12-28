@@ -20,12 +20,14 @@ class Main extends Component {
   constructor(props) {
     super(props)
     let scannables;
+    var mySlideshow;
       this.state = {
         scannables: '0',
 	scannableStats: [],
 	scannableRewards: [],
 	cardsLoading: true,
         flipped: [],
+	mySlideshow: mySlideshow,
 	loadingGif: <img src={loader} alt="loading..." />
        }
     this.loadLeasePage = this.loadLeasePage.bind(this);
@@ -33,6 +35,7 @@ class Main extends Component {
     this.getScannable = this.getScannable.bind(this);
     this.buildCard = this.buildCard.bind(this);
     this.flipCard= this.flipCard.bind(this);
+
   }
 
  
@@ -76,7 +79,12 @@ class Main extends Component {
 
 
 	  self.setState({scannables:localScannables});
+
+          var show = <Slideshow slides={localScannables} />;
+          self.setState({mySlideshow: show});
     });
+
+    console.log(localScannables);
   }
 
   getScannable = async (upcHash) => {
@@ -139,7 +147,6 @@ class Main extends Component {
 	   currentUpcState.push(rewardInfo.lastRewardTimestamp);
            self.setState({[rewardKey]: currentUpcState});
 	}
-	console.log("CURRENT INFO: " + JSON.stringify(currentUpcState));
 //	console.log("REWARD  INFO: " + JSON.stringify(rewardInfo));
 //	console.log("OWNED  INFO: " + JSON.stringify(rewardInfo.isOwned));
     })();
@@ -258,12 +265,11 @@ class Main extends Component {
     }
 
   render() {
-console.log(this.state.scannables);
     return (
       <div id="content" className="mt-3">
         <div className="card mb-4" >
           <div className="card-body">
-	    <Slideshow />
+	    {this.state.mySlideshow}
           </div>
         </div>
       </div>

@@ -14,16 +14,11 @@ import Trianglify from 'react-trianglify'
 class Slideshow extends Component {
 
   constructor(props) {
-    super(props)
-    let scannables;
-      this.state = {
-        scannables: '0',
-	scannableStats: [],
-	scannableRewards: [],
-	cardsLoading: true,
-        flipped: [],
-	loadingGif: <img src={loader} alt="loading..." />
-       }
+    super(props);
+    var slides = Array();
+    this.state = {
+	slides: this.props.slides
+    }
   }
 
   refreshPage() {
@@ -38,22 +33,30 @@ class Slideshow extends Component {
     return this.refreshPage();
   }
 
+  setSlides(slides) {
+    this.setState({slides: slides});
+	  console.log(slides);
+  }
+
   render() {
 
-    const slides = [
-      { title: 'First item', description: 'Lorem ipsum'},
-      { title: 'Second item', description: 'Lorem ipsum'}
-    ];
+   var slides = this.state.slides;
+   if(slides != null) {
+//    const slides = [
+//      { title: 'First item', body: 'Lorem ipsum'},
+//      { title: 'Second item', body: 'Lorem ipsum'}
+//    ];
 
+       const slides = this.state.slides;
 
-    return (
-       <Slider>
-         {slides.map((slide, index) => <div key={index}>
-           <h2>{slide.title}</h2>
-           <div>{slide.description}</div>
-         </div>)}
-       </Slider>
-    );
+       return (
+          <Slider>
+            {slides.map((slide, index) => <div key={index}>
+              <div>{slide.body}</div>
+            </div>)}
+          </Slider>
+       );
+    }
   }
 }
 
