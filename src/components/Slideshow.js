@@ -49,9 +49,9 @@ class Slideshow extends Component {
        return (
           <Slider>
             {slides.map((slide, index) => <div key={index}>
+              <div><QRCode value={slide.word} /></div>
               <h2>{slide.gameId}</h2>
               <div>{slide.word}</div>
-              <div><QRCode value={slide.word} /></div>
             </div>)}
           </Slider>
        );
