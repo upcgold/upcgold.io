@@ -93,7 +93,7 @@ class Main extends Component {
                 self.setState({slides: localSlides});
                 var localSliderKey = Math.random();
                 self.setState({sliderKey: localSliderKey});
-	        var localSlideshow = <Slideshow slides={localSlides} />
+	        var localSlideshow = <Slideshow unstakeTokens={self.props.unstakeTokens} slides={localSlides} />
                console.log(localSlideshow); 
                 self.setState({slideshow: localSlideshow});
                 return rewardInfo;

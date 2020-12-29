@@ -52,6 +52,14 @@ class Slideshow extends Component {
               <div><QRCode value={slide.word} /></div>
               <h2>{slide.gameId}</h2>
               <div>{slide.word}</div>
+<button
+   value={slide.word}
+   onClick={(word) => {this.props.unstakeTokens(word)} }
+   className="btn btn-primary btn-block btn-lg"
+>
+Release Chip
+</button>
+
             </div>)}
           </Slider>
        );
