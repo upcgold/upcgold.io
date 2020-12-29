@@ -50,7 +50,7 @@ class Slideshow extends Component {
        return (
           <Slider duration={500}>
             {slides.map((slide, index) => <div style={{"textAlign": "center" }} key={index}>
-              <div><QRCode value={slide.word} /></div>
+              <div><QRCode value={JSON.stringify(slide.qrJson)} /></div>
               <h2>{slide.gameId}</h2>
               <div>UPC: {slide.word}</div>
               <div>Amount: {web3.utils.fromWei(slide.amountStaked, 'ether')} (xDAI)</div>
