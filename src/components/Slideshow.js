@@ -42,6 +42,7 @@ class Slideshow extends Component {
 
   render() {
 
+   const web3 = window.web3;
    var slides = this.state.slides;
    if(slides != null) {
        const slides = this.state.slides;
@@ -51,7 +52,8 @@ class Slideshow extends Component {
             {slides.map((slide, index) => <div key={index}>
               <div><QRCode value={slide.word} /></div>
               <h2>{slide.gameId}</h2>
-              <div>{slide.word}</div>
+              <div>UPC: {slide.word}</div>
+              <div>Amount: {web3.utils.fromWei(slide.amountStaked, 'ether')} (xDAI)</div>
 <button
    value={slide.word}
    onClick={(word) => {this.props.unstakeTokens(word)} }
