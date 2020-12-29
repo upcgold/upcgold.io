@@ -19,6 +19,7 @@ class Slideshow extends Component {
     this.state = {
 	slides: this.props.slides
     }
+    console.log(this.props.slides);
   }
 
   refreshPage() {
@@ -44,7 +45,8 @@ class Slideshow extends Component {
    if(slides != null) {
 //    const slides = [
 //      { title: 'First item', body: 'Lorem ipsum'},
-//      { title: 'Second item', body: 'Lorem ipsum'}
+//      { title: 'Second item', body: 'Lorem ipsum'}     
+//              <div>{slide.word}</div>
 //    ];
 
        const slides = this.state.slides;
@@ -52,7 +54,7 @@ class Slideshow extends Component {
        return (
           <Slider>
             {slides.map((slide, index) => <div key={index}>
-              <div>{slide.body}</div>
+              <div></div>
             </div>)}
           </Slider>
        );

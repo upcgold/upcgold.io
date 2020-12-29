@@ -6,12 +6,14 @@ import Button from 'react-bootstrap/Button';
 //import loader from './infinity-loader.gif';
 import loader from './infinity-loader2.gif';
 import Slideshow from './Slideshow';
+import Slides from './Slides';
 import QRCode from "qrcode-react";
 import Slider from 'react-animated-slider';
 import 'react-animated-slider/build/horizontal.css';
 import ReactCardFlip from 'react-card-flip';
 import Trianglify from 'react-trianglify'
-
+import { makeAutoObservable } from "mobx"
+import { observer } from "mobx-react-lite"
 
 
 
@@ -20,14 +22,14 @@ class Main extends Component {
   constructor(props) {
     super(props)
     let scannables;
-    var mySlideshow;
+    var show = new Slides();
       this.state = {
         scannables: '0',
 	scannableStats: [],
 	scannableRewards: [],
 	cardsLoading: true,
         flipped: [],
-	mySlideshow: mySlideshow,
+	mySlideshow: show,
 	loadingGif: <img src={loader} alt="loading..." />
        }
     this.loadLeasePage = this.loadLeasePage.bind(this);
@@ -68,11 +70,7 @@ class Main extends Component {
             var tempSc = self.getScannable(upcHash);
             currentScannableStats[upcHash] = tempSc;
             scannable = self.buildCard(i,upcHash.substring(0,upcHash.length));
-            var scannableJson = {
-               "index": i,
-               "body": scannable             
-            };
-            localScannables.push(scannableJson);
+            localScannables.push(scannable);
             var flipId = "flip" + upcHash;
 	    self.setState({[flipId]:self.state[flipId]});
           }
@@ -84,7 +82,6 @@ class Main extends Component {
           self.setState({mySlideshow: show});
     });
 
-    console.log(localScannables);
   }
 
   getScannable = async (upcHash) => {
@@ -116,28 +113,13 @@ class Main extends Component {
     var rewardKey = data + "-reward";
     var currentStaker;
     var amountStaked = this.state.loadingGif;
+    var amountStaked = 0;
     var isOwned;
     var word;
     let rewardInfo;
     //building the card is 2 step process.  first resolve the promise from above (when the load page function above is called) and set state info for this individual
     //scannable.
     var self = this;
-    promiseStats.then(values => {
-	//example object.  disable the log below to inspect 
-	//values {"0":"0x22F23F59A19a5EEd1eE9c546F64CC645B92a4263","1":"98000000000000000","2":false,"3":"0","4":"1605388210","5":"chris","currentStaker":"0x22F23F59A19a5EEd1eE9c546F64CC645B92a4263","amountStaked":"98000000000000000","isOwned":false,"rewards":"0","stakingStartTimestamp":"1605388210","word":"chris"}
-
-	//console.log("values " + JSON.stringify(values));
-        currentStaker=values[0];
-        amountStaked=values[1];
-        word=values[5];
-        var arr = [];
-        arr.push(values[0]);
-        arr.push(values[1]);
-        arr.push(word);
-        self.setState({[data]: arr});
-        self.setState({cardsLoading: false});
-    }); 
-
     (async () => {
         rewardInfo = await self.props.getRewardInfo(data);
 	var currentUpcState = self.state[data];
@@ -147,121 +129,15 @@ class Main extends Component {
 	   currentUpcState.push(rewardInfo.lastRewardTimestamp);
            self.setState({[rewardKey]: currentUpcState});
 	}
-//	console.log("REWARD  INFO: " + JSON.stringify(rewardInfo));
+	//console.log("REWARD  INFO: " + JSON.stringify(rewardInfo));
+        var slides = new Slides();
+        slides.data.push(rewardInfo);
+        console.log(slides);
+        //self.state.mySlideshow.addData(rewardInfo);
+        return rewardInfo;
 //	console.log("OWNED  INFO: " + JSON.stringify(rewardInfo.isOwned));
     })();
 
-    var bgCol = "#FDF9EC";
-    var altCol = "#FDF9EC";
-    var stateProp = data;
-    currentStaker = this.state.[stateProp];
-    var currentStakerAr;
-    var currentStakerRaw = "0x0";
-    var upcOwnerTruncated; 
-    var isOwned = "False";
-    var rewardsEarned = "To be calculated...";
-    var cardRewards = this.state[rewardKey];
-    var adminTabs;
-
-    //the 3rd element is ownership info.  this was added in the async block above
-    if(cardRewards && cardRewards.length >= 3) {
-       //var isOwned = cardRewards[3];
-       var isOwned = true;  //this needs to be dynamic
-       if(isOwned) {
-          isOwned = "True";
-          bgCol = "#" + data.substring(32,38);
-          altCol = "#" + data.substring(21,27);
-          adminTabs = <Nav.Item><Nav.Link href="#link">Admin</Nav.Link></Nav.Item>;
-       }
-       else {
-          isOwned = "False";
-       }
-    }
-
-    //the 3rd element is rewards info.  this was added in the async block above
-    if(cardRewards && cardRewards.length >= 4) {
-       var rewardsEarnedTmp = cardRewards[4];
-       if(rewardsEarned) {
-         rewardsEarned = rewardsEarnedTmp;
-	 rewardsEarned = window.web3.utils.fromWei(rewardsEarned, 'Ether');
-       }
-    }    //complicated flow... this is where the individual card's scan stats are calculated and set. currentStaker is not set on page load.  it is set 5 seconds after when the load.... function is called.  this is why this check must be done before setting values
-
-
-    if(currentStaker) {
-
-       if(this.state.cardsLoading) {
-           currentStakerAr = Object.values(currentStaker);
-           word = currentStakerAr[2];
-           currentStakerRaw = currentStakerAr[0];
-	   upcOwnerTruncated = currentStakerRaw.substring(0,5) + "..." + currentStakerRaw.substring(35);
-       }
-       else {
-           currentStakerAr = Object.values(currentStaker);
-           amountStaked = window.web3.utils.fromWei(currentStakerAr[1], 'Ether');
-           word = currentStakerAr[2];
-           currentStakerRaw = currentStakerAr[0];
-	   upcOwnerTruncated = currentStakerRaw.substring(0,5) + "..." + currentStakerRaw.substring(35);
-       }
-    }
-
-     var flippedKey = "flip" + data.toString();
-     var isFlip = this.state[flippedKey];
-     var bg = <Trianglify seed={data} />;
-     var dataJson = 
-     {
-	"color": bgCol,
-	"value": amountStaked,
-	"owner": currentStakerRaw,
-	"word": word
-     };
-
-
-     return (
-      [
-        'Info',
-      ].map((variant, idx) => (
-        <div key={count}>
-         <ReactCardFlip isFlipped={isFlip} flipDirection="horizontal">
-            <Card
-              style={{backgroundColor: bgCol, marginBottom: '2em'}}
-            >
-             <Card.Header
-              style={{backgroundColor: altCol, display: 'flex', flexDirection: 'row'}}
-        >
-               <Nav variant="tabs" defaultActiveKey="#first">
-                 <Nav.Item>
-                   <Nav.Link href="#first">Overview</Nav.Link>
-                 </Nav.Item>
-                 {adminTabs}
-               </Nav>
-             </Card.Header>
-             <Card.Body>
-               <Card.Title>Chip Stats: {word}</Card.Title>
-               <Card.Text>
-                  <button onClick={() => this.flipCard(data)}>Click to flip</button>
-
-                  <div style={{backgroundColor: "#fff", padding: '4px', marginBottom: '10px'}}>
-                  <p>Value: {amountStaked} (xDAI)</p>
-                  <p>SCAN AT CASINO: <QRCode value={JSON.stringify(dataJson)} /></p>
-                  </div>
-                            <button
-                           value={word}
-                           onClick={(word) => {this.props.unstakeTokens(word)} }
-                           className="btn btn-primary btn-block btn-lg"
-                          >
-                          Release Chip
-                      </button>
-               </Card.Text>
-             </Card.Body>
-           </Card>
-           <div>
-           <h1>hello</h1>
-           {bg}
-           <button onClick={() => this.flipCard(data)}>Click to flip</button>
-           </div>
-        </ReactCardFlip>
-       </div>)));
     }
 
   render() {
@@ -269,7 +145,6 @@ class Main extends Component {
       <div id="content" className="mt-3">
         <div className="card mb-4" >
           <div className="card-body">
-	    {this.state.mySlideshow}
           </div>
         </div>
       </div>
