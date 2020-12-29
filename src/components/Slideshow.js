@@ -48,7 +48,7 @@ class Slideshow extends Component {
        const slides = this.state.slides;
 
        return (
-          <Slider>
+          <Slider duration={500}>
             {slides.map((slide, index) => <div key={index}>
               <div><QRCode value={slide.word} /></div>
               <h2>{slide.gameId}</h2>
