@@ -23,19 +23,22 @@ class Main extends Component {
     super(props)
     let scannables;
     var show = new Slides();
+    const showObs = observer(show);
+
       this.state = {
         scannables: '0',
+        sliderKey: 0,
 	scannableStats: [],
 	scannableRewards: [],
 	cardsLoading: true,
         flipped: [],
-	mySlideshow: show,
+	slideshow: null,
+	slides: Array(),
 	loadingGif: <img src={loader} alt="loading..." />
        }
     this.loadLeasePage = this.loadLeasePage.bind(this);
     this.getScannables = this.getScannables.bind(this);
     this.getScannable = this.getScannable.bind(this);
-    this.buildCard = this.buildCard.bind(this);
     this.flipCard= this.flipCard.bind(this);
 
   }
@@ -67,19 +70,43 @@ class Main extends Component {
             let currentStaker;
             let amountStaked;
             let word;
+	    let rewardInfo;
             var tempSc = self.getScannable(upcHash);
             currentScannableStats[upcHash] = tempSc;
-            scannable = self.buildCard(i,upcHash.substring(0,upcHash.length));
-            localScannables.push(scannable);
-            var flipId = "flip" + upcHash;
-	    self.setState({[flipId]:self.state[flipId]});
+
+            (async () => {
+                let data = upcHash.substring(0,upcHash.length);
+		var rewardKey = data + "-reward";
+                rewardInfo = await self.props.getRewardInfo(data);
+        	var currentUpcState = self.state[data];
+        	if(currentUpcState) {
+        	   currentUpcState.push(rewardInfo.isOwned);
+        	   currentUpcState.push(rewardInfo.rewards);
+        	   currentUpcState.push(rewardInfo.lastRewardTimestamp);
+                   self.setState({[rewardKey]: currentUpcState});
+        	}
+        	//console.log("REWARD  INFO: " + JSON.stringify(rewardInfo));
+                //slides.data.push(rewardInfo);
+                var localSlides = self.state.slides;
+                localSlides.push(rewardInfo);
+                self.setState({slides: localSlides});
+                var localSliderKey = self.state.sliderKey;
+                self.setState({sliderKey: localSliderKey});
+	        var localSlideshow = <Slideshow key={localSliderKey} slides={localSlides} />
+               console.log(localSlideshow); 
+                self.setState({slideshow: localSlideshow});
+                return rewardInfo;
+        //	console.log("OWNED  INFO: " + JSON.stringify(rewardInfo.isOwned));
+            })();
+
+            //scannable = self.buildCard(i,upcHash.substring(0,upcHash.length));
+            //localScannables.push(scannable);
+            //var flipId = "flip" + upcHash;
+	    //self.setState({[flipId]:self.state[flipId]});
           }
 
 
 	  self.setState({scannables:localScannables});
-
-          var show = <Slideshow slides={localScannables} />;
-          self.setState({mySlideshow: show});
     });
 
   }
@@ -96,55 +123,17 @@ class Main extends Component {
     return scannables;
   };
 
-
   flipCard = (data) => {
     var flipKey = "flip" + data;
     this.setState({[flipKey]: !this.state[flipKey]});
   }
-
-  /**
-   * the goal of this function is to output card html for one scannable.  this function resolves
-   * a promise from the loadPage function and then does a lookup to get the reward information for
-   * each scannable (RewardGranter)
-   */
-  buildCard = (count,data) => {
-    var promiseStats   = this.state.scannableStats[data];
-    var promiseRewards = this.state.scannableRewards[data];
-    var rewardKey = data + "-reward";
-    var currentStaker;
-    var amountStaked = this.state.loadingGif;
-    var amountStaked = 0;
-    var isOwned;
-    var word;
-    let rewardInfo;
-    //building the card is 2 step process.  first resolve the promise from above (when the load page function above is called) and set state info for this individual
-    //scannable.
-    var self = this;
-    (async () => {
-        rewardInfo = await self.props.getRewardInfo(data);
-	var currentUpcState = self.state[data];
-	if(currentUpcState) {
-	   currentUpcState.push(rewardInfo.isOwned);
-	   currentUpcState.push(rewardInfo.rewards);
-	   currentUpcState.push(rewardInfo.lastRewardTimestamp);
-           self.setState({[rewardKey]: currentUpcState});
-	}
-	//console.log("REWARD  INFO: " + JSON.stringify(rewardInfo));
-        var slides = new Slides();
-        slides.data.push(rewardInfo);
-        console.log(slides);
-        //self.state.mySlideshow.addData(rewardInfo);
-        return rewardInfo;
-//	console.log("OWNED  INFO: " + JSON.stringify(rewardInfo.isOwned));
-    })();
-
-    }
 
   render() {
     return (
       <div id="content" className="mt-3">
         <div className="card mb-4" >
           <div className="card-body">
+            {this.state.slideshow}
           </div>
         </div>
       </div>

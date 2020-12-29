@@ -1,13 +1,12 @@
-import { makeObservable, observable, computed, action } from "mobx"
+import { makeAutoObservable, observable, computed, action } from "mobx"
 
 export default class Slides {
-    data
+//    @observable data = []
+    data = Array()
 
     constructor() {
-        this.data = Array();
-        makeObservable(this, {
-            data: observable
-        })
+        makeAutoObservable(this);
+this.data.push(5);
         //this.addData = this.addData.bind(this);
     }
 }

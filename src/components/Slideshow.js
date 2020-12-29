@@ -17,9 +17,10 @@ class Slideshow extends Component {
     super(props);
     var slides = Array();
     this.state = {
-	slides: this.props.slides
+	slides: props.slides
     }
-    console.log(this.props.slides);
+    console.log("INNNNNN");
+    console.log(props.slides[1]);
   }
 
   refreshPage() {
@@ -43,18 +44,13 @@ class Slideshow extends Component {
 
    var slides = this.state.slides;
    if(slides != null) {
-//    const slides = [
-//      { title: 'First item', body: 'Lorem ipsum'},
-//      { title: 'Second item', body: 'Lorem ipsum'}     
-//              <div>{slide.word}</div>
-//    ];
-
        const slides = this.state.slides;
 
        return (
           <Slider>
             {slides.map((slide, index) => <div key={index}>
-              <div></div>
+              <h2>{slide.gameId}</h2>
+              <div>{slide.word}</div>
             </div>)}
           </Slider>
        );
