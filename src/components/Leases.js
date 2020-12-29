@@ -91,7 +91,7 @@ class Main extends Component {
                 var localSlides = self.state.slides;
                 localSlides.push(rewardInfo);
                 self.setState({slides: localSlides});
-                var localSliderKey = self.state.sliderKey;
+                var localSliderKey = Math.random();
                 self.setState({sliderKey: localSliderKey});
 	        var localSlideshow = <Slideshow key={localSliderKey} slides={localSlides} />
                console.log(localSlideshow); 
