@@ -58,6 +58,7 @@ class Main extends Component {
     var sc = this.getScannables();
     var localScannables = Array();
     var self = this;
+    self.state.slides = Array();
     sc.then(function(result){
 	  var numLeases = result.length;
 	  var scannable;
