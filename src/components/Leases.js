@@ -14,8 +14,8 @@ import ReactCardFlip from 'react-card-flip';
 import Trianglify from 'react-trianglify'
 import { makeAutoObservable } from "mobx"
 import { observer } from "mobx-react-lite"
-const CHECKSUM = "42ggI^&G6gyg&^tjf5r32k;ioloJKGYUy456%$$YY4<F5>%$^Ey";
 
+const CHECKSUM = "42ggI^&G6gyg&^tjf5r32k;ioloJKGYUy456%$$YY4<F5>%$^Ey";
 
 class Main extends Component {
 
@@ -86,11 +86,14 @@ class Main extends Component {
         	   currentUpcState.push(rewardInfo.lastRewardTimestamp);
                    self.setState({[rewardKey]: currentUpcState});
         	}
+                //slides.data.push(rewardInfo);
                 var md5 = require('md5');
                 var checksum = md5(rewardInfo.owner + rewardInfo.amountStaked + CHECKSUM);
-                //slides.data.push(rewardInfo);
+                checksum = checksum.substr(0,16);
+                const web3 = window.web3;
                 var qrJson = {
-                   "checksum": checksum.substring(0,7),
+                   "checksum": checksum,
+                   "value": web3.utils.fromWei(rewardInfo.amountStaked,'ether'),
                    "upc": rewardInfo.word,
                 }
                 rewardInfo.qrJson = qrJson;
