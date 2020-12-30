@@ -239,7 +239,7 @@ class App extends Component {
       <div style={{height: '100vh', width: '100vw', border:'none'}} >
                   <Tabs style={{paddingTop:'10px'}}>
                     <TabList>
-                      <Tab>CoinBox Casino</Tab>
+                      <Tab>Coinbox Casino</Tab>
                       <Tab>Store</Tab>
                       <Tab>Level Up</Tab>
                     </TabList>
