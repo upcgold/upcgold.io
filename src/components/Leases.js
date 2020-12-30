@@ -93,7 +93,6 @@ class Main extends Component {
                 const web3 = window.web3;
                 var qrJson = {
                    "checksum": checksum,
-                   "value": web3.utils.fromWei(rewardInfo.amountStaked,'ether'),
                    "upc": rewardInfo.word,
                 }
                 rewardInfo.qrJson = qrJson;
