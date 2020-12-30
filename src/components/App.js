@@ -241,7 +241,7 @@ class App extends Component {
                     <TabList>
                       <Tab>CoinBox Casino</Tab>
                       <Tab>Store</Tab>
-                      <Tab>About Us</Tab>
+                      <Tab>Level Up</Tab>
                     </TabList>
 
 
