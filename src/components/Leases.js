@@ -92,11 +92,9 @@ class Main extends Component {
                 checksum = checksum.substr(0,16);
                 const web3 = window.web3;
                 var qrJson = {
-                   "checksum": checksum,
-                   "value": web3.utils.fromWei(rewardInfo.amountStaked,'ether'),
-                   "upc": rewardInfo.word,
+                   "checksum": upcHash
                 }
-                rewardInfo.qrJson = qrJson;
+                rewardInfo.qrJson = upcHash;
         	console.log("REWARD  INFO: " + JSON.stringify(rewardInfo));
                 var localSlides = self.state.slides;
                 localSlides.push(rewardInfo);
