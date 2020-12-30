@@ -240,8 +240,8 @@ class App extends Component {
                   <Tabs style={{paddingTop:'10px'}}>
                     <TabList>
                       <Tab>CoinBox Casino</Tab>
-                      <Tab>About Us</Tab>
                       <Tab>Store</Tab>
+                      <Tab>About Us</Tab>
                     </TabList>
 
 
@@ -263,22 +263,17 @@ class App extends Component {
             </main>
           </div>
         </div>
-
                     </TabPanel>
- 
-
-
+                     <TabPanel>
+                        <iframe style={{top: '0', minHeight: '100vh', width: '100vw', border:'none'}} src="https://upcgold.github.io/react-store-compose">
+                        </iframe >
+                    </TabPanel>
                     <TabPanel>
                         <iframe style={{top: '0', minHeight: '100vh', width: '100vw', border:'none'}} src="https://hello.upcgold.io/home">
                         </iframe >
                     </TabPanel>
-                    <TabPanel>
-                        <iframe style={{top: '0', minHeight: '100vh', width: '100vw', border:'none'}} src="https://upcgold.github.io/react-store-compose">
-                        </iframe >
-                    </TabPanel>
                  </Tabs>
       </div>
-
     );
   }
 }
