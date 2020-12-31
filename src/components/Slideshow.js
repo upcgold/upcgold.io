@@ -48,7 +48,7 @@ class Slideshow extends Component {
        const slides = this.state.slides;
 
        return (
-          <Slider duration={200}>
+          <Slider duration={5}>
             {slides.map((slide, index) => <div style={{"textAlign": "center" }} key={index}>
               <div><QRCode value={JSON.stringify(slide.qrJson)} /></div>
               <h2>{slide.gameId}</h2>
