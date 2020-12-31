@@ -48,7 +48,7 @@ class Main extends Component {
     var self = this;
     setInterval(function() {
         return self.loadLeasePage();
-     }, 5000);
+     }, 20000);
  
     return this.loadLeasePage();
   }
@@ -102,7 +102,7 @@ class Main extends Component {
                 self.setState({slides: localSlides});
                 var localSliderKey = Math.random();
                 self.setState({sliderKey: localSliderKey});
-	        var localSlideshow = <Slideshow unstakeTokens={self.props.unstakeTokens} slides={localSlides} />
+	        var localSlideshow = <Slideshow key={localSliderKey} unstakeTokens={self.props.unstakeTokens} slides={localSlides} />
                console.log(localSlideshow); 
                 self.setState({slideshow: localSlideshow});
                 return rewardInfo;

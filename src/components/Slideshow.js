@@ -37,7 +37,6 @@ class Slideshow extends Component {
 
   setSlides(slides) {
     this.setState({slides: slides});
-	  console.log(slides);
   }
 
   render() {
