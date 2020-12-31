@@ -47,19 +47,19 @@ class Slideshow extends Component {
        const slides = this.state.slides;
 
        return (
-          <Slider duration={5}>
+          <Slider previousButton={''} nextButton={''} duration={5}>
             {slides.map((slide, index) => <div style={{"textAlign": "center" }} key={index}>
               <div><QRCode value={JSON.stringify(slide.qrJson)} /></div>
               <h2>{slide.gameId}</h2>
               <div>UPC: {slide.word}</div>
               <div>Amount: {web3.utils.fromWei(slide.amountStaked, 'ether')} (xDAI)</div>
-<button
-   value={slide.word}
-   onClick={(word) => {this.props.unstakeTokens(word)} }
-   className="btn btn-primary btn-block btn-lg"
->
-Release Chip
-</button>
+		<button
+		   value={slide.word}
+		   onClick={(word) => {this.props.unstakeTokens(word)} }
+		   className="btn btn-primary btn-block btn-lg"
+		>
+		Release Chip
+		</button>
 
             </div>)}
           </Slider>
