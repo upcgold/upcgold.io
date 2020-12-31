@@ -92,6 +92,7 @@ class Main extends Component {
                 checksum = checksum.substr(0,16);
                 const web3 = window.web3;
                 var qrJson = {
+		   "intent": "collectInterest",
                    "checksum": checksum,
                    "upc": rewardInfo.word,
                 }
