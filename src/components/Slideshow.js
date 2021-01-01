@@ -58,13 +58,12 @@ class Slideshow extends Component {
             <ReactCardFlip isFlipped={this.state.isFlipped} flipDirection="horizontal">
              <div>
               <div><QRCode value={JSON.stringify(slide.qrJson)} /></div>
-              <h2>{slide.gameId}</h2>
               <div>UPC: {slide.word}</div>
               <div>Amount: {web3.utils.fromWei(slide.amountStaked, 'ether')} (xDAI)</div>
 		<button
 		   value={slide.word}
 		   onClick={(word) => {this.props.unstakeTokens(word)} }
-		   className="btn btn-primary btn-block btn-lg"
+		   className="btn btn-warning btn-block btn-lg"
 		>
 		Release Chip
 		</button>
@@ -72,6 +71,11 @@ class Slideshow extends Component {
 		   className="btn btn-primary btn-block btn-lg"
                 >
 			Coinbox Casino
+		</button>
+		<button onClick={() => this.flipCard()}
+		   className="btn btn-success btn-block btn-lg"
+                >
+                  Configure {slide.gameId}
 		</button>
               <h2>#{index+1}</h2>
              </div>
