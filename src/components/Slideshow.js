@@ -17,7 +17,8 @@ class Slideshow extends Component {
     super(props);
     var slides = Array();
     this.state = {
-	slides: props.slides
+	slides: props.slides,
+        isFlipped: false
     }
     console.log("INNNNNN");
     console.log(props.slides[1]);
@@ -35,6 +36,11 @@ class Slideshow extends Component {
     return this.refreshPage();
   }
 
+  flipCard = (data) => {
+    this.setState({isFlipped: !this.state.isFlipped});
+  }
+
+
   setSlides(slides) {
     this.setState({slides: slides});
   }
@@ -49,6 +55,8 @@ class Slideshow extends Component {
        return (
           <Slider previousButton={''} nextButton={''} duration={5}>
             {slides.map((slide, index) => <div style={{"textAlign": "center" }} key={index}>
+            <ReactCardFlip isFlipped={this.state.isFlipped} flipDirection="horizontal">
+             <div>
               <div><QRCode value={JSON.stringify(slide.qrJson)} /></div>
               <h2>{slide.gameId}</h2>
               <div>UPC: {slide.word}</div>
@@ -60,9 +68,23 @@ class Slideshow extends Component {
 		>
 		Release Chip
 		</button>
-
+		<button onClick={() => this.flipCard()}
+		   className="btn btn-primary btn-block btn-lg"
+                >
+			Coinbox Casino
+		</button>
               <h2>#{index+1}</h2>
-            </div>)}
+             </div>
+             <div>
+		<button onClick={() => this.flipCard()}
+		   className="btn btn-primary btn-block btn-lg"
+                >
+			Back
+		</button>
+<h1>hi</h1>
+             </div>
+           </ReactCardFlip></div>)}
+           
           </Slider>
        );
     }
