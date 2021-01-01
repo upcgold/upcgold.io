@@ -48,7 +48,7 @@ class Main extends Component {
     var self = this;
     setInterval(function() {
         return self.loadLeasePage();
-     }, 20000);
+     }, 120000);
  
     return this.loadLeasePage();
   }
