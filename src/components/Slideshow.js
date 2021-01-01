@@ -45,7 +45,7 @@ class Slideshow extends Component {
    var slides = this.state.slides;
    if(slides != null) {
        const slides = this.state.slides;
-
+//console.log(slides);
        return (
           <Slider previousButton={''} nextButton={''} duration={5}>
             {slides.map((slide, index) => <div style={{"textAlign": "center" }} key={index}>
@@ -61,7 +61,7 @@ class Slideshow extends Component {
 		Release Chip
 		</button>
 
-              <h2>#{slide.index}</h2>
+              <h2>#{index+1}</h2>
             </div>)}
           </Slider>
        );

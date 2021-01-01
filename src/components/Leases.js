@@ -93,10 +93,10 @@ class Main extends Component {
                 var qrJson = {
                    "upc": rewardInfo.word,
 		   "intent": "collectInterest",
-                   "checksum": checksum
+                   "checksum": checksum,
+                   "index": i
                 }
                 rewardInfo.qrJson = qrJson;
-                rewardInfo.index = i;
                 var localSlides = self.state.slides;
                 localSlides.push(rewardInfo);
                 self.setState({slides: localSlides});
