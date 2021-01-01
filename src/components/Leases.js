@@ -86,34 +86,27 @@ class Main extends Component {
         	   currentUpcState.push(rewardInfo.lastRewardTimestamp);
                    self.setState({[rewardKey]: currentUpcState});
         	}
-                //slides.data.push(rewardInfo);
                 var md5 = require('md5');
                 var checksum = md5(rewardInfo.owner + rewardInfo.amountStaked + CHECKSUM);
                 checksum = checksum.substr(0,16);
                 const web3 = window.web3;
                 var qrJson = {
-		   "intent": "collectInterest",
-                   "checksum": checksum,
                    "upc": rewardInfo.word,
+		   "intent": "collectInterest",
+                   "checksum": checksum
                 }
                 rewardInfo.qrJson = qrJson;
-        	console.log("REWARD  INFO: " + JSON.stringify(rewardInfo));
+                rewardInfo.index = i;
                 var localSlides = self.state.slides;
                 localSlides.push(rewardInfo);
                 self.setState({slides: localSlides});
                 var localSliderKey = Math.random();
                 self.setState({sliderKey: localSliderKey});
 	        var localSlideshow = <Slideshow key={localSliderKey} unstakeTokens={self.props.unstakeTokens} slides={localSlides} />
-               console.log(localSlideshow); 
                 self.setState({slideshow: localSlideshow});
                 return rewardInfo;
-        //	console.log("OWNED  INFO: " + JSON.stringify(rewardInfo.isOwned));
             })();
 
-            //scannable = self.buildCard(i,upcHash.substring(0,upcHash.length));
-            //localScannables.push(scannable);
-            //var flipId = "flip" + upcHash;
-	    //self.setState({[flipId]:self.state[flipId]});
           }
 
 

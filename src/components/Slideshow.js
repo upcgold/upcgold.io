@@ -61,6 +61,7 @@ class Slideshow extends Component {
 		Release Chip
 		</button>
 
+              <h2>#{slide.index}</h2>
             </div>)}
           </Slider>
        );
