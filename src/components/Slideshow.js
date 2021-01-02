@@ -18,7 +18,8 @@ class Slideshow extends Component {
     var slides = Array();
     this.state = {
 	slides: props.slides,
-        isFlipped: false
+        isFlipped: false,
+        activeCard: 'front'
     }
     console.log("INNNNNN");
     console.log(props.slides[1]);
@@ -38,6 +39,7 @@ class Slideshow extends Component {
 
   flipCard = (data) => {
     this.setState({isFlipped: !this.state.isFlipped});
+    this.setState({activeCard: data});
   }
 
 
@@ -67,17 +69,17 @@ class Slideshow extends Component {
 		>
 		Release Chip
 		</button>
-		<button onClick={() => this.flipCard()}
+		<button onClick={() => this.flipCard('spin')}
 		   className="btn btn-primary btn-block btn-lg"
                 >
 			Coinbox Casino
 		</button>
-		<button onClick={() => this.flipCard()}
+		<button onClick={() => this.flipCard('xp')}
 		   className="btn btn-success btn-block btn-lg"
                 >
                   Configure {slide.gameId}
 		</button>
-		<button onClick={() => this.flipCard()}
+		<button onClick={() => this.flipCard('cm')}
 		   className="btn btn-dark btn-block btn-lg"
                 >
                   *crypto mode*
@@ -85,12 +87,12 @@ class Slideshow extends Component {
               <h2>#{index+1}</h2>
              </div>
              <div>
-		<button onClick={() => this.flipCard()}
+		<button onClick={() => this.flipCard('front')}
 		   className="btn btn-primary btn-block btn-lg"
                 >
 			Back
 		</button>
-<h1>hi</h1>
+		<h1>{this.state.activeCard}</h1>
              </div>
            </ReactCardFlip></div>)}
            
