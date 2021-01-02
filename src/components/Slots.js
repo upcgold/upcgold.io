@@ -22,7 +22,7 @@ export default class Slots extends Component {
     });
     setTimeout(() => {
       this.setState({ rolling: false });
-    }, 700);
+    }, 300);
 
     // looping through all 3 slots to start rolling
     this.slotRef.forEach((slot, i) => {
