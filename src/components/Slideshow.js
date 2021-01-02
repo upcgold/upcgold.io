@@ -74,12 +74,12 @@ class Slideshow extends Component {
 		Release Chip
 		</button>
 		<button onClick={() => this.flipCard('spin')}
-		   className="btn btn-primary btn-block btn-lg"
+		   className="btn btn-success btn-block btn-lg"
                 >
-			Coinbox Casino
+			Play Chip
 		</button>
 		<button onClick={() => this.flipCard(slide.gameId)}
-		   className="btn btn-success btn-block btn-lg"
+		   className="btn btn-primary btn-block btn-lg"
                 >
                   Configure {slide.gameId}
 		</button>
