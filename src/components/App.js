@@ -250,15 +250,7 @@ class App extends Component {
           <div className="row">
             <main role="main" className="col-lg-12 ml-auto mr-auto" style={{ maxWidth: '600px' }}>
               <div className="content mr-auto ml-auto">
-                  <Tabs>
-                    <TabList>
-                      <Tab>Chips</Tab>
-                    </TabList>
-                
-                    <TabPanel>
-                                {leases}
-                    </TabPanel>
-                  </Tabs>
+                               {leases}
               </div>
             </main>
           </div>
