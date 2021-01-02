@@ -55,7 +55,7 @@ class Slideshow extends Component {
        return (
           <Slider previousButton={''} nextButton={''} duration={5}>
             {slides.map((slide, index) => <div style={{"textAlign": "center" }} key={index}>
-            <ReactCardFlip isFlipped={this.state.isFlipped} flipDirection="horizontal">
+            <ReactCardFlip style={{'height': '100vh'}} isFlipped={this.state.isFlipped} flipDirection="horizontal">
              <div>
               <div><QRCode value={JSON.stringify(slide.qrJson)} /></div>
               <div>UPC: {slide.word}</div>
