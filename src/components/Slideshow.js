@@ -80,7 +80,7 @@ class Slideshow extends Component {
 		<button onClick={() => this.flipCard()}
 		   className="btn btn-dark btn-block btn-lg"
                 >
-                  Hide Encrypted Message
+                  *crypto mode*
 		</button>
               <h2>#{index+1}</h2>
              </div>
