@@ -12,7 +12,7 @@ export default class Slots extends Component {
     this.state = { fruit1: "🍒", fruit2: "🍒", fruit3: "🍒", rolling: false };
 
     // get ref of dic onn which elements will roll
-    this.slotRef = [createRef(), createRef(), createRef()];
+    this.slotRef = [createRef(), createRef(), createRef(), createRef(), createRef()];
   }
 
   // to trigger roolling and maintain state
@@ -75,6 +75,28 @@ export default class Slots extends Component {
         <div className="slot">
           <section>
             <div className="container" ref={this.slotRef[2]}>
+              {Slots.defaultProps.fruits.map(fruit => (
+                <div>
+                  <span>{fruit}</span>
+                </div>
+              ))}
+            </div>
+          </section>
+        </div>
+        <div className="slot">
+          <section>
+            <div className="container" ref={this.slotRef[3]}>
+              {Slots.defaultProps.fruits.map(fruit => (
+                <div>
+                  <span>{fruit}</span>
+                </div>
+              ))}
+            </div>
+          </section>
+        </div>
+        <div className="slot">
+          <section>
+            <div className="container" ref={this.slotRef[4]}>
               {Slots.defaultProps.fruits.map(fruit => (
                 <div>
                   <span>{fruit}</span>
