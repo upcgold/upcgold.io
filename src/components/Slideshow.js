@@ -10,6 +10,7 @@ import Slider from 'react-animated-slider';
 import 'react-animated-slider/build/horizontal.css';
 import ReactCardFlip from 'react-card-flip';
 import Trianglify from 'react-trianglify'
+import Slots from './Slots';
 
 class Slideshow extends Component {
 
@@ -92,6 +93,7 @@ class Slideshow extends Component {
                 >
 			Back
 		</button>
+                <Slots />
 		<h1>{this.state.activeCard}</h1>
              </div>
            </ReactCardFlip></div>)}
