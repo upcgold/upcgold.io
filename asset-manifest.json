@@ -1,7 +1,7 @@
 {
   "main.css": "/upcgold.io/static/css/main.9ddc5f7e.chunk.css",
-  "main.js": "/upcgold.io/static/js/main.1bb5b030.chunk.js",
-  "main.js.map": "/upcgold.io/static/js/main.1bb5b030.chunk.js.map",
+  "main.js": "/upcgold.io/static/js/main.f7f1005e.chunk.js",
+  "main.js.map": "/upcgold.io/static/js/main.f7f1005e.chunk.js.map",
   "static/css/1.a657a6a8.chunk.css": "/upcgold.io/static/css/1.a657a6a8.chunk.css",
   "static/js/1.02051b61.chunk.js": "/upcgold.io/static/js/1.02051b61.chunk.js",
   "static/js/1.02051b61.chunk.js.map": "/upcgold.io/static/js/1.02051b61.chunk.js.map",
@@ -11,6 +11,6 @@
   "static/css/main.9ddc5f7e.chunk.css.map": "/upcgold.io/static/css/main.9ddc5f7e.chunk.css.map",
   "static/css/1.a657a6a8.chunk.css.map": "/upcgold.io/static/css/1.a657a6a8.chunk.css.map",
   "index.html": "/upcgold.io/index.html",
-  "precache-manifest.205a262cac8ed2d8bd37246ff2fc0340.js": "/upcgold.io/precache-manifest.205a262cac8ed2d8bd37246ff2fc0340.js",
+  "precache-manifest.c9a35dee670aa579c4adfd3494f3dd34.js": "/upcgold.io/precache-manifest.c9a35dee670aa579c4adfd3494f3dd34.js",
   "service-worker.js": "/upcgold.io/service-worker.js"
 }
