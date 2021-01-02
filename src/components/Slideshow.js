@@ -91,12 +91,12 @@ class Slideshow extends Component {
               <h2>#{index+1}</h2>
              </div>
              <div>
+		<h1>{this.state.activeCard}</h1>
 		<button onClick={() => this.flipCard('front')}
 		   className="btn btn-primary btn-block btn-lg"
                 >
 			Back
 		</button>
-		<h1>{this.state.activeCard}</h1>
              </div>
            </ReactCardFlip></div>)}
            
