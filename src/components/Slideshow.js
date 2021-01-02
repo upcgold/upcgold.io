@@ -40,6 +40,9 @@ class Slideshow extends Component {
 
   flipCard = (data) => {
     this.setState({isFlipped: !this.state.isFlipped});
+    if(data == 'spin') {
+       data = <Slots />;
+    }
     this.setState({activeCard: data});
   }
 
@@ -93,7 +96,6 @@ class Slideshow extends Component {
                 >
 			Back
 		</button>
-                <Slots />
 		<h1>{this.state.activeCard}</h1>
              </div>
            </ReactCardFlip></div>)}
