@@ -74,7 +74,7 @@ class Slideshow extends Component {
                 >
 			Coinbox Casino
 		</button>
-		<button onClick={() => this.flipCard('xp')}
+		<button onClick={() => this.flipCard(slide.gameId)}
 		   className="btn btn-success btn-block btn-lg"
                 >
                   Configure {slide.gameId}
