@@ -77,6 +77,11 @@ class Slideshow extends Component {
                 >
                   Configure {slide.gameId}
 		</button>
+		<button onClick={() => this.flipCard()}
+		   className="btn btn-dark btn-block btn-lg"
+                >
+                  Hide Encrypted Message
+		</button>
               <h2>#{index+1}</h2>
              </div>
              <div>
