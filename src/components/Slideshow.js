@@ -57,12 +57,14 @@ class Slideshow extends Component {
    var slides = this.state.slides;
    if(slides != null) {
        const slides = this.state.slides;
+       const slidesLen = this.state.slides.length;
 //console.log(slides);
        return (
           <Slider previousButton={''} nextButton={''} duration={5}>
             {slides.map((slide, index) => <div style={{"textAlign": "center" }} key={index}>
             <ReactCardFlip style={{'height': '100vh'}} isFlipped={this.state.isFlipped} flipDirection="horizontal">
              <div>
+	      <i>{index+1}/{slidesLen}</i>
               <div><QRCode value={JSON.stringify(slide.qrJson)} /></div>
               <div>UPC: {slide.word}</div>
               <div>Amount: {web3.utils.fromWei(slide.amountStaked, 'ether')} (xDAI)</div>
