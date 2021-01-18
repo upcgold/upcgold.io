@@ -5,6 +5,7 @@ import Web3 from 'web3'
 import UPCGoldBank from '../abis/UPCGoldBank.json'
 import RewardGranter from '../abis/RewardGranter.json'
 import Navbar from './Navbar'
+import VideoBackground from './VideoBackground'
 import Leases from './Leases'
 import Evictions from './Evictions'
 import Withdraw from './Withdraw'
@@ -236,6 +237,7 @@ class App extends Component {
     }
 
     return (
+     <VideoBackground>
       <div style={{height: '100vh', width: '100vw', border:'none'}} >
                   <Tabs style={{paddingTop:'10px'}}>
                     <TabList>
@@ -249,9 +251,7 @@ class App extends Component {
         <div className="container-fluid mt-5">
           <div className="row">
             <main role="main" className="col-lg-12 ml-auto mr-auto" style={{ overflow: 'scroll', maxWidth: '600px' }}>
-              <div className="content mr-auto ml-auto" style={{overflow: 'scroll'}}>
                                {leases}
-              </div>
             </main>
           </div>
         </div>
@@ -266,6 +266,7 @@ class App extends Component {
                     </TabPanel>
                  </Tabs>
       </div>
+     </VideoBackground>
     );
   }
 }

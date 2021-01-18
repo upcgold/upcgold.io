@@ -2,7 +2,7 @@
   "name": "UPCGrid",
   "version": "0.1.0",
   "description": "",
-  "homepage": "http://upcgold.github.io/upcgold.io",
+  "homepage": ".",
   "author": "gregory@dappuniversity.com",
   "dependencies": {
     "@dicebear/avatars": "^4.2.5",
