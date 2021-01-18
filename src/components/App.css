@@ -87,3 +87,14 @@ section {
   color: #f1f1f1;
   width: 100%;
 }
+
+.card-body {
+  padding: 0px;
+  background: rgba(0, 0, 0, 0.5);
+}
+
+.card {
+  padding: 0px;
+  background: rgba(0, 0, 0, 0.5);
+}
+

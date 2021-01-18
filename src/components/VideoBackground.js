@@ -7,7 +7,6 @@ class VideoBackground extends Component {
         super(props);
 
         this.state = {
-            videoURL: 'https://test-videos.co.uk/vids/bigbuckbunny/mp4/av1/1080/Big_Buck_Bunny_1080_10s_1MB.mp4'
         }
     }
 
@@ -16,9 +15,9 @@ class VideoBackground extends Component {
 
 <div>
 <video autoplay muted loop id="myVideo">
-  <source src="https://test-videos.co.uk/vids/bigbuckbunny/mp4/av1/1080/Big_Buck_Bunny_1080_10s_1MB.mp4" type="video/mp4"/>
+  <source src="https://archive.org/download/SampleVideo1280x7205mb/SampleVideo_1280x720_5mb.mp4" type="video/mp4"/>
 </video>
-<div class="content">
+<div style={{"background": "rgba(255, 0, 0, 0.4)"}} class="content">
         {this.props.children}
 </div>
 </div>

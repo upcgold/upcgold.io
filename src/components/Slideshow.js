@@ -61,7 +61,7 @@ class Slideshow extends Component {
 //console.log(slides);
        return (
           <Slider style={{height: '100%'}} previousButton={''} nextButton={''} duration={5}>
-            {slides.map((slide, index) => <div style={{"textAlign": "center" }} key={index}>
+            {slides.map((slide, index) => <div style={{'padding':'0px','height':"100vh", "textAlign": "center" }} key={index}>
             <ReactCardFlip isFlipped={this.state.isFlipped} flipDirection="horizontal">
              <div>
 	      <i>{index+1}/{slidesLen}</i>

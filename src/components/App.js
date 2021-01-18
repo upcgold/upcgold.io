@@ -239,7 +239,7 @@ class App extends Component {
     return (
      <VideoBackground>
       <div style={{height: '100vh', width: '100vw', border:'none'}} >
-                  <Tabs style={{paddingTop:'10px'}}>
+                  <Tabs>
                     <TabList>
                       <Tab>Coinbox Casino</Tab>
                       <Tab>Store</Tab>
@@ -248,13 +248,9 @@ class App extends Component {
 
 
                     <TabPanel>
-        <div className="container-fluid mt-5">
-          <div className="row">
-            <main role="main" className="col-lg-12 ml-auto mr-auto" style={{ overflow: 'scroll', maxWidth: '600px' }}>
+            <div style={{ minHeight: '100vh', width: '100vw' }}>
                                {leases}
-            </main>
-          </div>
-        </div>
+            </div>
                     </TabPanel>
                      <TabPanel>
                         <iframe style={{top: '0', minHeight: '100vh', width: '100vw', border:'none'}} src="https://upcgold.github.io/react-store-compose">
