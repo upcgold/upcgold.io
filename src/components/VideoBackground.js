@@ -17,7 +17,7 @@ class VideoBackground extends Component {
 <video autoplay muted loop id="myVideo">
   <source src="https://archive.org/download/SampleVideo1280x7205mb/SampleVideo_1280x720_5mb.mp4" type="video/mp4"/>
 </video>
-<div style={{"background": "rgba(255, 0, 0, 0.4)"}} class="content">
+<div style={{"background": "rgba(0, 0, 0, 0.4)"}} class="content">
         {this.props.children}
 </div>
 </div>

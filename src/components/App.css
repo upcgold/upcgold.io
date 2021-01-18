@@ -84,13 +84,13 @@ section {
   position: fixed;
   bottom: 0;
   background: rgba(0, 0, 0, 0.5);
-  color: #f1f1f1;
   width: 100%;
 }
 
 .card-body {
   padding: 0px;
-  background: rgba(0, 0, 0, 0.5);
+  background: rgba(200, 197, 200, 0.7);
+  color: white;
 }
 
 .card {
