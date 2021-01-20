@@ -137,7 +137,7 @@ class Main extends Component {
       <div id="content" className="mt-3">
         <div className="card mb-4" >
           <div className="card-body">
-            {this.state.slideshow}
+            <Slideshow />
           </div>
         </div>
       </div>

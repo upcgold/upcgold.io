@@ -10,6 +10,7 @@ import Leases from './Leases'
 import Evictions from './Evictions'
 import Withdraw from './Withdraw'
 import Deposit from './Deposit'
+import Scanner from './Scanner'
 import { Tab, Tabs, TabList, TabPanel } from 'react-tabs';
 import './App.css'
 import 'react-tabs/style/react-tabs.css';
@@ -211,20 +212,8 @@ class App extends Component {
 	getMyBalance={this.getMyBalance}
       />
 
-      leases= <Leases
-        daiTokenBalance={this.state.daiTokenBalance}
-        stakingBalance={this.state.stakingBalance}
-        contractBalance={this.state.contractBalance}
-        stakeTokens={this.stakeTokens}
-        unstakeTokens={this.unstakeTokens}
-        handleChange={this.handleChange}
-        updateUpc={this.updateUpc}
-	getMyScannables={this.getMyScannables}
-	getScannable={this.getScannable}
-	myAccount={this.state.account}
-	getRewardInfo={this.getRewardInfo}
-      />
- 
+      leases= <Scanner />
+
       evictions= <Evictions
         daiTokenBalance={this.state.daiTokenBalance}
         stakingBalance={this.state.stakingBalance}
@@ -237,13 +226,11 @@ class App extends Component {
     }
 
     return (
-     <VideoBackground>
       <div style={{height: '100vh', width: '100vw', border:'none'}} >
                   <Tabs>
                     <TabList>
-                      <Tab>Coinbox Casino</Tab>
-                      <Tab>Store</Tab>
-                      <Tab>Level Up</Tab>
+                      <Tab>ATM Machine</Tab>
+                      <Tab>University</Tab>
                     </TabList>
 
 
@@ -256,13 +243,8 @@ class App extends Component {
                         <iframe style={{top: '0', minHeight: '100vh', width: '100vw', border:'none'}} src="https://upcgold.github.io/react-store-compose">
                         </iframe >
                     </TabPanel>
-                    <TabPanel>
-                        <iframe style={{top: '0', minHeight: '100vh', width: '100vw', border:'none'}} src="https://hello.upcgold.io/home">
-                        </iframe >
-                    </TabPanel>
                  </Tabs>
       </div>
-     </VideoBackground>
     );
   }
 }
