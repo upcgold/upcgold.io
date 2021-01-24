@@ -7,10 +7,10 @@ import RewardGranter from '../abis/RewardGranter.json'
 import Navbar from './Navbar'
 import VideoBackground from './VideoBackground'
 import Leases from './Leases'
+import Scanner from './Scanner'
 import Evictions from './Evictions'
 import Withdraw from './Withdraw'
 import Deposit from './Deposit'
-import Scanner from './Scanner'
 import { Tab, Tabs, TabList, TabPanel } from 'react-tabs';
 import './App.css'
 import 'react-tabs/style/react-tabs.css';
@@ -18,8 +18,8 @@ import 'react-tabs/style/react-tabs.css';
 class App extends Component {
 
   async componentWillMount() {
-    //await this.loadWeb3()
-    //await this.loadBlockchainData()
+    await this.loadWeb3()
+    await this.loadBlockchainData()
   }
 
   async loadBlockchainData() {
@@ -103,10 +103,10 @@ class App extends Component {
   };
 
   componentDidMount(){
-//    var self = this;
-//    setInterval(function() {
-//        return self.getTVL();
-//     }, 2000);
+    var self = this;
+    setInterval(function() {
+        return self.getTVL();
+     }, 2000);
   }
 
  
@@ -195,7 +195,7 @@ class App extends Component {
     let withdraw 
     let leases
     let evictions
-    if(this.state.loading && 0==1) {
+    if(this.state.loading) {
       deposit = <p id="loader" className="text-center">Loading...</p>
       withdraw= <p id="loader" className="text-center">Loading...</p>
       leases= <p id="loader" className="text-center">Loading...</p>
@@ -214,6 +214,9 @@ class App extends Component {
 
       leases= <Scanner />
 
+
+
+
       evictions= <Evictions
         daiTokenBalance={this.state.daiTokenBalance}
         stakingBalance={this.state.stakingBalance}
@@ -229,7 +232,7 @@ class App extends Component {
       <div style={{height: '100vh', width: '100vw', border:'none'}} >
                   <Tabs>
                     <TabList>
-                      <Tab>ATM Server</Tab>
+                      <Tab>ATM Client</Tab>
                       <Tab>University</Tab>
                     </TabList>
 
