@@ -10,10 +10,11 @@ import Leases from './Leases'
 import Evictions from './Evictions'
 import Withdraw from './Withdraw'
 import Deposit from './Deposit'
-import Scanner from './Scanner'
+import AuthQr from './AuthQr'
 import { Tab, Tabs, TabList, TabPanel } from 'react-tabs';
 import './App.css'
 import 'react-tabs/style/react-tabs.css';
+import { withRouter } from 'react-router-dom';
 
 class App extends Component {
 
@@ -103,6 +104,7 @@ class App extends Component {
   };
 
   componentDidMount(){
+
 //    var self = this;
 //    setInterval(function() {
 //        return self.getTVL();
@@ -212,7 +214,7 @@ class App extends Component {
 	getMyBalance={this.getMyBalance}
       />
 
-      leases= <Scanner />
+      leases= <AuthQr />
 
       evictions= <Evictions
         daiTokenBalance={this.state.daiTokenBalance}

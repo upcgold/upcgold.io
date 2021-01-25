@@ -6,7 +6,7 @@ import Client from './components/Client';
 import * as serviceWorker from './serviceWorker';
 
 import { BrowserRouter as Router, Route, Link, Switch } from "react-router-dom";
-
+import { useParams } from "react-router";
 
 class WrappedApp extends Component {
   state = {}; //...some vals }
@@ -16,7 +16,7 @@ class WrappedApp extends Component {
       <Router>
         <Switch>
           <Route exact path="/server" component={App} />
-          <Route exact path="/client" component={Client} />
+          <Route exact path="/client/:clientQrData" component={Client} />
         </Switch>
       </Router>
     );

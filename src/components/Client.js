@@ -7,7 +7,7 @@ import RewardGranter from '../abis/RewardGranter.json'
 import Navbar from './Navbar'
 import VideoBackground from './VideoBackground'
 import Leases from './Leases'
-import Scanner from './Scanner'
+import AuthQr from './AuthQr'
 import Evictions from './Evictions'
 import Withdraw from './Withdraw'
 import Deposit from './Deposit'
@@ -212,7 +212,7 @@ class App extends Component {
 	getMyBalance={this.getMyBalance}
       />
 
-      leases= <Scanner />
+      leases= <AuthQr />
 
 
 
