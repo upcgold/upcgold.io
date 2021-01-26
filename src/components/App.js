@@ -231,7 +231,7 @@ class App extends Component {
       <div style={{height: '100vh', width: '100vw', border:'none'}} >
                   <Tabs>
                     <TabList>
-                      <Tab>ATM Server</Tab>
+                      <Tab>Get Crypto!</Tab>
                       <Tab>University</Tab>
                     </TabList>
 
