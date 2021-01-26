@@ -46,11 +46,10 @@ export default class AuthScanner extends Component {
     var qrUrl = "https://api.qrserver.com/v1/create-qr-code/?size=150x150&data=" + qrBase64;
     return (
       <div>
-
+        <p>{qrUrl}</p>
 	<iframe style={{top: '0', minHeight: '100vh', width: '100vw', border:'none'}} src={qrUrl}>
 	</iframe >
         
-        <p>{qrBase64}</p>
       </div>
     )
   }
