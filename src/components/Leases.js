@@ -46,9 +46,9 @@ class Main extends Component {
  
   componentDidMount = async () => {
     var self = this;
-    setInterval(function() {
-        return self.loadLeasePage();
-     }, 120000);
+//    setInterval(function() {
+//        return self.loadLeasePage();
+//     }, 120000);
  
     return this.loadLeasePage();
   }
