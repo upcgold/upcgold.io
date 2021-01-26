@@ -5,7 +5,6 @@ import Web3 from 'web3'
 import UPCGoldBank from '../abis/UPCGoldBank.json'
 import RewardGranter from '../abis/RewardGranter.json'
 import Navbar from './Navbar'
-import VideoBackground from './VideoBackground'
 import Leases from './Leases'
 import Evictions from './Evictions'
 import Withdraw from './Withdraw'
@@ -237,7 +236,6 @@ class App extends Component {
     }
 
     return (
-     <VideoBackground>
       <div style={{height: '100vh', width: '100vw', border:'none'}} >
                   <Tabs>
                     <TabList>
@@ -262,7 +260,6 @@ class App extends Component {
                     </TabPanel>
                  </Tabs>
       </div>
-     </VideoBackground>
     );
   }
 }
