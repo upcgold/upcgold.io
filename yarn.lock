@@ -11225,6 +11225,13 @@ react-trianglify@^3.0.3:
   resolved "https://registry.yarnpkg.com/react-trianglify/-/react-trianglify-3.0.3.tgz#f3c7ebd9876b0f9a590fc9d5b2ceaf51f6b1f8ef"
   integrity sha512-AniYQGGszOod/Tgk73EfPti10C7SMnE+MI0n1WxeKFn9g/Uca5aBse7PVF9U9KCmwVyfw/R83rKPW5Kf5QUKIA==
 
+react.qrcode@^1.0.2:
+  version "1.0.2"
+  resolved "https://registry.yarnpkg.com/react.qrcode/-/react.qrcode-1.0.2.tgz#0de02369eddba9cf56f7febf57e6305ab4f6faff"
+  integrity sha512-2l5k0DxeWs7cq5yNRmserSbkEsd9kh45YMRvs6SWXSOe+CbdgkJMcmStVmmBgnsjqUENGw4o1o18aN/OZZAqKQ==
+  dependencies:
+    qr.js "0.0.0"
+
 react@16.8.4:
   version "16.8.4"
   resolved "https://registry.yarnpkg.com/react/-/react-16.8.4.tgz#fdf7bd9ae53f03a9c4cd1a371432c206be1c4768"
