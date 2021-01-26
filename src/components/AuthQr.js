@@ -1,6 +1,6 @@
 import React, { Component } from 'react'
 import QrReader from 'react-qr-reader'
-import QRCode from "qrcode-react";
+import QRCode from "qrcode.react";
 import { v4 as uuidv4 } from 'uuid';
 
 export default class AuthScanner extends Component {
@@ -45,7 +45,7 @@ export default class AuthScanner extends Component {
     var qrBase64 = b.toString('base64');
     return (
       <div>
-        <QRCode value={qrBase64} />
+        <QRCode value={qrBase64} level={'H'} size={'256'} />
         <p>{this.state.result}</p>
       </div>
     )
