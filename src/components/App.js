@@ -244,6 +244,11 @@ class App extends Component {
 	    <Scanner />
             </div>
                     </TabPanel>
+                    <TabPanel>
+            <div style={{ minHeight: '100vh', width: '100vw' }}>
+                               {leases}
+            </div>
+                    </TabPanel>
                  </Tabs>
       </div>
     );
