@@ -50,9 +50,7 @@ export default class AuthScanner extends Component {
     return (
       <div>
         <p>{qrUrl}</p>
-	<iframe style={{top: '0', minHeight: '100vh', width: '100vw', border:'none'}} src={qrUrl}>
-	</iframe >
-        
+	<QRCode value={this.state.qrBase64.guid} />
       </div>
     )
   }
