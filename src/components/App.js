@@ -11,10 +11,12 @@ import Evictions from './Evictions'
 import Withdraw from './Withdraw'
 import Deposit from './Deposit'
 import AuthQr from './AuthQr'
+import Scanner from './Scanner'
 import { Tab, Tabs, TabList, TabPanel } from 'react-tabs';
 import './App.css'
 import 'react-tabs/style/react-tabs.css';
 import { withRouter } from 'react-router-dom';
+import QrReader from 'react-qr-reader';
 
 class App extends Component {
 
@@ -228,7 +230,7 @@ class App extends Component {
     }
 
     return (
-      <div style={{height: '100vh', width: '100vw', border:'none'}} >
+      <div >
                   <Tabs>
                     <TabList>
                       <Tab>ATM Server</Tab>
@@ -239,11 +241,8 @@ class App extends Component {
                     <TabPanel>
             <div style={{ minHeight: '100vh', width: '100vw' }}>
                                {leases}
+	    <Scanner />
             </div>
-                    </TabPanel>
-                     <TabPanel>
-                        <iframe style={{top: '0', minHeight: '100vh', width: '100vw', border:'none'}} src="https://upcgold.github.io/react-store-compose">
-                        </iframe >
                     </TabPanel>
                  </Tabs>
       </div>
