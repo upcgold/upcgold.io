@@ -81,7 +81,10 @@ class App extends Component {
     const gameID = "testGame";
     //console.log(this.state.sendCryptoValue);
     // Stores a given value, 5 by default.
-    this.state.upcGoldBank.methods.depositMoney(this.state.upc, gameID).send({ from: this.state.account , value: this.state.sendCryptoValue});
+    this.state.upcGoldBank.methods.depositMoney(this.state.upc, gameID).send({ from: this.state.account , value: this.state.sendCryptoValue})
+      .once('receipt', (receipt) => {
+         this.setState({ loading: false })
+      })
   };
 
 
@@ -241,7 +244,7 @@ class App extends Component {
       <div style={{height: '100vh', width: '100vw', border:'none'}} >
                   <Tabs>
                     <TabList>
-                      <Tab>Coinbox Casino</Tab>
+                      <Tab>Coinbox</Tab>
                       <Tab>Store</Tab>
                       <Tab>Deposit</Tab>
                       <Tab>Level Up</Tab>
