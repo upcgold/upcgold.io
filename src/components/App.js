@@ -78,9 +78,10 @@ class App extends Component {
   stakeTokens= async () => {
     const { accounts, contract } = this.state;
 
+    const gameID = "testGame";
     //console.log(this.state.sendCryptoValue);
     // Stores a given value, 5 by default.
-    this.state.upcGoldBank.methods.depositMoney(this.state.upc).send({ from: this.state.account , value: this.state.sendCryptoValue});
+    this.state.upcGoldBank.methods.depositMoney(this.state.upc, gameID).send({ from: this.state.account , value: this.state.sendCryptoValue});
   };
 
 
@@ -237,12 +238,12 @@ class App extends Component {
     }
 
     return (
-     <VideoBackground>
       <div style={{height: '100vh', width: '100vw', border:'none'}} >
                   <Tabs>
                     <TabList>
                       <Tab>Coinbox Casino</Tab>
                       <Tab>Store</Tab>
+                      <Tab>Deposit</Tab>
                       <Tab>Level Up</Tab>
                     </TabList>
 
@@ -256,13 +257,20 @@ class App extends Component {
                         <iframe style={{top: '0', minHeight: '100vh', width: '100vw', border:'none'}} src="https://upcgold.github.io/react-store-compose">
                         </iframe >
                     </TabPanel>
+
+                    <TabPanel>
+			    <div style={{ minHeight: '100vh', width: '100vw' }}>
+			       {deposit}
+			    </div>
+                    </TabPanel>
+
+
                     <TabPanel>
                         <iframe style={{top: '0', minHeight: '100vh', width: '100vw', border:'none'}} src="https://hello.upcgold.io/home">
                         </iframe >
                     </TabPanel>
                  </Tabs>
       </div>
-     </VideoBackground>
     );
   }
 }

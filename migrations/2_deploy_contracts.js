@@ -14,8 +14,8 @@ module.exports = async function(deployer, network, accounts) {
   //await deployer.deploy(Context)
   //await deployer.deploy(ERC20)
   //await deployer.deploy(IERC20)
-  await deployer.deploy(Migrations)
-  await deployer.deploy(RewardGranter)
+  //await deployer.deploy(Migrations)
+  //await deployer.deploy(RewardGranter)
   //await deployer.deploy(SafeMath)
 //  const UPCGoldBank= await UPCGoldBank.deployed()
 }

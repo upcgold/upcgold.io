@@ -22,14 +22,23 @@ module.exports = {
         process.env.GOERLI_URL),
       network_id: "*"
     },
+    matic: {
+      provider: () => new HDWalletProvider(mnemonic, `https://rpc-mumbai.matic.today`),
+      network_id: 80001,
+      confirmations: 2,
+      timeoutBlocks: 200,
+      skipDryRun: true
+    },
     xdai: {
           provider: function() {
                 return new HDWalletProvider(
                process.env.MNEMONIC,
-               "https://dai.poa.network")
+               "https://api.anyblock.tools/ethereum/poa/xdai/rpc/c6f80ef3-bc49-49f1-9961-82c2644bde63")
           },
+	  confirmations: 2,
+	  skipDryRun: true,
           network_id: 100,
-          gas: 12122960,
+          gas: 12500000,
           gasPrice: 1000000000
     }
   },
