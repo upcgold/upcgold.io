@@ -7,7 +7,7 @@ class Intel extends Component {
   constructor(props) {
     super(props)
     this.state = {
-      daiTokenBalance: '0',
+      code: props.match.params.code,
       isFlipped: false,
     }
   }
@@ -26,6 +26,7 @@ class Intel extends Component {
 
             <ReactCardFlip isFlipped={this.state.isFlipped} flipDirection="horizontal">
              <div>
+	        <b>code is {this.state.code} </b>
                 <button onClick={() => this.flipCard('spin')}
                    className="btn btn-success btn-block btn-lg"
                 >
@@ -50,7 +51,6 @@ class Intel extends Component {
                     <div>
                       <label className="float-left"><b>Stake Tokens</b></label>
                       <span className="float-right text-muted">
-                        Your Balance: {window.web3.utils.fromWei(this.state.daiTokenBalance, 'Ether')}
                       </span>
                     </div>
                     <div className="input-group mb-4">

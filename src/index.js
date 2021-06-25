@@ -15,11 +15,11 @@ const routing = (
           <Link to="/">Home</Link>
         </li>
         <li>
-          <Link to="/intel">Intel</Link>
+          <Link to="/intel/24242342abe42">Intel</Link>
         </li>
       </ul>	
       <Route path="/" component={App} />
-      <Route path="/intel" component={Intel} />
+      <Route path="/intel/:code" component={Intel} />
     </div>
   </HashRouter>
 )
