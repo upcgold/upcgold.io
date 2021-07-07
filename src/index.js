@@ -4,16 +4,13 @@ import 'bootstrap/dist/css/bootstrap.css'
 import App from './components/App';
 import * as serviceWorker from './serviceWorker';
 import Intel from './components/Intel';
-import ScrollToTop from './components/ScrollToTop';
 import { HashRouter, Route, Link } from "react-router-dom";
 
 
 
 const routing = (
   <HashRouter>
-    <ScrollToTop>
       <Route path="/intel/:code" component={App} />
-    </ScrollToTop>
   </HashRouter>
 )
 
