@@ -2,18 +2,31 @@ import React, { Component } from 'react'
 import dai from '../dai.png'
 import ReactCardFlip from 'react-card-flip';
 
+
 class Intel extends Component {
 
   constructor(props) {
     super(props)
     this.state = {
-      code: props.match.params.code,
+      code: "",
       isFlipped: false,
     }
   }
 
   componentDidMount(){
     var self = this;
+    var scan;
+    var tmpCode;
+    try {
+          tmpCode = this.props.intel;
+          tmpCode = tmpCode.substring(7);
+          scan = JSON.parse(atob(tmpCode));
+       }   
+       catch(e){
+          scan = ""; 
+       }   
+    this.state.code = scan.code;
+      
   }
 
   flipCard = (data) => {
@@ -67,7 +80,8 @@ class Intel extends Component {
                         ref={(input2) => { this.input2 = input2 }}
                         className="form-control form-control-lg"
       	          onChange={this.props.updateUpc}
-                        placeholder="String"
+                        placeholder="UPC"
+	                value={this.state.code}
                         required />
       
                       <div className="input-group-append">

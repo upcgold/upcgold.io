@@ -10,6 +10,7 @@ import Leases from './Leases'
 import Evictions from './Evictions'
 import Withdraw from './Withdraw'
 import Deposit from './Deposit'
+import Intel from './Intel'
 import { Tab, Tabs, TabList, TabPanel } from 'react-tabs';
 import './App.css'
 import 'react-tabs/style/react-tabs.css';
@@ -176,8 +177,19 @@ class App extends Component {
       stakingBalance: '0',
       loading: true,
       upc: '',
-      isFlipped: false
+      isFlipped: false,
+      intel: ""
     }
+
+
+
+    let currentPath = props.location.pathname;
+    if( currentPath.includes("intel") ) {
+      this.state.intel = currentPath;
+    }
+
+    console.log("current path is " + this.state.intel);
+
     this.handleChange = this.handleChange.bind(this);
     this.updateUpc= this.updateUpc.bind(this);
     this.getContractBalance= this.getContractBalance.bind(this);
@@ -203,8 +215,10 @@ class App extends Component {
       withdraw= <p id="loader" className="text-center">Loading...</p>
       leases= <p id="loader" className="text-center">Loading...</p>
       evictions= <p id="loader" className="text-center">Loading...</p>
-    } else {
-      deposit = <Deposit
+    }
+    else if(this.state.intel) {
+      deposit = "";
+      deposit = <Intel
         daiTokenBalance={this.state.daiTokenBalance}
         stakingBalance={this.state.stakingBalance}
         contractBalance={this.state.contractBalance}
@@ -213,8 +227,11 @@ class App extends Component {
         handleChange={this.handleChange}
         updateUpc={this.updateUpc}
 	getMyBalance={this.getMyBalance}
+	intel={this.state.intel}
       />
 
+
+    } else {
       leases= <Leases
         daiTokenBalance={this.state.daiTokenBalance}
         stakingBalance={this.state.stakingBalance}
