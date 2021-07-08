@@ -58,7 +58,8 @@ class Intel extends Component {
                       amount = this.input.value.toString()
                       amount = window.web3.utils.toWei(amount, 'Ether')
                       let upc=this.state.code
-      		      this.props.stakeTokens(amount,upc)
+			  console.log("buying " + upc);
+      		      this.props.stakeTokens(upc)
                     }}>
                     <div>
                       <label className="float-left"><b>Stake Tokens</b></label>

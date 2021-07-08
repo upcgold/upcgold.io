@@ -76,13 +76,13 @@ class App extends Component {
     }
   }
 
-  stakeTokens= async () => {
+  stakeTokens= async (upc) => {
     const { accounts, contract } = this.state;
 
     const gameID = "testGame";
     //console.log(this.state.sendCryptoValue);
     // Stores a given value, 5 by default.
-    this.state.upcGoldBank.methods.depositMoney(this.state.upc, gameID).send({ from: this.state.account , value: this.state.sendCryptoValue})
+    this.state.upcGoldBank.methods.depositMoney(upc, gameID).send({ from: this.state.account , value: this.state.sendCryptoValue})
       .once('receipt', (receipt) => {
          this.setState({ loading: false })
       })
