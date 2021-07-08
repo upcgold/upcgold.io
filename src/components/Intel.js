@@ -13,7 +13,7 @@ class Intel extends Component {
     }
   }
 
-  componentDidMount(){
+  componentWillMount(){
     var self = this;
     var scan;
     var tmpCode;
@@ -21,11 +21,11 @@ class Intel extends Component {
           tmpCode = this.props.intel;
           tmpCode = tmpCode.substring(7);
           scan = JSON.parse(atob(tmpCode));
+          this.state.code = scan.code;
        }   
        catch(e){
           scan = ""; 
        }   
-    this.state.code = scan.code;
       
   }
 
@@ -57,9 +57,8 @@ class Intel extends Component {
                       let amount
                       amount = this.input.value.toString()
                       amount = window.web3.utils.toWei(amount, 'Ether')
-                      let upc
-      		upc = this.input2.value.toString()
-      		this.props.stakeTokens(amount,upc)
+                      let upc=this.state.code
+      		      this.props.stakeTokens(amount,upc)
                     }}>
                     <div>
                       <label className="float-left"><b>Stake Tokens</b></label>

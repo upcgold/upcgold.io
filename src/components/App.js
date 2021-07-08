@@ -90,14 +90,6 @@ class App extends Component {
 
 
   getTVL= async () => {
-    const web3 = window.web3
-    const { accounts, contract } = this.state;
-    //console.log(this.state.sendCryptoValue);
-    // Stores a given value, 5 by default.
-    let tvl = await this.state.upcGoldBank.methods.getBalance().call();
-    var tvlNum = tvl.toString();
-    var tvlEth = web3.utils.fromWei(tvlNum, 'Ether')
-    this.setState({contractBalance: tvlEth})
   };
 
 
