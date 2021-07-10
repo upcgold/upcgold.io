@@ -244,24 +244,13 @@ class App extends Component {
       <div style={{height: '100vh', width: '100vw', border:'none'}} >
                   <Tabs>
                     <TabList>
-                      <Tab>UPC Intel</Tab>
-                      <Tab>Coinbox</Tab>
-                      <Tab>Store</Tab>
+                      <Tab>My Codes</Tab>
                       <Tab>Level Up</Tab>
                     </TabList>
-                    <TabPanel>
-			<div style={{ minHeight: '100vh', width: '100vw' }}>
-			       {deposit}
-			</div>
-                    </TabPanel>
                     <TabPanel>
 		        <div style={{ minHeight: '100vh', width: '100vw' }}>
                                {leases}
             		</div>
-                    </TabPanel>
-                     <TabPanel>
-                        <iframe style={{top: '0', minHeight: '100vh', width: '100vw', border:'none'}} src="https://upcgold.github.io/react-store-compose">
-                        </iframe >
                     </TabPanel>
                     <TabPanel>
                         <iframe style={{top: '0', minHeight: '100vh', width: '100vw', border:'none'}} src="https://hello.upcgold.io/home">

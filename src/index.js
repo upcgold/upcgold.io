@@ -9,18 +9,8 @@ import { HashRouter, Route, Link } from "react-router-dom";
 
 const routing = (
   <HashRouter>
-    <div>
-      <ul>
-        <li>
-          <Link to="/">Home</Link>
-        </li>
-        <li>
-          <Link to="/intel/24242342abe42">Intel</Link>
-        </li>
-      </ul>	
       <Route path="/" component={App} />
       <Route path="/intel/:code" component={Intel} />
-    </div>
   </HashRouter>
 )
 
