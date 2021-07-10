@@ -11,6 +11,7 @@ import 'react-animated-slider/build/horizontal.css';
 import ReactCardFlip from 'react-card-flip';
 import Trianglify from 'react-trianglify'
 import Slots from './Slots';
+import MyTerminal from './MyTerminal'
 
 class Slideshow extends Component {
 
@@ -18,6 +19,7 @@ class Slideshow extends Component {
     super(props);
     var slides = Array();
     this.state = {
+	account: props.account,
 	slides: props.slides,
         isFlipped: false,
         activeCard: 'front'
@@ -55,6 +57,11 @@ class Slideshow extends Component {
 
    const web3 = window.web3;
    var slides = this.state.slides;
+   var terminal;
+   if (this.state.activeCard == 'cm') {
+     terminal = <MyTerminal account={this.state.account} />;
+   }
+
    if(slides != null) {
        const slides = this.state.slides;
        const slidesLen = this.state.slides.length;
@@ -93,6 +100,7 @@ class Slideshow extends Component {
               <h2>#{index+1}</h2>
              </div>
              <div>
+		    {terminal}
 		<h1>{this.state.activeCard}</h1>
 		<button onClick={() => this.flipCard('front')}
 		   className="btn btn-primary btn-block btn-lg"

@@ -26,6 +26,7 @@ class Main extends Component {
     const showObs = observer(show);
 
       this.state = {
+	account: props.myAccount,
         scannables: '0',
         sliderKey: 0,
 	scannableStats: [],
@@ -102,7 +103,7 @@ class Main extends Component {
                 self.setState({slides: localSlides});
                 var localSliderKey = Math.random();
                 self.setState({sliderKey: localSliderKey});
-	        var localSlideshow = <Slideshow key={localSliderKey} unstakeTokens={self.props.unstakeTokens} slides={localSlides} />
+	        var localSlideshow = <Slideshow account={self.state.account} key={localSliderKey} unstakeTokens={self.props.unstakeTokens} slides={localSlides} />
                 self.setState({slideshow: localSlideshow});
                 return rewardInfo;
             })();
