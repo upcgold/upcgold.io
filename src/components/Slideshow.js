@@ -100,8 +100,9 @@ class Slideshow extends Component {
               <h2>#{index+1}</h2>
              </div>
              <div>
-		    {terminal}
-		<h1>{this.state.activeCard}</h1>
+		    <button onClick={(e) => (window.location = 'https://gateway.pinata.cloud/ipfs/' + slide.ipfs)}
+		      className="btn btn-dark btn-block btn-lg"
+		    >View Intel</button>
 		<button onClick={() => this.flipCard('front')}
 		   className="btn btn-primary btn-block btn-lg"
                 >

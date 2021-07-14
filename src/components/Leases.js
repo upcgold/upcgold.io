@@ -79,7 +79,7 @@ class Main extends Component {
             (async () => {
                 let data = upcHash.substring(0,upcHash.length);
 		var rewardKey = data + "-reward";
-                rewardInfo = await self.props.getRewardInfo(data);
+                rewardInfo = await self.props.getIntelByScannable(data);
         	var currentUpcState = self.state[data];
         	if(currentUpcState) {
         	   currentUpcState.push(rewardInfo.isOwned);
