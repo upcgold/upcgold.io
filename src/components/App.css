@@ -4,6 +4,12 @@
   text-align: center;
 }
 
+.last {
+  break-after: always;
+}
+
+
+
 .slider {
   height:100vh;
 }

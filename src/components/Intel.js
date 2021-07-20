@@ -10,7 +10,10 @@ class Intel extends Component {
     this.state = {
       code: "",
       isFlipped: false,
+      humanReadableName: "",
     }
+    this.handleNameChange = this.handleNameChange.bind(this);
+
   }
 
   componentWillMount(){
@@ -32,6 +35,11 @@ class Intel extends Component {
   flipCard = (data) => {
     this.setState({isFlipped: !this.state.isFlipped});
   }
+
+  handleNameChange(e) {
+     this.setState({ humanReadableName: e.target.value });
+  };
+
 
 
   render() {
@@ -57,9 +65,10 @@ class Intel extends Component {
                       let amount
                       amount = this.input.value.toString()
                       amount = window.web3.utils.toWei(amount, 'Ether')
+		      let humanReadableName = this.input3.value.toString();
                       let upc=this.state.code
-			  console.log("buying " + upc);
-      		      this.props.stakeTokens(upc)
+			  console.log("buying " + humanReadableName);
+      		      this.props.stakeTokens(upc,humanReadableName)
                     }}>
                     <div>
                       <label className="float-left"><b>Stake Tokens</b></label>
@@ -70,11 +79,19 @@ class Intel extends Component {
                       <input
                         type="text"
                         ref={(input) => { this.input = input }}
-                        className="form-control form-control-lg"
+                        className="form-control form-control-lg last"
       	          onChange={this.props.handleChange}
                         placeholder="xDAI"
                         required />
-      
+	    <br/>
+                      <input
+                        type="text"
+                        ref={(input3) => { this.input3 = input3 }}
+                        className="form-control form-control-lg last"
+      	          onChange={this.handleNameChange}
+                        placeholder=".upc domain name"
+                        required />
+	    <br/>
                       <input
                         type="text"
                         ref={(input2) => { this.input2 = input2 }}

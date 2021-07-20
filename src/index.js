@@ -5,12 +5,11 @@ import App from './components/App';
 import * as serviceWorker from './serviceWorker';
 import Intel from './components/Intel';
 import { HashRouter, Route, Link } from "react-router-dom";
-
-
+import { browserHistory } from 'react-router'
 
 const routing = (
   <HashRouter>
-      <Route path="/intel/:code" component={App} />
+      <Route render= {(props)=>window.location.reload()} path="/intel/:code" component={App} />
   </HashRouter>
 )
 

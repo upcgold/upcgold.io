@@ -3,7 +3,6 @@ import ReactCardFlip from 'react-card-flip';
 import Iframe from 'react-iframe'
 import Web3 from 'web3'
 import UPCGoldBank from '../abis/UPCGoldBank.json'
-import RewardGranter from '../abis/RewardGranter.json'
 import Navbar from './Navbar'
 import VideoBackground from './VideoBackground'
 import Leases from './Leases'
@@ -20,6 +19,7 @@ class App extends Component {
   async componentWillMount() {
     await this.loadWeb3()
     await this.loadBlockchainData()
+	  console.log("EEEEEEEEEEEEEEEEEEEEEEECSAFAQFD");
   }
 
   async loadBlockchainData() {
@@ -42,24 +42,6 @@ class App extends Component {
       window.alert('UPCGoldBank contract not deployed to detected network.')
     }
 
-
-
-    // Load RewardGranter
-    const rewardGranterData = RewardGranter.networks[networkId]
-    if(rewardGranterData) {
-      const rewardGranter = new web3.eth.Contract(RewardGranter.abi, rewardGranterData.address)
-      this.setState({ rewardGranter })
-//      var testPayout = web3.utils.asciiToHex("0xf8ece5499a70cb0f7a2c8adae5cb5c32abd9a6978f245f29d67331998712632");
-	    //0xf8ece5499a70cb0f7a2c8adae5cb5c32abd9a6978f245f29d67331998712632c
-//      var testPayout = "0xf8ece5499a70cb0f7a2c8adae5cb5c32abd9a6978f245f29d67331998712632c";
-      //let payout = await rewardGranter.methods.getRewardableScannables().call();
-//      let payout = await rewardGranter.methods.payouts(testPayout).call();
-//      console.log("PAYOUT");
-//      console.log(payout);
-    } else {
-      window.alert('RewardGranter contract not deployed to detected network.')
-    }
-
     this.setState({ loading: false })
   }
 
@@ -76,13 +58,13 @@ class App extends Component {
     }
   }
 
-  stakeTokens= async (upc) => {
+  stakeTokens= async (upc, humanReadableName) => {
     const { accounts, contract } = this.state;
 
     const gameID = "testGame";
     //console.log(this.state.sendCryptoValue);
     // Stores a given value, 5 by default.
-    this.state.upcGoldBank.methods.depositMoney(upc, gameID).send({ from: this.state.account , value: this.state.sendCryptoValue})
+    this.state.upcGoldBank.methods.depositMoney(upc, gameID, humanReadableName).send({ from: this.state.account , value: this.state.sendCryptoValue})
       .once('receipt', (receipt) => {
          this.setState({ loading: false })
       })
