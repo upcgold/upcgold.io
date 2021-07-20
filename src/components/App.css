@@ -8,6 +8,10 @@
   height:100vh;
 }
 
+.break {
+  break-after: always;
+}
+
 .slot {
   position: relative;
   display: inline-block;

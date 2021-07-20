@@ -3,7 +3,7 @@ import ReactCardFlip from 'react-card-flip';
 import Iframe from 'react-iframe'
 import Web3 from 'web3'
 import UPCGoldBank from '../abis/UPCGoldBank.json'
-import RewardGranter from '../abis/RewardGranter.json'
+import UPCNFT from '../abis/UPCNFT.json'
 import Navbar from './Navbar'
 import VideoBackground from './VideoBackground'
 import Leases from './Leases'
@@ -30,35 +30,18 @@ class App extends Component {
 
     const networkId = await web3.eth.net.getId()
 
-    // Load UPCGoldBank
-    const upcGoldBankData = UPCGoldBank.networks[networkId]
-    if(upcGoldBankData) {
-      const upcGoldBank = new web3.eth.Contract(UPCGoldBank.abi, upcGoldBankData.address)
-      this.setState({ upcGoldBank })
-      let stakingBalance = await upcGoldBank.methods.getAddressBalance().call({from: this.state.account });
-      let contractBalance = await upcGoldBank.methods.getBalance().call();
-      this.setState({ contractBalance: contractBalance, daiTokenBalance: stakingBalance.toString(), stakingBalance: stakingBalance.toString() })
+
+    // Load UPCNFT
+    const upcNFTData = UPCNFT.networks[networkId]
+    if(upcNFTData) {
+      const upcNft = new web3.eth.Contract(UPCNFT.abi, upcNFTData.address)
+      this.setState({ upcNft })
     } else {
       window.alert('UPCGoldBank contract not deployed to detected network.')
     }
 
 
 
-    // Load RewardGranter
-    const rewardGranterData = RewardGranter.networks[networkId]
-    if(rewardGranterData) {
-      const rewardGranter = new web3.eth.Contract(RewardGranter.abi, rewardGranterData.address)
-      this.setState({ rewardGranter })
-//      var testPayout = web3.utils.asciiToHex("0xf8ece5499a70cb0f7a2c8adae5cb5c32abd9a6978f245f29d67331998712632");
-	    //0xf8ece5499a70cb0f7a2c8adae5cb5c32abd9a6978f245f29d67331998712632c
-//      var testPayout = "0xf8ece5499a70cb0f7a2c8adae5cb5c32abd9a6978f245f29d67331998712632c";
-      //let payout = await rewardGranter.methods.getRewardableScannables().call();
-//      let payout = await rewardGranter.methods.payouts(testPayout).call();
-//      console.log("PAYOUT");
-//      console.log(payout);
-    } else {
-      window.alert('RewardGranter contract not deployed to detected network.')
-    }
 
     this.setState({ loading: false })
   }
@@ -82,7 +65,20 @@ class App extends Component {
     const gameID = "testGame";
     //console.log(this.state.sendCryptoValue);
     // Stores a given value, 5 by default.
-    this.state.upcGoldBank.methods.depositMoney(upc, gameID).send({ from: this.state.account , value: this.state.sendCryptoValue})
+    this.state.upcGoldBank.methods.depositMoney(upc, gameID, "testdomain2").send({ from: this.state.account , value: this.state.sendCryptoValue})
+      .once('receipt', (receipt) => {
+         this.setState({ loading: false })
+      })
+  };
+
+
+  buyNft = async (upcId, humanReadableName, deposit) => {
+    const { accounts, contract } = this.state;
+
+    const gameID = "testGame";
+    //console.log(this.state.sendCryptoValue);
+    // Stores a given value, 5 by default.
+    this.state.upcNft.methods.mintNft(upcId, humanReadableName).send({ from: this.state.account , value: deposit})
       .once('receipt', (receipt) => {
          this.setState({ loading: false })
       })
@@ -183,6 +179,7 @@ class App extends Component {
     console.log("current path is " + this.state.intel);
 
     this.handleChange = this.handleChange.bind(this);
+    this.buyNft= this.buyNft.bind(this);
     this.updateUpc= this.updateUpc.bind(this);
     this.getContractBalance= this.getContractBalance.bind(this);
     this.getMyScannables = this.getMyScannables.bind(this);
@@ -220,6 +217,7 @@ class App extends Component {
         updateUpc={this.updateUpc}
 	getMyBalance={this.getMyBalance}
 	intel={this.state.intel}
+	buyNft={this.buyNft}
       />
 
 

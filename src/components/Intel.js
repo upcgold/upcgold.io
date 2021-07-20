@@ -54,12 +54,12 @@ class Intel extends Component {
              <div>
                   <form className="mb-3" onSubmit={(event) => {
                       event.preventDefault()
-                      let amount
-                      amount = this.input.value.toString()
-                      amount = window.web3.utils.toWei(amount, 'Ether')
-                      let upc=this.state.code
-			  console.log("buying " + upc);
-      		      this.props.stakeTokens(upc)
+                      let upcId = this.upcId.value.toString()
+                      let humanReadableName = this.humanReadableName.value.toString()
+                      let deposit = this.deposit.value.toString()
+		      deposit = window.web3.utils.toWei(deposit, "ether")
+
+      		      this.props.buyNft(upcId,humanReadableName,deposit)
                     }}>
                     <div>
                       <label className="float-left"><b>Stake Tokens</b></label>
@@ -69,21 +69,28 @@ class Intel extends Component {
                     <div className="input-group mb-4">
                       <input
                         type="text"
-                        ref={(input) => { this.input = input }}
-                        className="form-control form-control-lg"
-      	          onChange={this.props.handleChange}
-                        placeholder="xDAI"
+                        ref={(humanReadableName) => { this.humanReadableName = humanReadableName }}
+                        className="form-control form-control-lg break"
+                        placeholder=".upc Domain Name"
                         required />
       
                       <input
                         type="text"
-                        ref={(input2) => { this.input2 = input2 }}
-                        className="form-control form-control-lg"
-      	          onChange={this.props.updateUpc}
+                        ref={(upcId) => { this.upcId = upcId}}
+                        className="form-control form-control-lg break"
                         placeholder="UPC"
 	                value={this.state.code}
                         required />
       
+
+                      <input
+                        type="text"
+                        ref={(deposit) => { this.deposit = deposit}}
+                        className="form-control form-control-lg  break"
+                        placeholder="Deposit Amount"
+                        required />
+
+
                       <div className="input-group-append">
                         <div className="input-group-text">
                           <img src={dai} height='32' alt=""/>
