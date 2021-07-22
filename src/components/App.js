@@ -4,6 +4,7 @@ import Iframe from 'react-iframe'
 import Web3 from 'web3'
 import UPCGoldBank from '../abis/UPCGoldBank.json'
 import UPCNFT from '../abis/UPCNFT.json'
+import xUPC from '../abis/xUPC.json'
 import Navbar from './Navbar'
 import VideoBackground from './VideoBackground'
 import Leases from './Leases'
@@ -36,6 +37,20 @@ class App extends Component {
     if(upcNFTData) {
       const upcNft = new web3.eth.Contract(UPCNFT.abi, upcNFTData.address)
       this.setState({ upcNft })
+    } else {
+      window.alert('UPCGoldBank contract not deployed to detected network.')
+    }
+
+
+    // Load xUPC
+    const xUPCData = xUPC.networks[networkId]
+    if(xUPCData) {
+      const XUPC = new web3.eth.Contract(xUPC.abi, xUPCData.address)
+      this.setState({ xupc: XUPC })
+      var upcBal = await this.state.xupc.methods.balanceOf(this.state.account).call({ from: this.state.account });
+	    console.log(upcBal);
+      upcBal = window.web3.utils.fromWei(upcBal, "ether");
+      this.setState({ upcBal })
     } else {
       window.alert('UPCGoldBank contract not deployed to detected network.')
     }
@@ -96,6 +111,8 @@ class App extends Component {
 
   componentDidMount(){
     var self = this;
+
+//     this.setState({ upcBal });
     setInterval(function() {
         return self.getTVL();
      }, 2000);
@@ -249,6 +266,7 @@ class App extends Component {
 
     return (
       <div style={{height: '100vh', width: '100vw', border:'none'}} >
+	    <b>UPC Balance is: {this.state.upcBal} </b>
 			       {deposit}
       </div>
     );
