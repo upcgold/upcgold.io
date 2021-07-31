@@ -5,6 +5,9 @@ pragma experimental ABIEncoderV2;
 import "https://github.com/OpenZeppelin/openzeppelin-contracts/blob/release-v3.4/contracts/token/ERC721/ERC721.sol";
 import "https://github.com/OpenZeppelin/openzeppelin-contracts/blob/release-v3.4/contracts/utils/Counters.sol";
 import "https://github.com/OpenZeppelin/openzeppelin-contracts/blob/release-v3.4/contracts/access/Ownable.sol";
+import "https://github.com/OpenZeppelin/openzeppelin-contracts/blob/release-v3.4/contracts/token/ERC20/IERC20.sol";
+
+import "./xUPC.sol";
 
 contract UPCNFT is ERC721, Ownable {
     using Counters for Counters.Counter;
@@ -18,8 +21,14 @@ contract UPCNFT is ERC721, Ownable {
         string   word;
         string   ipfs;
         string   humanReadableName;
+        bool     minted;
     }
-
+    
+    struct NFTLookup {
+        uint256  tokenId;
+        bool     minted;
+        address  staker;  //address of the staker
+    }    
 
      
     struct Deposit {
@@ -39,20 +48,38 @@ contract UPCNFT is ERC721, Ownable {
     mapping(bytes32 => string)    public upcHashToDomain;
     
     
-    string public defaultIpfs;
-    address payable private  bank;
-    uint    public totalBalance;
-    uint    currentNftPrice;
-
+    mapping(address => NFTMeta[])    public nftsToMintByAddress;
+    mapping(bytes32 => NFTLookup)    public nftsToMintByHash;
 
     
+    
+    string public defaultIpfs;
+    address payable private  bank;
+
+    uint    public totalBalance;
+    uint256    currentNftPrice;
+    xUPC    private _token;
+
+
 
     constructor() ERC721("UPCNFT", "UPCN") Ownable() public {
         bank = msg.sender;
         defaultIpfs = "QmejN35QPpmJXZ55jgVjVU1NgTGwgGg5GufWd81rRCZPF4";
-        currentNftPrice = 50000000000000000;
+        currentNftPrice = 1 ether;
     }
     
+
+        
+    function getTotalCurrency() external view  returns(uint256) {
+        return _token.totalSupply();
+    }
+
+
+
+    function setPayToken(address  addy) external onlyOwner {
+        _token = xUPC(addy);
+    }
+
     
     function getMyNfts() external view returns(NFTMeta[] memory) {
         return addressToNFTMeta[msg.sender];
@@ -104,63 +131,76 @@ contract UPCNFT is ERC721, Ownable {
         return true;
     }
 
+    
+    function approvePurchase() public {
+        _token.approve(address(this), currentNftPrice);
+    }
+    
 
-    function mintNft(string memory upcId, string memory humanReadableName) external payable returns (uint256) {
-
-        address staker = msg.sender;
-        uint payedPrice = msg.value;
-        
-        uint remainderAfterPaying = payedPrice - currentNftPrice;
-        
-        require(payedPrice >= currentNftPrice , "Please send proper price to mint NFT");
-
-        
-        bank.transfer(msg.value);
-        totalBalance += msg.value;
-        
-
+    
+    function buyNft(string memory upcId, string memory humanReadableName) public {
+        _token.transferFrom(msg.sender, address(this), currentNftPrice);
         bytes32 upcHash = sha256(abi.encodePacked(upcId));
-
-        string memory testHumanReadable = hashedHumanReadableLookup[humanReadableName];
-        string memory upcExistsTest  = upcHashToDomain[upcHash];
-
-        
-        
-        bytes memory tempEmptyStringTest = bytes(testHumanReadable); // Uses memory
-        bytes memory tempUpcExistTest = bytes(upcExistsTest); // Uses memory
-
-        require(tempUpcExistTest.length == 0  , "Sorry, this UPC already purchased");
-        require(tempEmptyStringTest.length  == 0  , "Sorry, this .upc domain is already taken ");  //make sure that the domain has not been registered
-        
-
-        if(remainderAfterPaying > 0) {
-            balanceReceived[msg.sender].totalBalance += remainderAfterPaying;
-            Deposit memory deposit = Deposit(remainderAfterPaying, now);
-            balanceReceived[msg.sender].deposits[balanceReceived[msg.sender].numPayments] = deposit;
-            balanceReceived[msg.sender].numPayments++; 
-        }
-
-
-
         _tokenIds.increment();
         uint256 newNftTokenId = _tokenIds.current();
-
+        
+        //add the metadata to the array to alert that an nft is available for minting
         NFTMeta memory nftMeta;
         nftMeta.tokenId = newNftTokenId;
-        nftMeta.staker = staker;
+        nftMeta.staker = msg.sender;
         nftMeta.upcHash = upcHash;
         nftMeta.word = upcId;
         nftMeta.ipfs = defaultIpfs;
         nftMeta.humanReadableName = humanReadableName;
+        nftMeta.minted = false;
+        nftsToMintByAddress[msg.sender].push(nftMeta);
+        
+        
+        NFTLookup memory nftLookup;
+        nftLookup.tokenId = newNftTokenId;
+        nftLookup.minted = false;
+        nftLookup.staker = msg.sender;
+        nftsToMintByHash[upcHash] = nftLookup;
+    }
+    
+    
+
+    function mintNft(string memory upcId) public payable returns (uint256) {
+
+        address staker = msg.sender;
+        bytes32 upcHash = sha256(abi.encodePacked(upcId));
+
+        require(msg.sender == nftsToMintByHash[upcHash].staker , "Only owner can mint this nft");
+        require(nftsToMintByHash[upcHash].minted == false, "NFT already minted");
+    
+        uint256 tokenIdToMint = nftsToMintByHash[upcHash].tokenId;
+        NFTMeta memory nftToMint;
+
+        for(uint i = 0; i < nftsToMintByAddress[msg.sender].length; i++) {
+            if(nftsToMintByAddress[msg.sender][i].tokenId == tokenIdToMint) {
+               nftToMint = nftsToMintByAddress[msg.sender][i];
+            }
+        }
+        
+
+        
+        NFTMeta memory nftMeta;
+        nftMeta.tokenId = nftToMint.tokenId;
+        nftMeta.staker = nftToMint.staker;
+        nftMeta.upcHash = nftToMint.upcHash;
+        nftMeta.word = nftToMint.word;
+        nftMeta.ipfs = nftToMint.ipfs;
+        nftMeta.humanReadableName = nftToMint.humanReadableName;
         
         addressToNFTMeta[staker].push(nftMeta);
-        hashedHumanReadableLookup[humanReadableName] = defaultIpfs;
+        hashedHumanReadableLookup[nftToMint.humanReadableName] = defaultIpfs;
         
-        upcHashToDomain[upcHash] = humanReadableName;
+        upcHashToDomain[upcHash] = nftToMint.humanReadableName;
         
-        _safeMint(staker, newNftTokenId);
-        _setTokenURI(newNftTokenId, defaultIpfs);
+        _safeMint(staker, tokenIdToMint);
+        _setTokenURI(tokenIdToMint, defaultIpfs);
 
-        return newNftTokenId;
+        return tokenIdToMint;
+
     }
 }
