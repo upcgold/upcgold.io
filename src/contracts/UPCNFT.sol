@@ -197,6 +197,11 @@ contract UPCNFT is ERC721, Ownable {
         
         upcHashToDomain[upcHash] = nftToMint.humanReadableName;
         
+        //update this upc as minted
+        nftsToMintByHash[upcHash].minted = true;
+
+        
+        
         _safeMint(staker, tokenIdToMint);
         _setTokenURI(tokenIdToMint, defaultIpfs);
 
