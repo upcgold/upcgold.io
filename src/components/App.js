@@ -2,7 +2,6 @@ import React, { Component } from 'react'
 import ReactCardFlip from 'react-card-flip';
 import Iframe from 'react-iframe'
 import Web3 from 'web3'
-import UPCGoldBank from '../abis/UPCGoldBank.json'
 import UPCNFT from '../abis/UPCNFT.json'
 import xUPC from '../abis/xUPC.json'
 import Navbar from './Navbar'
@@ -38,7 +37,7 @@ class App extends Component {
       const upcNft = new web3.eth.Contract(UPCNFT.abi, upcNFTData.address)
       this.setState({ upcNft })
     } else {
-      window.alert('UPCGoldBank contract not deployed to detected network.')
+      //window.alert('UPCNFT contract not deployed to detected network.')
     }
 
 
@@ -52,7 +51,7 @@ class App extends Component {
       upcBal = window.web3.utils.fromWei(upcBal, "ether");
       this.setState({ upcBal })
     } else {
-      window.alert('UPCGoldBank contract not deployed to detected network.')
+      //window.alert('UPCGoldBank contract not deployed to detected network.')
     }
 
 

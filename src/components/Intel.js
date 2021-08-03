@@ -1,5 +1,6 @@
 import React, { Component } from 'react'
 import dai from '../dai.png'
+import MyTerminal from './MyTerminal'
 import ReactCardFlip from 'react-card-flip';
 
 
@@ -36,6 +37,9 @@ class Intel extends Component {
 
   render() {
     return (
+	    <div>
+
+	    <MyTerminal />
 
             <ReactCardFlip isFlipped={this.state.isFlipped} flipDirection="horizontal">
              <div>
@@ -112,7 +116,8 @@ class Intel extends Component {
                         Back
                 </button>
              </div>
-           </ReactCardFlip>);
+           </ReactCardFlip>
+	  </div>);
   }
 }
 
