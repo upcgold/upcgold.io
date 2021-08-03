@@ -36,6 +36,7 @@ class App extends Component {
     if(upcNFTData) {
       const upcNft = new web3.eth.Contract(UPCNFT.abi, upcNFTData.address)
       this.setState({ upcNft })
+      this.setState({ upcNFTData: upcNFTData })
     } else {
       //window.alert('UPCNFT contract not deployed to detected network.')
     }
@@ -145,6 +146,21 @@ class App extends Component {
     return stakingBalance.toString();
   };
 
+
+  approve= async () => {
+    const web3 = window.web3
+    const upcNFTData = this.state.upcNFTData;
+
+    const { accounts, contract } = this.state;
+
+    console.log(upcNFTData.address);
+    var approval = await this.state.xupc.methods.approve(upcNFTData.address, "10000000000000000000").send({ from: this.state.account });
+    this.setState({daiTokenBalance: approval.toString() });
+    return approval.toString();
+  };
+
+
+
   getRewardInfo= async (upcHash) => {
     const { accounts, contract } = this.state;
     let payout = await this.state.rewardGranter.methods.payouts(upcHash).call({from: this.state.account });
@@ -202,6 +218,7 @@ class App extends Component {
     this.getScannable = this.getScannable.bind(this);
     this.getMyBalance = this.getMyBalance.bind(this);
     this.getTVL = this.getTVL.bind(this);
+    this.approve= this.approve.bind(this);
     this.handleFlip = this.handleFlip.bind(this);
   }
 
@@ -233,6 +250,7 @@ class App extends Component {
         updateUpc={this.updateUpc}
 	getMyBalance={this.getMyBalance}
 	intel={this.state.intel}
+	approve={this.approve}
 	buyNft={this.buyNft}
       />
 
@@ -265,7 +283,6 @@ class App extends Component {
 
     return (
       <div style={{height: '100vh', width: '100vw', border:'none'}} >
-	    <b>UPC Balance is: {this.state.upcBal} </b>
 			       {deposit}
       </div>
     );

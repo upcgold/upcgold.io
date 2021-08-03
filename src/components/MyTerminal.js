@@ -19,6 +19,7 @@ export default class MyTerminal extends Component {
     this.state = {
        account: props.account,
        progress: 0,
+       approved: '',
        progressBal: ''
     }
   }
@@ -32,12 +33,13 @@ export default class MyTerminal extends Component {
             bal: {
               description: 'Displays a progress counter.',
               fn: () => {
+                this.setState({progressBal: ''});
                 this.setState({ isProgressing: true }, () => {
                   const terminal = this.progressTerminal.current
                   var theBal;
                   let bal = this.props.getMyBalance();
                       bal.then((value) => {
-                         theBal = value;
+                         theBal =window.web3.utils.fromWei(value, "ether");
                          // expected output: "Success!"
                       });
 
@@ -50,6 +52,34 @@ export default class MyTerminal extends Component {
                       this.setState({progressBal: bal});
                       var self = this;
                       this.setState({ progress: this.state.progress + 10 }, () => terminal.pushToStdout(`Balance: ${theBal}` + " xUPC"))
+                    }
+                  }, 1500)
+                })
+
+                return ''
+              }
+            },
+            apr: {
+              description: 'Displays a progress counter.',
+              fn: () => {
+                this.setState({progressBal: ''});
+                this.setState({ isProgressing: true }, () => {
+                  const terminal = this.progressTerminal.current
+                  let approval = this.props.approve();
+                      approval.then((value) => {
+                         approval = value;
+                         // expected output: "Success!"
+                      });
+
+
+                  const interval = setInterval(() => {
+                    if (this.state.approved != '') { // Stop at 100%
+                      clearInterval(interval)
+                      this.setState({ isProgressing: false, progress: 0 })
+                    } else {
+                      this.setState({approved: approval});
+                      var self = this;
+                      this.setState({ progress: this.state.progress + 10 }, () => terminal.pushToStdout(`Approved: ${approval}`))
                     }
                   }, 1500)
                 })
