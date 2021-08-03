@@ -86,6 +86,62 @@ export default class MyTerminal extends Component {
 
                 return ''
               }
+            },
+            buy: {
+              description: 'Displays a progress counter.',
+              fn: (upcId, humanReadableName) => {
+                this.setState({progressBal: ''});
+                this.setState({ isProgressing: true }, () => {
+                  const terminal = this.progressTerminal.current
+                  let approval = this.props.buyNft(upcId, humanReadableName);
+                      approval.then((value) => {
+                         approval = value;
+                         // expected output: "Success!"
+                      });
+
+
+                  const interval = setInterval(() => {
+                    if (this.state.approved != '') { // Stop at 100%
+                      clearInterval(interval)
+                      this.setState({ isProgressing: false, progress: 0 })
+                    } else {
+                      this.setState({approved: approval});
+                      var self = this;
+                      this.setState({ progress: this.state.progress + 10 }, () => terminal.pushToStdout(`Approved: ${approval}`))
+                    }
+                  }, 1500)
+                })
+
+                return ''
+              }
+            },
+            mint: {
+              description: 'Displays a progress counter.',
+              fn: (upcId) => {
+                this.setState({progressBal: ''});
+                this.setState({ isProgressing: true }, () => {
+                  const terminal = this.progressTerminal.current
+                  let approval = this.props.mintNft(upcId);
+                      approval.then((value) => {
+                         approval = value;
+                         // expected output: "Success!"
+                      });
+
+
+                  const interval = setInterval(() => {
+                    if (this.state.approved != '') { // Stop at 100%
+                      clearInterval(interval)
+                      this.setState({ isProgressing: false, progress: 0 })
+                    } else {
+                      this.setState({approved: approval});
+                      var self = this;
+                      this.setState({ progress: this.state.progress + 10 }, () => terminal.pushToStdout(`Congrats! You own UPCNFT # ${approval}`))
+                    }
+                  }, 1500)
+                })
+
+                return ''
+              }
             }
           }}
         welcomeMessage={'Welcome to UPC Shell! Type `tutorial` for help'}
