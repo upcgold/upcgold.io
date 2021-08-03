@@ -39,7 +39,7 @@ class Intel extends Component {
     return (
 	    <div>
 
-	    <MyTerminal />
+	    <MyTerminal getMyBalance={this.props.getMyBalance} account={this.state.code} />
 
             <ReactCardFlip isFlipped={this.state.isFlipped} flipDirection="horizontal">
              <div>

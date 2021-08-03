@@ -140,7 +140,7 @@ class App extends Component {
   getMyBalance = async () => {
     const { accounts, contract } = this.state;
 
-    let stakingBalance = await this.state.upcGoldBank.methods.getAddressBalance().call({from: this.state.account });
+    var stakingBalance = await this.state.xupc.methods.balanceOf(this.state.account).call({ from: this.state.account });
     this.setState({daiTokenBalance: stakingBalance.toString() });
     return stakingBalance.toString();
   };
