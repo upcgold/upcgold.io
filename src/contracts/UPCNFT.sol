@@ -45,6 +45,7 @@ contract UPCNFT is ERC721, Ownable {
     ) internal
       override(ERC721) {
         super._beforeTokenTransfer(from, to, tokenId);
+        //if(nftsToMintByAddress[from])
         /*
         NFTMeta memory toTransfer;
 
@@ -117,7 +118,17 @@ contract UPCNFT is ERC721, Ownable {
     }
 
 
-
+    //returns the position in the address array that an nft holds
+    function findTokenIndexByAddress(address owner, uint256 tokenId) public payable returns (int) {
+        uint i = 0;
+        int found = -1;
+        for(i = 0; i < nftsToMintByAddress[owner].length; i++) {
+            if(nftsToMintByAddress[owner][i].tokenId == tokenId) {
+               found = int(i);
+            }
+        }
+        return found;
+    }
 
     function mintNft(string memory upcId) public payable returns (uint256) {
 
@@ -130,12 +141,14 @@ contract UPCNFT is ERC721, Ownable {
         uint256 tokenIdToMint = nftsToMintByHash[upcHash].tokenId;
         NFTMeta memory nftToMint;
 
-        for(uint i = 0; i < nftsToMintByAddress[msg.sender].length; i++) {
-            if(nftsToMintByAddress[msg.sender][i].tokenId == tokenIdToMint) {
-               nftToMint = nftsToMintByAddress[msg.sender][i];
-            }
-        }
+        int indexToMint = findTokenIndexByAddress(msg.sender, tokenIdToMint);
         
+
+        require(indexToMint > 0, "Error trying to mint an NFT that is not in range");
+        
+        //cast the result to a uint
+        nftToMint = nftsToMintByAddress[msg.sender][uint(indexToMint)];
+
 
         NFTMeta memory nftMeta;
         nftMeta.tokenId = nftToMint.tokenId;

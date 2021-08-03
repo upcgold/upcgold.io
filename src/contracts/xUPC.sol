@@ -2,8 +2,8 @@
 pragma solidity ^0.6.2;
 
 import "https://github.com/OpenZeppelin/openzeppelin-contracts/blob/release-v3.4/contracts/token/ERC20/ERC20.sol";
+import "https://github.com/OpenZeppelin/openzeppelin-contracts/blob/release-v3.4/contracts/token/ERC20/ERC20Burnable.sol";
 import "https://github.com/OpenZeppelin/openzeppelin-contracts/blob/release-v3.4/contracts/utils/Context.sol";
-
 
 /**
  * @title SimpleToken
@@ -11,9 +11,10 @@ import "https://github.com/OpenZeppelin/openzeppelin-contracts/blob/release-v3.4
  * Note they can later distribute these tokens as they wish using `transfer` and other
  * `ERC20` functions.
  */
-contract xUPC is Context, ERC20 {
+contract xUPC is Context, ERC20, ERC20Burnable {
 
 
+    uint rehash = 3;
     address private owner;
     struct Reward {
         uint256  amount;
@@ -21,10 +22,11 @@ contract xUPC is Context, ERC20 {
         address payable miner;
     }
     
+    Reward[] public rewards;
     /**
      * @dev Constructor that gives _msgSender() all of existing tokens.
      */
-    constructor () public  ERC20("UPC Matrix", "XUPC") {
+    constructor () ERC20("UPC Matrix", "XUPC") public{
         _mint(_msgSender(), 10000 * (10 ** uint256(decimals())));
         owner = msg.sender;
     }
@@ -41,13 +43,17 @@ contract xUPC is Context, ERC20 {
         _;
     }
 
-    
+    0xD2AA536Ea5960be7b756468E686f4034722E59d7
     function addReward(uint256 amount, string memory winningHash, address payable miner) public payable onlyOwner {
-        
+        Reward memory newRewreward;
+        newRewreward.amount = amount;
+        newRewreward.winningHash = winningHash;
+        newRewreward.miner = miner;
+        rewards.push(newRewreward);
     }
     
     function clearRewards() public  onlyOwner{
-        
+        delete rewards;
     }
     
     function stringToBytes32(string memory source) public pure returns (bytes32 result) {
