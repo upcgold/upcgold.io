@@ -99,13 +99,14 @@ class App extends Component {
       })
   };
 
-  buyNft = async (upcId, humanReadableName, deposit) => {
+  buyNft = async (upcId, humanReadableName) => {
     const { accounts, contract } = this.state;
 
     const gameID = "testGame";
     //console.log(this.state.sendCryptoValue);
     // Stores a given value, 5 by default.
-    this.state.upcNft.methods.buyNft(upcId, humanReadableName).send({ from: this.state.account , value: deposit})
+	  console.log("buying " + upcId);
+    this.state.upcNft.methods.buyNft(upcId, humanReadableName).send({ from: this.state.account })
       .once('receipt', (receipt) => {
          this.setState({ loading: false })
       })

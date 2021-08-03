@@ -89,11 +89,11 @@ export default class MyTerminal extends Component {
             },
             buy: {
               description: 'Displays a progress counter.',
-              fn: (upcId, humanReadableName) => {
+              fn: (humanReadableName) => {
                 this.setState({progressBal: ''});
                 this.setState({ isProgressing: true }, () => {
                   const terminal = this.progressTerminal.current
-                  let approval = this.props.buyNft(upcId, humanReadableName);
+                  let approval = this.props.buyNft(this.state.account, humanReadableName);
                       approval.then((value) => {
                          approval = value;
                          // expected output: "Success!"
