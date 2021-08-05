@@ -28,6 +28,7 @@ export default class MyTerminal extends Component {
     var promptlabel = this.state.account + '@upc_shell>';
     return (
       <Terminal
+        style={{"maxHeight":"300px"}}
         ref={this.progressTerminal}
         commands={{
             bal: {
@@ -62,26 +63,45 @@ export default class MyTerminal extends Component {
             apr: {
               description: 'Displays a progress counter.',
               fn: () => {
+                var progress = 0;
                 this.setState({progressBal: ''});
+                this.setState({progress: 0});
+                this.setState({approved: false});
                 this.setState({ isProgressing: true }, () => {
                   const terminal = this.progressTerminal.current
                   let approval = this.props.approve();
+
+
+                  const intervalApprov = setInterval(() => {
+                    if (!this.state.approved) { // Stop at 100%
+                      terminal.clearStdout();
+                      this.setState({ progress: this.state.progress + 1 }, () => terminal.pushToStdout(`Request Processing: ${this.state.progress}`))
+                    }
+                  }, 1000)
+
+
+
+
+
+
+
+
                       approval.then((value) => {
                          approval = value;
                          // expected output: "Success!"
-                      });
 
-
-                  const interval = setInterval(() => {
-                    if (this.state.approved != '') { // Stop at 100%
-                      clearInterval(interval)
-                      this.setState({ isProgressing: false, progress: 0 })
-                    } else {
-                      this.setState({approved: approval});
-                      var self = this;
-                      this.setState({ progress: this.state.progress + 10 }, () => terminal.pushToStdout(`Approved: ${approval}`))
-                    }
-                  }, 1500)
+                         const interval = setInterval(() => {
+                           if (!value) { // Stop at 100%
+                             this.setState({ progress: this.state.progress + 10 }, () => terminal.pushToStdout(`Request Processing: ${progress}`))
+                           } else {
+                             this.setState({approved: true});
+                             var self = this;
+                             this.setState({ progress: this.state.progress + 10 }, () => terminal.pushToStdout(`Approved: ${approval}`))
+                             
+                             clearInterval(interval)
+                           }
+                         }, 1500)
+                  });
                 })
 
                 return ''
@@ -144,8 +164,9 @@ export default class MyTerminal extends Component {
               }
             }
           }}
-        welcomeMessage={'Welcome to UPC Shell! Type `tutorial` for help'}
+        welcomeMessage={'Welcome to UPC Shell! \n Type `tutorial` for help'}
         promptLabel={promptlabel}
+        autoFocus={true}
       />
     )
   }
