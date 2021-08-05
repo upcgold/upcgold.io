@@ -1,6 +1,7 @@
 import React, { Component } from 'react'
 import dai from '../dai.png'
 import MyTerminal from './MyTerminal'
+import MyTicker from './MyTicker'
 import ReactCardFlip from 'react-card-flip';
 
 
@@ -49,16 +50,12 @@ class Intel extends Component {
 
             <ReactCardFlip isFlipped={this.state.isFlipped} flipDirection="horizontal">
              <div>
-                <button onClick={() => this.flipCard('spin')}
-                   className="btn btn-success btn-block btn-lg"
-                >
-                        Read Intel
-                </button>
                 <button onClick={() => this.flipCard('cm')}
                    className="btn btn-dark btn-block btn-lg"
                 >
-                  *crypto mode*
+                  Crypto Mode
                 </button>
+	        <MyTicker />
              </div>
              <div>
                   <form className="mb-3" onSubmit={(event) => {
