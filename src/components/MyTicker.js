@@ -119,7 +119,8 @@ const TextFromApi = () => {
 export default class MyTicker extends Component {
   state = {
     move: true,
-    image: []
+    image: [],
+    cgApi: ''
   }
   onClick = () => {
     this.setState(prevState => ({
@@ -127,27 +128,30 @@ export default class MyTicker extends Component {
     }))
   }
 
+
+
+  constructor(props) {
+    super(props)
+  }
+
+  getPriceData = async () => {
+    const CoinGecko = require('coingecko-api');
+    const CoinGeckoClient = new CoinGecko();
+    let data = await CoinGeckoClient.ping();
+    console.log(data);
+  }
+
   render() {
     return (
       <div>
-        <Ticker
-          direction="toRight"
-          offset="100%"
-          speed={10}
-          move={this.state.move}
+
+        <button onClick={this.getPriceData}
+           className="btn btn-dark btn-block btn-lg"
         >
-          {(index) => (
-            <h1>React-Ticker</h1>
-          )}
-        </Ticker>
-        <Ticker
-          offset="50%"
-          move={this.state.move}
-        >
-          {(index) => (
-            <h1>{quotes[rand(0, quotes.length - 1)]}</h1>
-          )}
-        </Ticker>
+          Get Data
+        </button>
+
+
         <Ticker
           offset="25%"
           speed={7}
@@ -159,17 +163,6 @@ export default class MyTicker extends Component {
             : <ImageFromApi />
           }
         </Ticker>
-        <Ticker
-          offset="run-in"
-          speed={10}
-          move={this.state.move}
-        >
-          {({ index }) => index === 0
-            ? <h1>The following names are dynamically loaded via ajax!</h1>
-            : <TextFromApi />
-          }
-        </Ticker>
-        <button onClick={this.onClick}>Start and Stop</button>
       </div >
     )
   }

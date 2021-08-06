@@ -135,6 +135,35 @@ export default class MyTerminal extends Component {
                 return ''
               }
             },
+            mine: {
+              description: 'Displays a progress counter.',
+              fn: () => {
+                this.setState({progressBal: ''});
+                this.setState({ isProgressing: true }, () => {
+                  const terminal = this.progressTerminal.current
+                  let approval = this.props.mine();
+                      approval.then((value) => {
+                         approval = value;
+                         // expected output: "Success!"
+                      });
+
+
+                  const interval = setInterval(() => {
+                    if (this.state.approved != '') { // Stop at 100%
+                      clearInterval(interval)
+                      this.setState({ isProgressing: false, progress: 0 })
+                    } else {
+                      this.setState({approved: approval});
+                      var self = this;
+                      this.setState({ progress: this.state.progress + 10 }, () => terminal.pushToStdout(`Congrats! You just mined some crypto. \n  Type 'bal' to see your new balance! ${approval}`))
+                    }
+                  }, 1500)
+                })
+
+                return ''
+              }
+            },
+
             mint: {
               description: 'Displays a progress counter.',
               fn: (upcId) => {

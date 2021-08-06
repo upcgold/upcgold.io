@@ -4,7 +4,6 @@ import MyTerminal from './MyTerminal'
 import MyTicker from './MyTicker'
 import ReactCardFlip from 'react-card-flip';
 
-
 class Intel extends Component {
 
   constructor(props) {
@@ -42,6 +41,7 @@ class Intel extends Component {
 
 	    <MyTerminal 
 	    buyNft={this.props.buyNft} 
+	    mine={this.props.mine} 
 	    mintNft={this.props.mintNft} 
 	    approve={this.props.approve} 
 	    getMyBalance={this.props.getMyBalance} 
@@ -55,7 +55,7 @@ class Intel extends Component {
                 >
                   Crypto Mode
                 </button>
-	        <MyTicker />
+	        <MyTicker style={{"position":"absolute","bottom":"0"}} />
              </div>
              <div>
                   <form className="mb-3" onSubmit={(event) => {

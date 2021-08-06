@@ -172,6 +172,18 @@ class App extends Component {
     return approval.toString();
   };
 
+  mine= async () => {
+    const web3 = window.web3
+    const upcNFTData = this.state.upcNFTData;
+
+    const { accounts, contract } = this.state;
+
+    console.log(upcNFTData.address);
+    var approval = await this.state.xupc.methods.mine().send({ from: this.state.account });
+    this.setState({daiTokenBalance: approval.toString() });
+    return approval.toString();
+  };
+
 
 
   getRewardInfo= async (upcHash) => {
@@ -226,6 +238,7 @@ class App extends Component {
     this.handleChange = this.handleChange.bind(this);
     this.buyNft= this.buyNft.bind(this);
     this.mintNft= this.mintNft.bind(this);
+    this.mine= this.mine.bind(this);
     this.updateUpc= this.updateUpc.bind(this);
     this.getContractBalance= this.getContractBalance.bind(this);
     this.getMyScannables = this.getMyScannables.bind(this);
@@ -267,6 +280,7 @@ class App extends Component {
 	approve={this.approve}
 	buyNft={this.buyNft}
 	mintNft={this.mintNft}
+	mine={this.mine}
       />
 
 
