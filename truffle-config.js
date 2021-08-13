@@ -23,17 +23,19 @@ module.exports = {
       network_id: "*"
     },
     matic: {
-      provider: () => new HDWalletProvider(mnemonic, `https://rpc-mainnet.matic.network`),
+      provider: () => new HDWalletProvider(process.env.MNEMONIC, `https://rpc-mainnet.maticvigil.com`),
       network_id: 137,
       confirmations: 2,
+      skipDryRun: true,
       timeoutBlocks: 200,
-      skipDryRun: true
+      gas: 12500000,
+      gasPrice: 1000000000,
     },
     xdai: {
           provider: function() {
                 return new HDWalletProvider(
                process.env.MNEMONIC,
-               "https://api.anyblock.tools/ethereum/poa/xdai/rpc/c6f80ef3-bc49-49f1-9961-82c2644bde63")
+               "https://rpc.xdaichain.com/")
           },
 	  confirmations: 2,
 	  skipDryRun: true,
@@ -46,12 +48,12 @@ module.exports = {
   contracts_build_directory: './src/abis/',
   compilers: {
     solc: {
-      version: "^0.6.0",
+      version: "^0.8.0",
       optimizer: {
         enabled: true,
         runs: 200
       },
-      evmVersion: "petersburg"
+      evmVersion: "istanbul"
     }
   }
 }

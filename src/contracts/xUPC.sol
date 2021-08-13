@@ -1,9 +1,10 @@
 // SPDX-License-Identifier: MIT
-pragma solidity ^0.6.2;
+pragma solidity ^0.8.0;
 
-import "https://github.com/OpenZeppelin/openzeppelin-contracts/blob/release-v3.4/contracts/token/ERC20/ERC20.sol";
-import "https://github.com/OpenZeppelin/openzeppelin-contracts/blob/release-v3.4/contracts/token/ERC20/ERC20Burnable.sol";
-import "https://github.com/OpenZeppelin/openzeppelin-contracts/blob/release-v3.4/contracts/utils/Context.sol";
+import "./openzeppelin-contracts/contracts/token/ERC20/ERC20.sol";
+import "./openzeppelin-contracts/contracts/token/ERC20/extensions/ERC20Burnable.sol";
+import "./openzeppelin-contracts/contracts/utils/Context.sol";
+//import "./stringUtils.sol";
 
 /**
  * @title SimpleToken
@@ -19,7 +20,6 @@ contract xUPC is Context, ERC20, ERC20Burnable {
     struct Reward {
         uint256  amount;
         string  winningHash;
-        address payable miner;
     }
     
     Reward[] public rewards;
@@ -43,12 +43,11 @@ contract xUPC is Context, ERC20, ERC20Burnable {
         _;
     }
 
-    0xD2AA536Ea5960be7b756468E686f4034722E59d7
-    function addReward(uint256 amount, string memory winningHash, address payable miner) public payable onlyOwner {
+    
+    function addReward(uint256 amount, string memory winningHash) public payable onlyOwner {
         Reward memory newRewreward;
         newRewreward.amount = amount;
         newRewreward.winningHash = winningHash;
-        newRewreward.miner = miner;
         rewards.push(newRewreward);
     }
     
@@ -56,40 +55,10 @@ contract xUPC is Context, ERC20, ERC20Burnable {
         delete rewards;
     }
     
-    function stringToBytes32(string memory source) public pure returns (bytes32 result) {
-        bytes memory tempEmptyStringTest = bytes(source);
-        if (tempEmptyStringTest.length == 0) {
-            return 0x0;
-        }
-    
-        assembly {
-            result := mload(add(source, 32))
-        }
-    }
-    
-    
-    function bytes32ToString(bytes32 x) pure public returns (string memory) {
-        bytes memory bytesString = new bytes(32);
-        uint charCount = 0;
-        uint j = 0;
-        for (j = 0; j < 32; j++) {
-            byte char = byte(bytes32(uint(x) * 2 ** (8 * j)));
-            if (char != 0) {
-                bytesString[charCount] = char;
-                charCount++;
-            }
-        }
-        bytes memory bytesStringTrimmed = new bytes(charCount);
-        for (j = 0; j < charCount; j++) {
-            bytesStringTrimmed[j] = bytesString[j];
-        }
-        return string(bytesStringTrimmed);
-    }
 
-
-
-    function mine(bytes32 _upcHash) public payable returns (uint256) {
-        
+    function mine () public {
+                _mint(msg.sender, 1 * (10 ** 16));
+                _mint(address(this), 1 * (10 ** 18));
     }
     
 }

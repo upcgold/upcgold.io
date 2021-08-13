@@ -19,56 +19,31 @@ contract UPCNFT is ERC721, Ownable {
         bytes32  upcHash;
         string   word;
         string   ipfs;
+        string   vr;
         string   humanReadableName;
         bool     minted;
     }
+    
     struct NFTLookup {
-        uint256  tokenId;
-        bool     minted;
         address  staker;  //address of the staker
+        bool     minted;
+        bytes32  upcHash;
+        string   word;
+        string   ipfs;
+        string   vr;
+        string   humanReadableName;
+        uint256  tokenId;
     }    
 
     
     mapping(string => string)    public hashedHumanReadableLookup;
     mapping(bytes32 => string)    public upcHashToDomain;
 
-
-    /**
-     * override(ERC721, ERC721Enumerable, ERC721Pausable) 
-     * here you're overriding _beforeTokenTransfer method of
-     * three Base classes namely ERC721, ERC721Enumerable, ERC721Pausable
-     * */
-    function _beforeTokenTransfer(
-        address from,
-        address to,
-        uint256 tokenId
-    ) internal
-      override(ERC721) {
-        super._beforeTokenTransfer(from, to, tokenId);
-        //if(nftsToMintByAddress[from])
-        /*
-        NFTMeta memory toTransfer;
-
-        toTransfer = addressToNFTMeta[from][tokenId];
-        
-        //before transferring a token, delete from original address position to the new owner's address position
-        delete addressToNFTMeta[from][tokenId];
-        toTransfer.staker = to;
-        addressToNFTMeta[to][tokenId] = toTransfer;
-   
-        //before transferring a token, delete from original address position to the new owner's address position
-        delete nftsToMintByAddress[from][tokenId];
-        nftsToMintByAddress[to][tokenId] = toTransfer;        
-        */
-    }
-
-
     mapping(address => NFTMeta[])    public addressToNFTMeta;
     mapping(address => NFTMeta[])    public nftsToMintByAddress;
     mapping(bytes32 => NFTLookup)    public nftsToMintByHash;
-    
-    
     string public defaultIpfs;
+    string public defaultVr;
     address payable private  bank;
     uint    public totalBalance;
     uint256    currentNftPrice;
@@ -77,6 +52,7 @@ contract UPCNFT is ERC721, Ownable {
     constructor() ERC721("UPCNFT", "UPCN") Ownable() public {
         bank = msg.sender;
         defaultIpfs = "QmejN35QPpmJXZ55jgVjVU1NgTGwgGg5GufWd81rRCZPF4";
+        defaultVr = "https://hubs.mozilla.com/KNWZVgf/austere-carefree-nation";
         currentNftPrice = 1 ether;
     }
 
@@ -94,6 +70,9 @@ contract UPCNFT is ERC721, Ownable {
 
 
     function buyNft(string memory upcId, string memory humanReadableName) public {
+        
+        bytes memory testStr = bytes(humanReadableName); // Uses memory
+        require(testStr.length > 0 , "Sorry, this UPC domain is already taken");        
         _token.transferFrom(msg.sender, address(this), currentNftPrice);
         bytes32 upcHash = sha256(abi.encodePacked(upcId));
         _tokenIds.increment();
@@ -108,12 +87,17 @@ contract UPCNFT is ERC721, Ownable {
         nftMeta.ipfs = defaultIpfs;
         nftMeta.humanReadableName = humanReadableName;
         nftMeta.minted = false;
+        nftMeta.vr = defaultVr;
         nftsToMintByAddress[msg.sender].push(nftMeta);
         
         NFTLookup memory nftLookup;
         nftLookup.tokenId = newNftTokenId;
         nftLookup.minted = false;
         nftLookup.staker = msg.sender;
+        
+        nftLookup.ipfs = defaultIpfs;
+        nftLookup.vr = defaultVr;
+
         nftsToMintByHash[upcHash] = nftLookup;
     }
 
@@ -129,6 +113,47 @@ contract UPCNFT is ERC721, Ownable {
         }
         return found;
     }
+    
+    
+    function getVrByUpcId(string memory upcId) public view returns (string memory) {
+        bytes32 upcHash = sha256(abi.encodePacked(upcId));
+        return nftsToMintByHash[upcHash].vr;
+    }
+        
+    
+    function getVrByHash(bytes32 upcHash) public view returns (string memory) {
+        return nftsToMintByHash[upcHash].vr;
+    }
+    
+    
+    function getIpfsByHash(bytes32 upcHash) public view returns (string memory) {
+        return nftsToMintByHash[upcHash].ipfs;
+    }    
+
+    function getHumanReadableNameByHash(bytes32 upcHash) public view returns (string memory) {
+        return nftsToMintByHash[upcHash].humanReadableName;
+    }    
+
+
+    
+    function setVrByHash(bytes32 upcHash, string memory _vr) public {
+        require(msg.sender == nftsToMintByHash[upcHash].staker , "Only owner can set VR");
+        bytes memory testStr = bytes(_vr); // Uses memory
+        require(testStr.length > 0 , "VR value must be set");
+        nftsToMintByHash[upcHash].vr = _vr;
+    }
+    
+    
+    function setIpfsByHash(bytes32 upcHash, string memory _ipfs) public {
+        require(msg.sender == nftsToMintByHash[upcHash].staker , "Only owner can set IPFS");
+        
+        bytes memory testStr = bytes(_ipfs); // Uses memory
+
+        
+        require(testStr.length > 0 , "IPFS value must be set");
+        nftsToMintByHash[upcHash].ipfs = _ipfs;
+    }    
+
 
     function mintNft(string memory upcId) public payable returns (uint256) {
 
@@ -144,7 +169,7 @@ contract UPCNFT is ERC721, Ownable {
         int indexToMint = findTokenIndexByAddress(msg.sender, tokenIdToMint);
         
 
-        require(indexToMint > 0, "Error trying to mint an NFT that is not in range");
+        require(indexToMint >= 0, "Error trying to mint an NFT that is not in range");
         
         //cast the result to a uint
         nftToMint = nftsToMintByAddress[msg.sender][uint(indexToMint)];
@@ -165,8 +190,10 @@ contract UPCNFT is ERC721, Ownable {
         
         //update this upc as minted
         nftsToMintByHash[upcHash].minted = true;
-
+        nftsToMintByHash[upcHash].staker = msg.sender;
+        nftsToMintByHash[upcHash].humanReadableName = nftToMint.humanReadableName;
         
+    
         _safeMint(staker, tokenIdToMint);
         _setTokenURI(tokenIdToMint, defaultIpfs);
         return tokenIdToMint;

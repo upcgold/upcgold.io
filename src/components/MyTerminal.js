@@ -1,5 +1,7 @@
 import React, { Component } from 'react'
 import Terminal from 'react-console-emulator'
+import ScratchCard from './ScratchCard'
+
 
 const commands = {
   echo: {
@@ -78,14 +80,6 @@ export default class MyTerminal extends Component {
                       this.setState({ progress: this.state.progress + 1 }, () => terminal.pushToStdout(`Request Processing: ${this.state.progress}`))
                     }
                   }, 1000)
-
-
-
-
-
-
-
-
                       approval.then((value) => {
                          approval = value;
                          // expected output: "Success!"
@@ -135,6 +129,35 @@ export default class MyTerminal extends Component {
                 return ''
               }
             },
+
+
+            vr: {
+              description: 'Displays a progress counter.',
+              fn: () => {
+                this.setState({progressBal: ''});
+                this.setState({ isProgressing: true }, () => {
+                  const terminal = this.progressTerminal.current
+                  let approval = this.props.getVrByHash(this.state.account);
+		  console.log(this.state.account);
+		  console.log(approval);
+
+                  const interval = setInterval(() => {
+                    if (this.state.approved != '') { // Stop at 100%
+                      clearInterval(interval)
+                      this.setState({ isProgressing: false, progress: 0 })
+                    } else {
+                      this.setState({approved: approval});
+                      var self = this;
+                      this.setState({ progress: this.state.progress + 10 }, () => terminal.pushToStdout(`Congrats! You just mined some crypto. \n  Type 'bal' to see your new balance! ${approval}`))
+                    }
+                  }, 1500)
+                })
+
+                return ''
+              }
+            },
+
+
             mine: {
               description: 'Displays a progress counter.',
               fn: () => {
@@ -196,6 +219,7 @@ export default class MyTerminal extends Component {
         welcomeMessage={'Welcome to UPC Shell! \n Type `tutorial` for help'}
         promptLabel={promptlabel}
         autoFocus={true}
+	promptLabelStyle={{"color":"green"}}
       />
     )
   }

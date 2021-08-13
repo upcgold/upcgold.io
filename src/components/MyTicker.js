@@ -1,12 +1,14 @@
 import React, { Component, useState, useEffect } from 'react'
-
-import './extra/ticker-layout.css'
-
+import uuid from 'react-uuid';
+import ScratchCard from 'react-scratchcard';
+import ReactCardFlip from 'react-card-flip';
 import Ticker from 'react-ticker'
 import Image1 from './extra/img-1.jpg'
 import Image2 from './extra/img-2.jpg'
 import Image3 from './extra/img-3.jpg'
 import Image4 from './extra/img-4.jpg'
+import QRCode from "react-qr-code";
+
 
 function rand(min, max) {
   var offset = min
@@ -128,10 +130,16 @@ export default class MyTicker extends Component {
     }))
   }
 
+  flipCard = () => {
+    this.setState({isFlipped: !this.state.isFlipped});
+  }
 
 
   constructor(props) {
     super(props)
+    this.state = {
+      isFlipped: false
+    }
   }
 
   getPriceData = async () => {
@@ -153,16 +161,31 @@ export default class MyTicker extends Component {
 
 
         <Ticker
-          offset="25%"
-          speed={7}
+          speed={2}
           move={this.state.move}
           height={200}
         >
           {({ index }) => index === 0
-            ? <h2 style={{ width: '25vw', padding: '10px' }}>The following images are dynamically loaded via ajax!</h2>
-            : <ImageFromApi />
+            ? <h2 style={{ width: '25vw' }}>Crack the eggs to possibly find crypto!</h2>
+            : 
+         <div onClick={() => alert("hi")} style={{"marginRight":"10px"}} >
+	    <QRCode size={128} value={uuid()} />
+         </div>
           }
         </Ticker>
+
+        <Ticker
+          style={{"size":"12em"}}
+          direction="toRight"
+          offset="100%"
+          speed={10}
+          move={this.state.move}
+        >
+          {(index) => (
+            <h1>React-Ticker</h1>
+          )}
+        </Ticker>
+	    
       </div >
     )
   }
