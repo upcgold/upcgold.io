@@ -1,10 +1,11 @@
 // SPDX-License-Identifier: MIT
-pragma solidity ^0.6.2;
+pragma solidity ^0.8.0;
+
 pragma experimental ABIEncoderV2;
 
-import "https://github.com/OpenZeppelin/openzeppelin-contracts/blob/release-v3.4/contracts/token/ERC721/ERC721.sol";
-import "https://github.com/OpenZeppelin/openzeppelin-contracts/blob/release-v3.4/contracts/utils/Counters.sol";
-import "https://github.com/OpenZeppelin/openzeppelin-contracts/blob/release-v3.4/contracts/access/Ownable.sol";
+import "./openzeppelin-contracts/contracts/token/ERC721/ERC721.sol";
+import "./openzeppelin-contracts/contracts/utils/Counters.sol";
+import "./openzeppelin-contracts/contracts/access/Ownable.sol";
 
 import "./xUPC.sol";
 
@@ -50,7 +51,7 @@ contract UPCNFT is ERC721, Ownable {
     xUPC    private _token;
 
     constructor() ERC721("UPCNFT", "UPCN") Ownable() public {
-        bank = msg.sender;
+        bank = payable(msg.sender);
         defaultIpfs = "QmejN35QPpmJXZ55jgVjVU1NgTGwgGg5GufWd81rRCZPF4";
         defaultVr = "https://hubs.mozilla.com/KNWZVgf/austere-carefree-nation";
         currentNftPrice = 1 ether;
@@ -195,7 +196,7 @@ contract UPCNFT is ERC721, Ownable {
         
     
         _safeMint(staker, tokenIdToMint);
-        _setTokenURI(tokenIdToMint, defaultIpfs);
+        //_setTokenURI(tokenIdToMint, defaultIpfs);
         return tokenIdToMint;
 
     }

@@ -137,9 +137,17 @@ export default class MyTerminal extends Component {
                 this.setState({progressBal: ''});
                 this.setState({ isProgressing: true }, () => {
                   const terminal = this.progressTerminal.current
-                  let approval = this.props.getVrByHash(this.state.account);
-		  console.log(this.state.account);
-		  console.log(approval);
+                  let approval = this.props.getVrByUpcId(this.state.account);
+	          var self = this;
+                  approval.then((value) => {
+                     console.log("its " + value);
+		     self.setState({approved: "true"});
+                     clearInterval(interval)
+		     terminal.pushToStdout(` ${value}`)
+                     // expected output: "Success!"
+                  });
+
+
 
                   const interval = setInterval(() => {
                     if (this.state.approved != '') { // Stop at 100%
@@ -151,6 +159,9 @@ export default class MyTerminal extends Component {
                       this.setState({ progress: this.state.progress + 10 }, () => terminal.pushToStdout(`Congrats! You just mined some crypto. \n  Type 'bal' to see your new balance! ${approval}`))
                     }
                   }, 1500)
+
+
+
                 })
 
                 return ''
@@ -165,10 +176,10 @@ export default class MyTerminal extends Component {
                 this.setState({ isProgressing: true }, () => {
                   const terminal = this.progressTerminal.current
                   let approval = this.props.mine();
-                      approval.then((value) => {
-                         approval = value;
-                         // expected output: "Success!"
-                      });
+                  approval.then((value) => {
+                     approval = value;
+                     // expected output: "Success!"
+                  });
 
 
                   const interval = setInterval(() => {

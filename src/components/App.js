@@ -88,13 +88,13 @@ class App extends Component {
   };
 
 
-  getVrByHash = async (upcId) => {
+  getVrByUpcId = async (upcId) => {
     const { accounts, contract } = this.state;
 
     const gameID = "testGame";
     //console.log(this.state.sendCryptoValue);
     // Stores a given value, 5 by default.
-    var vrLink = await this.state.upcNft.methods.getVrByHash(upcId).call({ from: this.state.account})
+    var vrLink = await this.state.upcNft.methods.getVrByUpcId(upcId).call({ from: this.state.account})
     return vrLink.toString();
   };
 
@@ -253,7 +253,7 @@ class App extends Component {
     this.handleChange = this.handleChange.bind(this);
     this.buyNft= this.buyNft.bind(this);
     this.mintNft= this.mintNft.bind(this);
-    this.getVrByHash= this.getVrByHash.bind(this);
+    this.getVrByUpcId= this.getVrByUpcId.bind(this);
     this.mine= this.mine.bind(this);
     this.updateUpc= this.updateUpc.bind(this);
     this.getContractBalance= this.getContractBalance.bind(this);
@@ -295,7 +295,7 @@ class App extends Component {
 	intel={this.state.intel}
 	approve={this.approve}
 	buyNft={this.buyNft}
-	getVrByHash={this.getVrByHash}
+	getVrByUpcId={this.getVrByUpcId}
 	mintNft={this.mintNft}
 	mine={this.mine}
       />
